@@ -5,16 +5,12 @@
 *.war
 *.ear
 
-# --------common zip file----------
-*.7z
-*.jar
-*.rar
-*.zip
-*.gz
-
 # ---------IBM ClearCase--------
 *.copyarea.db
 *.keep
+
+# -----------Maven---------
+target/
 
 # ----------eclipse---------
 *.pydevproject
@@ -43,3 +39,10 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+# --------common zip file----------
+*.7z
+*.jar
+*.rar
+*.zip
+*.gz
