@@ -1,0 +1,36 @@
+Zollty MVC Framework CHANGELOG
+===============================
+http://www.zollty.org/zollty-mvc
+
+
+Changes in version 0.0.1 (2013-06-02)
+-------------------------------------
+Create this project. It's only a rudiment, which expected to help servlet dispatch.
+
+
+Changes in version 0.0.2 (2013-08-05)
+-------------------------------------
+The first inner version. Reference for the design of Spring and Struts 2. Integrate 
+some good ideas like OSChina.NET.
+
+
+Changes in version 0.0.3 (2013-09-16)
+-------------------------------------
+The first local release version. Realized the Controller( based on httpservlet ), and IoC( support xml and annotation bean inject ).
+
+
+Changes in version 0.0.4 (2013-09-25)
+-------------------------------------
+Project reconstitution. Optimizing it's core design, overwrite the 90% Code of IoC.
+
+
+Changes in version 0.0.5 (2013-10-09)
+-------------------------------------
+Optimizing it's MVC module, overwrite all of the Handlers.
+
+
+Changes in version 0.0.6 (2013-10-24)
+-------------------------------------
+Add some useful tools under the addons module, like JndiDataSourceCreator and FileUploadTools.
+
+
