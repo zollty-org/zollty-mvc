@@ -5,6 +5,17 @@
 *.war
 *.ear
 
+# --------common zip file----------
+*.7z
+*.jar
+*.rar
+*.zip
+*.gz
+
+# ---------IBM ClearCase--------
+*.copyarea.db
+*.keep
+
 # ----------eclipse---------
 *.pydevproject
 .project
