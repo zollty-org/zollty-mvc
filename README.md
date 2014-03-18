@@ -10,12 +10,21 @@ Its DI function is very powerful, support method injection, support to create be
 Its BeanFactory is highly extensible, support ClassPathXmlApplicationContext, ClassPathAnnotationApplicationContext, WebXmlApplicationContext, and so on. 
  
 ##### 2.It's a lightweight MVC Framework 
-Support REST-ful, nice url customization, chained interceptor, ...and so on.   
-It's reliable and efficient, much more easy than SpringMVC, and it's faster. 
-Only one jar, no dependence, which includes it's most functions! 
+Support REST-ful, nice url customization, chained interceptor, ...and so on.  
+It's reliable and efficient, much more easy than SpringMVC, and it's faster.  
+Only one jar, no dependence, which includes it's most functions!  
 It's flexible, you can overwrite its API to extend its functionality.   
 
------------------
+
+* * *
+
+***
+
+*****
+
+- - -
+
+---------------------------------------
 ### How to use it 
 ###### a hello word sample  
 ```java
