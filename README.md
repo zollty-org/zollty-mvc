@@ -1,7 +1,9 @@
 ZolltyMVC
 ==========
     
-### What is ZolltyMVC 
+What is ZolltyMVC 
+----------------------------
+
 The ZolltyMVC is a lightweight Java MVC Framework.  
 It can help development teams build simple, portable, fast and flexible Java applications.
  
@@ -16,8 +18,9 @@ Only one jar, no dependence, which includes it's most functions!
 It's flexible, you can overwrite its API to extend its functionality.   
 
 
-### How to use it 
+How to use it 
 ---------------------------------------
+
 ###### a hello word sample  
 ```java
  @Controller
