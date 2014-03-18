@@ -1,6 +1,6 @@
 zollty-mvc
 ==========
----
+    
 ### What is ZolltyMVC ###
 > The ZolltyMVC is a lightweight Java MVC Framework. It can help development teams build simple, portable, fast and flexible Java applications.
  
@@ -14,12 +14,11 @@ zollty-mvc
 > Only one jar, no dependence, which includes it's most functions!    
 > It's flexible, you can overwrite its API to extend its functionality.   
    
----
 ### How to use it ###
 > ###### a hello word sample  
 ```java
-@Controller
-public class UserController{
+ @Controller
+ public class UserController{
 
    @RequestMapping("/admin/logout")
    public View logout(HttpServletRequest request){
@@ -31,13 +30,13 @@ public class UserController{
    }
    
    @RequestMapping("/admin/login")
-   public View login(
-           @HttpParam("userName")String userName,
-           @HttpParam("password")String password) {
+   public View login( 
+           @HttpParam("userName")String userName, 
+           @HttpParam("password")String password) { 
 		   
           // do something...
-		  
-          return new JspView("/admin/main.jsp");
+  
+          return new JspView("/admin/main.jsp"); 
    }
-}
+ }
 ```
