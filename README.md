@@ -1,4 +1,4 @@
-zollty-mvc
+ZolltyMVC
 ==========
     
 ### What is ZolltyMVC 
@@ -16,16 +16,8 @@ Only one jar, no dependence, which includes it's most functions!
 It's flexible, you can overwrite its API to extend its functionality.   
 
 
-* * *
-
-***
-
-*****
-
-- - -
-
----------------------------------------
 ### How to use it 
+---------------------------------------
 ###### a hello word sample  
 ```java
  @Controller
