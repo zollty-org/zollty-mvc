@@ -114,30 +114,33 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
 			path = new File(url.toURI());
 		} catch (Throwable t) {
 			log.error(t, "parse file error");
+			return;
 		}
-		path.listFiles(new FileFilter() {
-			public boolean accept(File file) {
-				String name = file.getName();
-				if (name.endsWith(".class") && !name.contains("$"))
-					parseClass(packageDirName.replace('/', '.') + "." + name.substring(0, file.getName().length() - 6));
-				else if (file.isDirectory())
-					try {
-						parseFile(file.toURI().toURL(), packageDirName + "/" + name);
-					} catch (Throwable t) {
-						log.error(t, "parse file error");
-					}
-				return false;
-			}
-		});
-	}
+        path.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                String name = file.getName();
+                if (name.endsWith(".class") && !name.contains("$")) {
+                    parseClass(packageDirName.replace('/', '.') + "." + name.substring(0, file.getName().length() - 6));
+                } else if (file.isDirectory()) {
+                    try {
+                        parseFile(file.toURI().toURL(), packageDirName + "/" + name);
+                    } catch (Throwable t) {
+                        log.error(t, "parse file error");
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
 	private void parseJar(URL url, String packageDirName) {
 		Enumeration<JarEntry> entries = null;
-		try {
-			entries = ((JarURLConnection) url.openConnection()).getJarFile().entries();
-		} catch (Throwable t) {
-			log.error(t, "parse jar error");
-		}
+        try {
+            entries = ((JarURLConnection) url.openConnection()).getJarFile().entries();
+        } catch (Throwable t) {
+            log.error(t, "parse jar error");
+            return;
+        }
 		while (entries.hasMoreElements()) {
 			String name = entries.nextElement().getName();
 			if (!name.endsWith(".class") || name.contains("$")
@@ -155,6 +158,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
 			c = getBeanClassLoader().loadClass(className);
 		} catch (Throwable t) {
 			log.error(t, "parse class error");
+			return;
 		}
 		
 		BeanDefinition beanDefinition = null;

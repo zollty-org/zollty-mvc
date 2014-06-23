@@ -26,7 +26,7 @@ import org.zollty.framework.mvc.support.ControllerMetaInfo;
 public class Resource {
 //	public static final String WILDCARD = "?";
 //	private static final String[] EMPTY = new String[0];
-	private static String ENCODING;
+	private String encoding;
 	
 	private final Map<String, ControllerHandler> CONSTANT_URI;
 	
@@ -38,7 +38,7 @@ public class Resource {
 	
 	public Resource(String encoding) {
 		CONSTANT_URI = new HashMap<String, ControllerHandler>();
-		ENCODING = encoding;
+		this.encoding = encoding;
 	}
 	
 //	private Resource(boolean root) {
@@ -53,7 +53,7 @@ public class Resource {
 	}
 	
 	public String getEncoding() {
-		return ENCODING;
+		return encoding;
 	}
 
 	public void add(String uri, ControllerMetaInfo c) {

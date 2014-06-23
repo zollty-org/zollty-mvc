@@ -31,7 +31,7 @@ public class DispatcherServlet extends DispatcherController {
 	@Override
 	public void dispatcher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String servletURI = new String( request.getRequestURI().substring( request.getContextPath().length() ) );
+		String servletURI = request.getRequestURI().substring( request.getContextPath().length() );
 		
 		// 排除拦截 的前缀，例如 可设置 /resources/ 开头的请求，一律不拦截
 		for(String prefix: this.handlerMapping.getExcludePrefixes()){

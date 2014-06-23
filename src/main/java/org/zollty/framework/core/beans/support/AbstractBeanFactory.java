@@ -359,9 +359,9 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
                     .getMapObj(setterParamType));
             //log.debug("map ret - " + m.getClass().getName());
         }
-        for (Object o : values.keySet()) {
-            Object k = getInjectArg(o, null);
-            Object v = getInjectArg(values.get(o), null);
+        for (Map.Entry<Object, Object> entry : values.entrySet()) {
+            Object k = getInjectArg(entry.getKey(), null);
+            Object v = getInjectArg(entry.getValue(), null);
             m.put(k, v);
         }
         return m;

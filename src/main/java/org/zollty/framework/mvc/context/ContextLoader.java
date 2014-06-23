@@ -113,7 +113,7 @@ public class ContextLoader {
 		if(configLocation==null){
 			configLocation = Const.DEFAULT_CONFIG_LOCATION;
 		}else if(configLocation.startsWith("/")){
-			configLocation = new String( configLocation.substring(1) );
+			configLocation = configLocation.substring(1);
 		}
 		
 		//ConfigReader.getInstance().load(configLocation, sc.getRealPath("/"));

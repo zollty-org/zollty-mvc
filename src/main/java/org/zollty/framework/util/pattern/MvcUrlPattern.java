@@ -38,11 +38,10 @@ public class MvcUrlPattern {
     private final List<MatchInfo> miList = new ArrayList<MatchInfo>();
     
     public List<String> match(String src) {
-        List<MatchFlag> tempMfList = new ArrayList<MatchFlag>();
         List<TempMatchValue> tempValueList = new ArrayList<TempMatchValue>();
         List<String> valueList = new ArrayList<String>();
 
-        tempMfList = new ArrayList<MatchFlag>(miList.size());
+        List<MatchFlag> tempMfList = new ArrayList<MatchFlag>(miList.size());
         for(MatchInfo ma: miList){
             tempMfList.add(new MatchFlag(ma));
         }
@@ -147,16 +146,16 @@ public class MvcUrlPattern {
                 if(!t1.mf.append){
                     valueList.add(tv.get(tv.size()-1).value);
                 }else{
-                    String val = "";
+                    StringBuilder val = new StringBuilder();
                     String mstr = t1.mf.ma.matchStr;
                     for (int k = 0; k < tv.size(); k++) {
                         if (k != tv.size() - 1) {
-                            val += tv.get(k).value + mstr;
+                            val.append(tv.get(k).value).append(mstr);
                         } else {
-                            val += tv.get(k).value;
+                            val.append(tv.get(k).value);
                         }
                     }
-                    valueList.add(val);
+                    valueList.add(val.toString());
                 }
                 t1.mf.used = true;
             }
@@ -172,6 +171,7 @@ public class MvcUrlPattern {
             LOG.trace("ValueList={}", valueList.toString());
         }
     }
+    
     
     private boolean canAppend(MatchFlag mf, List<TempMatchValue> tempValueList) {
         int size = tempValueList.size() - 1;

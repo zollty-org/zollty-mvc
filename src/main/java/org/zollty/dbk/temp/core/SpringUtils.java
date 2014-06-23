@@ -25,16 +25,14 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.temp.beans.BeanInstantiationException;
 import org.zollty.dbk.util.ReflectionUtils;
+import org.zollty.framework.util.Assert;
 
 
 /**
@@ -560,82 +558,6 @@ public class SpringUtils {
 		return true;
 	}
 	
-	/**
-	 * Convert the given number into an instance of the given target class.
-	 * @param number the number to convert
-	 * @param targetClass the target class to convert to
-	 * @return the converted number
-	 * @throws IllegalArgumentException if the target class is not supported
-	 * (i.e. not a standard Number subclass as included in the JDK)
-	 * @see java.lang.Byte
-	 * @see java.lang.Short
-	 * @see java.lang.Integer
-	 * @see java.lang.Long
-	 * @see java.math.BigInteger
-	 * @see java.lang.Float
-	 * @see java.lang.Double
-	 * @see java.math.BigDecimal
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Number> T convertNumberToTargetClass(Number number, Class<T> targetClass)
-			throws IllegalArgumentException {
-
-		Assert.notNull(number, "Number must not be null");
-		Assert.notNull(targetClass, "Target class must not be null");
-
-		if (targetClass.isInstance(number)) {
-			return (T) number;
-		}
-		else if (targetClass.equals(Byte.class)) {
-			long value = number.longValue();
-			if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
-				raiseOverflowException(number, targetClass);
-			}
-			return (T) new Byte(number.byteValue());
-		}
-		else if (targetClass.equals(Short.class)) {
-			long value = number.longValue();
-			if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
-				raiseOverflowException(number, targetClass);
-			}
-			return (T) new Short(number.shortValue());
-		}
-		else if (targetClass.equals(Integer.class)) {
-			long value = number.longValue();
-			if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
-				raiseOverflowException(number, targetClass);
-			}
-			return (T) new Integer(number.intValue());
-		}
-		else if (targetClass.equals(Long.class)) {
-			return (T) new Long(number.longValue());
-		}
-		else if (targetClass.equals(BigInteger.class)) {
-			if (number instanceof BigDecimal) {
-				// do not lose precision - use BigDecimal's own conversion
-				return (T) ((BigDecimal) number).toBigInteger();
-			}
-			else {
-				// original value is not a Big* number - use standard long conversion
-				return (T) BigInteger.valueOf(number.longValue());
-			}
-		}
-		else if (targetClass.equals(Float.class)) {
-			return (T) new Float(number.floatValue());
-		}
-		else if (targetClass.equals(Double.class)) {
-			return (T) new Double(number.doubleValue());
-		}
-		else if (targetClass.equals(BigDecimal.class)) {
-			// always use BigDecimal(String) here to avoid unpredictability of BigDecimal(double)
-			// (see BigDecimal javadoc for details)
-			return (T) new BigDecimal(number.toString());
-		}
-		else {
-			throw new IllegalArgumentException("Could not convert number [" + number + "] of type [" +
-					number.getClass().getName() + "] to unknown target class [" + targetClass.getName() + "]");
-		}
-	}
 
 	/**
 	 * Raise an overflow exception for the given number and target class.
@@ -646,173 +568,5 @@ public class SpringUtils {
 		throw new IllegalArgumentException("Could not convert number [" + number + "] of type [" +
 				number.getClass().getName() + "] to target class [" + targetClass.getName() + "]: overflow");
 	}
-	
-//	/** ReflectionUtils
-//	 * Determine whether the given field is a "public static final" constant.
-//	 * @param field the field to check
-//	 */
-//	public static boolean isPublicStaticFinal(Field field) {
-//		int modifiers = field.getModifiers();
-//		return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
-//	}
-//	
-//	/** ReflectionUtils
-//	 * Attempt to find a {@link Method} on the supplied class with the supplied name
-//	 * and no parameters. Searches all superclasses up to {@code Object}.
-//	 * <p>Returns {@code null} if no {@link Method} can be found.
-//	 * @param clazz the class to introspect
-//	 * @param name the name of the method
-//	 * @return the Method object, or {@code null} if none found
-//	 */
-//	public static Method findMethod(Class<?> clazz, String name) {
-//		return findMethod(clazz, name, new Class[0]);
-//	}
-//
-//	/** ReflectionUtils
-//	 * Attempt to find a {@link Method} on the supplied class with the supplied name
-//	 * and parameter types. Searches all superclasses up to {@code Object}.
-//	 * <p>Returns {@code null} if no {@link Method} can be found.
-//	 * @param clazz the class to introspect
-//	 * @param name the name of the method
-//	 * @param paramTypes the parameter types of the method
-//	 * (may be {@code null} to indicate any signature)
-//	 * @return the Method object, or {@code null} if none found
-//	 */
-//	public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
-//		Assert.notNull(clazz, "Class must not be null");
-//		Assert.notNull(name, "Method name must not be null");
-//		Class<?> searchType = clazz;
-//		while (searchType != null) {
-//			Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
-//			for (Method method : methods) {
-//				if (name.equals(method.getName()) &&
-//						(paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
-//					return method;
-//				}
-//			}
-//			searchType = searchType.getSuperclass();
-//		}
-//		return null;
-//	}
-	
-//	/** ClassUtils
-//	 * Given a method, which may come from an interface, and a target class used
-//	 * in the current reflective invocation, find the corresponding target method
-//	 * if there is one. E.g. the method may be {@code IFoo.bar()} and the
-//	 * target class may be {@code DefaultFoo}. In this case, the method may be
-//	 * {@code DefaultFoo.bar()}. This enables attributes on that method to be found.
-//	 * <p><b>NOTE:</b> In contrast to {@link org.springframework.aop.support.AopUtils#getMostSpecificMethod},
-//	 * this method does <i>not</i> resolve Java 5 bridge methods automatically.
-//	 * Call {@link org.springframework.core.BridgeMethodResolver#findBridgedMethod}
-//	 * if bridge method resolution is desirable (e.g. for obtaining metadata from
-//	 * the original method definition).
-//	 * <p><b>NOTE:</b> Since Spring 3.1.1, if Java security settings disallow reflective
-//	 * access (e.g. calls to {@code Class#getDeclaredMethods} etc, this implementation
-//	 * will fall back to returning the originally provided method.
-//	 * @param method the method to be invoked, which may come from an interface
-//	 * @param targetClass the target class for the current invocation.
-//	 * May be {@code null} or may not even implement the method.
-//	 * @return the specific target method, or the original method if the
-//	 * {@code targetClass} doesn't implement it or is {@code null}
-//	 */
-//	public static Method getMostSpecificMethod(Method method, Class<?> targetClass) {
-//		if (method != null && isOverridable(method, targetClass) &&
-//				targetClass != null && !targetClass.equals(method.getDeclaringClass())) {
-//			try {
-//				if (Modifier.isPublic(method.getModifiers())) {
-//					try {
-//						return targetClass.getMethod(method.getName(), method.getParameterTypes());
-//					}
-//					catch (NoSuchMethodException ex) {
-//						return method;
-//					}
-//				}
-//				else {
-//					Method specificMethod =
-//							findMethod(targetClass, method.getName(), method.getParameterTypes());
-//					return (specificMethod != null ? specificMethod : method);
-//				}
-//			}
-//			catch (AccessControlException ex) {
-//				// Security settings are disallowing reflective access; fall back to 'method' below.
-//			}
-//		}
-//		return method;
-//	}
-//	
-//	/** ClassUtils
-//	 * Determine whether the given method is overridable in the given target class.
-//	 * @param method the method to check
-//	 * @param targetClass the target class to check against
-//	 */
-//	private static boolean isOverridable(Method method, Class<?> targetClass) {
-//		if (Modifier.isPrivate(method.getModifiers())) {
-//			return false;
-//		}
-//		if (Modifier.isPublic(method.getModifiers()) || Modifier.isProtected(method.getModifiers())) {
-//			return true;
-//		}
-//		return getPackageName(method.getDeclaringClass()).equals(getPackageName(targetClass));
-//	}
-//	
-//	/** ClassUtils
-//	 * Determine the name of the package of the given class,
-//	 * e.g. "java.lang" for the {@code java.lang.String} class.
-//	 * @param clazz the class
-//	 * @return the package name, or the empty String if the class
-//	 * is defined in the default package
-//	 */
-//	public static String getPackageName(Class<?> clazz) {
-//		Assert.notNull(clazz, "Class must not be null");
-//		return getPackageName(clazz.getName());
-//	}
-//
-//	/** ClassUtils The package separator character '.' */
-//	private static final char PACKAGE_SEPARATOR = '.';
-//	
-//	/** ClassUtils
-//	 * Determine the name of the package of the given fully-qualified class name,
-//	 * e.g. "java.lang" for the {@code java.lang.String} class name.
-//	 * @param fqClassName the fully-qualified class name
-//	 * @return the package name, or the empty String if the class
-//	 * is defined in the default package
-//	 */
-//	public static String getPackageName(String fqClassName) {
-//		Assert.notNull(fqClassName, "Class name must not be null");
-//		int lastDotIndex = fqClassName.lastIndexOf(PACKAGE_SEPARATOR);
-//		return (lastDotIndex != -1 ? fqClassName.substring(0, lastDotIndex) : "");
-//	}
-//
-//	
-//	/** ClassUtils
-//	 * Return the user-defined class for the given instance: usually simply
-//	 * the class of the given instance, but the original class in case of a
-//	 * CGLIB-generated subclass.
-//	 * @param instance the instance to check
-//	 * @return the user-defined class
-//	 */
-//	public static Class<?> getUserClass(Object instance) {
-//		Assert.notNull(instance, "Instance must not be null");
-//		return getUserClass(instance.getClass());
-//	}
-//
-//	/** ClassUtils The CGLIB class separator character "$$" */
-//	public static final String CGLIB_CLASS_SEPARATOR = "$$";
-//	
-//	/** ClassUtils
-//	 * Return the user-defined class for the given class: usually simply the given
-//	 * class, but the original class in case of a CGLIB-generated subclass.
-//	 * @param clazz the class to check
-//	 * @return the user-defined class
-//	 */
-//	public static Class<?> getUserClass(Class<?> clazz) {
-//		if (clazz != null && clazz.getName().contains(CGLIB_CLASS_SEPARATOR)) {
-//			Class<?> superClass = clazz.getSuperclass();
-//			if (superClass != null && !Object.class.equals(superClass)) {
-//				return superClass;
-//			}
-//		}
-//		return clazz;
-//	}
 	
 }

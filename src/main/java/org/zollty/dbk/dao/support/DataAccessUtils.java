@@ -18,12 +18,13 @@ package org.zollty.dbk.dao.support;
 
 import java.util.Collection;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.dao.EmptyResultDataAccessException;
 import org.zollty.dbk.dao.IncorrectResultSizeDataAccessException;
 import org.zollty.dbk.dao.TypeMismatchDataAccessException;
 import org.zollty.dbk.temp.core.SpringUtils;
+import org.zollty.dbk.util.NumberUtils;
+import org.zollty.framework.util.Assert;
 
 /**
  * Miscellaneous utility methods for DAO implementations.
@@ -143,7 +144,7 @@ public abstract class DataAccessUtils {
 			}
 			else if (Number.class.isAssignableFrom(requiredType) && Number.class.isInstance(result)) {
 				try {
-					result = SpringUtils.convertNumberToTargetClass(((Number) result), (Class<? extends Number>) requiredType);
+					result = NumberUtils.convertNumberToTargetClass(((Number) result), (Class<? extends Number>) requiredType);
 				}
 				catch (IllegalArgumentException ex) {
 					throw new TypeMismatchDataAccessException(ex.getMessage());

@@ -348,7 +348,7 @@ public class StaticFileView implements View {
 		return "*";
 	}
 
-	private class MultipartByteranges {
+	private static class MultipartByteranges {
 		public String head;
 		public long firstBytePos, lastBytePos;
 	}
