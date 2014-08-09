@@ -21,7 +21,7 @@ The first local release version. Realized the Controller( based on httpservlet )
 
 Changes in version 0.0.4 (2013-09-25)
 -------------------------------------
-Project reconstitution. Optimizing it's core design, overwrite the 90% Code of IoC.
+Project re-constitution. Optimizing it's core design, overwrite the 90% Code of IoC.
 
 
 Changes in version 0.0.5 (2013-10-09)
@@ -32,5 +32,30 @@ Optimizing it's MVC module, overwrite all of the Handlers.
 Changes in version 0.0.6 (2013-10-24)
 -------------------------------------
 Add some useful tools under the addons module, like JndiDataSourceCreator and FileUploadTools.
+
+
+Changes in version 0.0.7 (2013-11-26)
+-------------------------------------
+Add lightweight JDBC module, 80% of the JDBC code reference from Spring Framework, and maintain its license and copyright.
+
+
+Changes in version 0.0.8 (1.0.0.RELEASE) (2014-02-18)
+-------------------------------------
+After many projects to use, we release the 1.0.0 stable version.
+
+
+Changes in version 0.0.9 (2014-03-18)
+-------------------------------------
+Configuration module optimization. ApplicationConfig is an Abstract interface, make configuration more flexible. Default support XML and properties file.
+
+
+Changes in version 0.1.0 (1.0.1.RELEASE) (2014-05-17)
+-------------------------------------
+Support StaticResourceView. Can read static resource (like HTML, CSS, JS, PNG file...) from jar or other places.
+
+
+Changes in version 0.1.1 (1.0.2.RELEASE) (2014-06-12)
+-------------------------------------
+The new path matching pattern design. A bit like AntPathMatcher, but more advanced (more suitable URL match).
 
 
