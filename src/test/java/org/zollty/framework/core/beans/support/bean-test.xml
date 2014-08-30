@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-	- Default SQL error codes for well-known databases.
-	- Can be overridden by definitions in a "sql-error-codes.xml" file
-	- in the root of the class path.
-	-
-	- If the Database Product Name contains characters that are invalid
-	- to use in the id attribute (like a space) then we need to add a property
-	- named "databaseProductName"/"databaseProductNames" that holds this value.
-	- If this property is present, then it will be used instead of the id for
-	- looking up the error codes based on the current database.
-	-->
 <beans xmlns="http://www.zollty.org/mvc/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans http://www.zollty.org/mvc/schema/beans/zolltymvc-beans-1.0.xsd">
 
-	<bean id="holder" class="test.bean.BeanHolder" >
+	<bean id="arrayBean" class="org.zollty.framework.core.beans.support.ArrayBean" >
 		<property name="codes" >
 			<array>
 				<value>128</value>

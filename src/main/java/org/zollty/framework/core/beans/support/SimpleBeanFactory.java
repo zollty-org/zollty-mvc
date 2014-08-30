@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by Zollty Tsou (Contact: zollty@163.com, http://blog.zollty.com)
  */
 package org.zollty.framework.core.beans.support;
 
@@ -17,27 +17,25 @@ import java.util.List;
 import org.zollty.framework.core.support.BeanDefinition;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-12-7
  */
 public class SimpleBeanFactory extends AbstractBeanFactory {
-	
-	@Override
-	public void refresh(){
-		check(); //冲突检测
-		addObjectToContext();
-	}
 
-	@Override
-	protected List<BeanDefinition> loadBeanDefinitions() {
-		//throw new UnsupportedOperationException("not support this method. please use loadBeanDefinitions(List<BeanDefinition> beandef) replace. ");
-		return this.beanDefinitions;
-	}
-	
-	public void loadBeanDefinitions(List<BeanDefinition> beandef){
-		this.beanDefinitions = beandef;
-	}
+    @Override
+    public void refresh() {
+        check(); // 冲突检测
+        addObjectToContext();
+    }
 
+    @Override
+    protected List<BeanDefinition> loadBeanDefinitions() {
+        return this.beanDefinitions;
+    }
+
+    public void loadBeanDefinitions(List<BeanDefinition> beandef) {
+        this.beanDefinitions = beandef;
+    }
 
     @Override
     protected void doBeforeRefresh() {
