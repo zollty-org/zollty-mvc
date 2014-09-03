@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.zollty.org/mvc/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans http://www.zollty.org/mvc/schema/beans/zolltymvc-beans-1.0.xsd">
+	xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans http://blog.zollty.com/res/zolltymvc-beans-1.0.xsd">
 
 	<bean id="arrayBean" class="org.zollty.framework.core.beans.support.ArrayBean" >
 		<property name="codes" >
