@@ -24,6 +24,10 @@ public class BeanFactoryHelper {
 	private static boolean isInited = false;
 	private static BeanFactory beanFactory;
 	
+	// 不允许创建实例
+	private BeanFactoryHelper(){
+	}
+	
 	/**
 	 * @return the beanFactory
 	 */
