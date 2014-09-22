@@ -24,7 +24,6 @@ import org.zollty.framework.mvc.handler.support.ErrorHandler;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.resource.PathMatchingResourcePatternResolver;
 import org.zollty.tool.web.ServletFileDownload;
-import org.zollty.util.StringUtils;
 
 /**
  * @author zollty
@@ -54,7 +53,7 @@ abstract public class AbstractStaticResourceView implements View {
             return;
         }
         if(in!=null){
-            String contentType = StringUtils.getFilenameExtension(shortPath);
+            String contentType = MvcUtils.StringUtil.getFilenameExtension(shortPath);
             contentType = ServletFileDownload.MIME.get(contentType);
             if(contentType!=null) {
                 response.setHeader("Content-Type", contentType);

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.zollty.util.ClassUtils;
+import org.zollty.util.CollectionUtils;
 import org.zollty.util.DateFormatUtils;
 import org.zollty.util.ExceptionUtils;
 import org.zollty.util.FileUtils;
@@ -190,6 +191,9 @@ public class MvcUtils {
     }
     
     public static class ReflectionUtil extends ReflectionUtils {
+    }
+    
+    public static class CollectionUtil extends CollectionUtils {
     }
 
 }

@@ -36,7 +36,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.zollty.framework.util.collection.IdentityHashMap;
-import org.zollty.util.NestedRuntimeException;
 
 /**
  * 类型转换工具类
@@ -124,7 +123,7 @@ public class MvcConvertUtils {
                 collection = (Collection) clazz.newInstance();
             }
             catch (Exception e) {
-                throw new NestedRuntimeException(e);
+                throw new MvcRuntimeException(e);
             }
             return collection;
         }
@@ -155,7 +154,7 @@ public class MvcConvertUtils {
                 map = (Map) clazz.newInstance();
             }
             catch (Exception e) {
-                throw new NestedRuntimeException(e);
+                throw new MvcRuntimeException(e);
             }
             return map;
         }

@@ -18,10 +18,10 @@ import java.util.Map;
 
 import org.zollty.framework.mvc.handler.WebHandler;
 import org.zollty.framework.mvc.handler.support.ControllerHandler;
-import org.zollty.framework.util.pattern.MvcUrlPattern;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.util.BasicRuntimeException;
+import org.zollty.util.match.PathMatcher;
+import org.zollty.util.match.ZolltyPathMatcher;
 
 /**
  * @author zollty
@@ -32,7 +32,7 @@ public class PattenControllerHandler {
     private static Logger LOG = LogFactory.getLogger(PattenControllerHandler.class);
     
     private final ControllerMetaInfo controller;
-    private MvcUrlPattern pattern;
+    private PathMatcher pattern;
     private final List<String> paramsName;
     
     /**
@@ -48,9 +48,9 @@ public class PattenControllerHandler {
             pstr = pstr.replace("["+str+"]", "**");
         }
         if(pstr.indexOf("***")!=-1){
-            throw new BasicRuntimeException("URI definition error, any two variables can't be connected. such as /{v1}{v2}/ is BAD. /{v1}-{v2}/ is OK.");
+            throw new IllegalArgumentException("URI definition error, any two variables can't be connected. such as /{v1}{v2}/ is BAD. /{v1}-{v2}/ is OK.");
         }
-        pattern = new MvcUrlPattern(pstr);
+        pattern = new ZolltyPathMatcher(pstr);
         if(LogFactory.isDebugEnabled()){
             LOG.debug("URI Real Pattern={}", pstr);
         }

@@ -15,9 +15,9 @@ package org.zollty.framework.util.pattern;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.util.ZolltyUtils;
 
 /**
  * 字符串匹配算法，专用于PathParam
@@ -193,7 +193,7 @@ public class MvcUrlPattern {
             LOG.trace("begin init pattern[{}]", pattern);
         }
         char[] pchar = pattern.toCharArray();
-        pchar = ZolltyUtils.ArrayUtil.addChar(pchar, '$');
+        pchar = MvcUtils.CollectionUtil.arrayAdd(pchar, '$');
         int p1 = -1, p2 = -1;
         String val1;
         int mf = -1; // mf标记，1代表“**匹配”, 0代表“*匹配”

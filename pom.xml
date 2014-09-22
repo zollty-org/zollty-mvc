@@ -38,9 +38,9 @@
 		<dependency>
 			<groupId>org.zollty</groupId>
 			<artifactId>zollty-util</artifactId>
-			<version>1.0</version>
+			<version>1.6</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/zollty-util-1.0.jar</systemPath>
+			<systemPath>${project.basedir}/lib/zollty-util-1.6.jar</systemPath>
 		</dependency>
 		<!-- Servlet -->
 		<dependency>

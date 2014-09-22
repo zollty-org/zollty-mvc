@@ -19,6 +19,31 @@ package org.zollty.framework.util;
  */
 public class Assert {
 
+    /**
+     * Assert a boolean expression, throwing <code>IllegalArgumentException</code>
+     * if the test result is <code>false</code>.
+     * <pre class="code">Assert.isTrue(i &gt; 0, "The value must be greater than zero");</pre>
+     * @param expression a boolean expression
+     * @param message the exception message to use if the assertion fails
+     * @throws IllegalArgumentException if expression is <code>false</code>
+     */
+    public static void isTrue(boolean expression, String message) {
+        if (!expression) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * Assert a boolean expression, throwing <code>IllegalArgumentException</code>
+     * if the test result is <code>false</code>.
+     * <pre class="code">Assert.isTrue(i &gt; 0);</pre>
+     * @param expression a boolean expression
+     * @throws IllegalArgumentException if expression is <code>false</code>
+     */
+    public static void isTrue(boolean expression) {
+        isTrue(expression, "[Assertion failed] - this expression must be true");
+    }
+    
 	/**
 	 * Assert that an object is not <code>null</code> .
 	 * <pre class="code">Assert.notNull(clazz, "The class must not be null");</pre>
@@ -94,4 +119,32 @@ public class Assert {
 	public static boolean isEmpty(Object[] array) {
 		return (array == null || array.length == 0);
 	}
+	
+	/**
+     * Assert a boolean expression, throwing <code>IllegalStateException</code>
+     * if the test result is <code>false</code>. Call isTrue if you wish to
+     * throw IllegalArgumentException on an assertion failure.
+     * <pre class="code">Assert.state(id == null, "The id property must not already be initialized");</pre>
+     * @param expression a boolean expression
+     * @param message the exception message to use if the assertion fails
+     * @throws IllegalStateException if expression is <code>false</code>
+     */
+    public static void state(boolean expression, String message) {
+        if (!expression) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    /**
+     * Assert a boolean expression, throwing {@link IllegalStateException}
+     * if the test result is <code>false</code>.
+     * <p>Call {@link #isTrue(boolean)} if you wish to
+     * throw {@link IllegalArgumentException} on an assertion failure.
+     * <pre class="code">Assert.state(id == null);</pre>
+     * @param expression a boolean expression
+     * @throws IllegalStateException if the supplied expression is <code>false</code>
+     */
+    public static void state(boolean expression) {
+        state(expression, "[Assertion failed] - this state invariant must be true");
+    }
 }
