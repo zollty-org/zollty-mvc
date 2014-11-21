@@ -24,25 +24,50 @@ How to use it
 ###### a hello word sample  
 ```java
  @Controller
- public class UserController{
+ public class HelloWorldController {
+    
+    @RequestMapping("/lesson1/hello-jsp")
+    public View helloJsp() {
 
-   @RequestMapping("/admin/logout")
-   public View logout(HttpServletRequest request){
-          try {
-            request.getSession().invalidate();
-          }catch (Exception e) {
-		  }
-          return new RedirectView("/admin?info=bye");
-   }
-   
-   @RequestMapping("/admin/login")
-   public View login( 
-           @HttpParam("userName")String userName, 
-           @HttpParam("password")String password) { 
-		   
-          // do something...
-  
-          return new JspView("/admin/main.jsp"); 
-   }
+        // Return a JSP View
+        return new JspView("/lesson1/hello.jsp");
+    }
+
+    @RequestMapping("/lesson1/hello-json")
+    public View helloJosn() {
+
+        // Return a JSON View
+        return new JsonView("{\"title\": \"hello\", \"name\": \"ZolltyMVC\"}");
+    }
+    
+    
+    @RequestMapping("GET:/user/{userName}") // Only allow GET method 
+    public View helloSomeOne(@URIParam("userName") String userName) {
+        
+        // Get userName from URI
+        return new TextView("Hello "+ userName);
+    }
+    
+	// Only allow POST method 
+    @RequestMapping("POST: /admin/login")
+    public View login(@HttpParam("userName") String userName, 
+            @HttpParam("password") String password) { 
+            // Automatic packaging of HTTP parameters
+
+        // TODO login service...
+
+        return new JspView("/admin/home.jsp");
+    }
+
+    @RequestMapping("/admin/logout")
+    public View logout(HttpServletRequest request) { 
+    	// HttpServletRequest can be used directly
+
+        // TODO logout service...
+        
+        return new RedirectView("/admin?info=bye");
+    }
+    
  }
 ```
+###### See the docs for more details  
