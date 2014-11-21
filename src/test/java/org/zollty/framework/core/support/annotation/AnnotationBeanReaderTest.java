@@ -8,52 +8,55 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou (Contact: zollty@163.com, http://blog.zollty.com)
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.core.support.annotation;
+
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
-
 import org.junit.Test;
 import org.zollty.framework.core.support.BeanDefinition;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2014-1-4
  */
 public class AnnotationBeanReaderTest {
-	
+
     @Test
-	public void testInject() {
-	    
-	    AbstractAnnotationBeanReader beanReader = new AbstractAnnotationBeanReader() {
+    public void testInject() {
+
+        AbstractAnnotationBeanReader beanReader = new AbstractAnnotationBeanReader() {
             @Override
             protected BeanDefinition getBeanDefinition(Class<?> c) {
                 return null;
             }
         };
-        
+
         try {
             List<Method> list = beanReader.getInjectMethod(SubClass.class);
-            for(Method m: list){
+            for (Method m : list) {
                 System.out.println(m.getName());
                 System.out.println(m.getDeclaringClass());
             }
-            
+
             List<Field> list1 = beanReader.getInjectField(SubClass.class);
-            for(Field m: list1){
+            for (Field m : list1) {
                 System.out.println(m.getName());
             }
-            
-        } catch(Exception e){
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
             fail("getInjectMethod and getInjectField error!");
         }
-		
-	}
+
+    }
 
 }

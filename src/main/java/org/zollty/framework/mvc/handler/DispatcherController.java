@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by zollty on 2013-6-02 [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.handler;
 
@@ -26,84 +28,83 @@ import org.zollty.framework.mvc.handler.support.HandlerChainImpl;
 import org.zollty.framework.mvc.servlet.HttpServletBean;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-6-02
  */
 @SuppressWarnings("serial")
 abstract public class DispatcherController extends HttpServletBean {
-	
-	private Logger log = LogFactory.getLogger(DispatcherController.class);
-	
-	abstract public void dispatcher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
-	
-	/**
-	 * 前端控制器，处理http请求到相应View
-	 * @param request HttpServletRequest对象
-	 * @param response HttpServletResponse对象
-	 */
-	public void handleRequest(String servletURI, HttpServletRequest request, HttpServletResponse response) {
-		
-		try {
-			request.setCharacterEncoding(encoding);
-		} catch (Throwable t) {
-			log.error(t, "dispatcher error");
-		}
-		response.setCharacterEncoding(encoding);
-		
-		HandlerChainImpl chain = handlerMapping.match(servletURI);
-		
-		if(chain.getHandlerSize()==0){ // 没有找到处理器 404
-			new ErrorHandler(null, request.getRequestURI() + " not found" ,
-					HttpServletResponse.SC_NOT_FOUND).render(request, response);
-			return;
-		}
-		// 执行对应的方法，返回方法指定的View
-		View v = chain.doNext(request, response, chain);
-		// 返回View为null，此时一般是在该方法内，直接采用了response返回，故需要判断response是否提交，若没提交，则认为是出错了
-		if(v == null) {
-			if (!response.isCommitted()) {
-				new ErrorHandler(null, "Server internal error",
-						HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(request, response);
-			}
-			return;
-		}
-		
-		try {
-			v.render(request, response);
-		} catch (Throwable t) {
-			new ErrorHandler(t, "dispatcher error", 
-					HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(
-					request, response);
-			return;
-		}
-	}
 
-	
-	///////////////Override the HttpServlet's methods////////////////
-	
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		dispatcher(request, response);
-	}
-	
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		dispatcher(request, response);
-	}
+    private Logger log = LogFactory.getLogger(DispatcherController.class);
 
-	@Override
-	public void doDelete(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		dispatcher(request, response);
+    abstract public void dispatcher(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException;
 
-	}
+    /**
+     * 前端控制器，处理http请求到相应View
+     * 
+     * @param request HttpServletRequest对象
+     * @param response HttpServletResponse对象
+     */
+    public void handleRequest(String servletURI, HttpServletRequest request, HttpServletResponse response) {
 
-	@Override
-	public void doPut(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		dispatcher(request, response);
-	}
-	
+        try {
+            request.setCharacterEncoding(encoding);
+        }
+        catch (Throwable t) {
+            log.error(t, "dispatcher error");
+        }
+        response.setCharacterEncoding(encoding);
+
+        HandlerChainImpl chain = handlerMapping.match(servletURI, request);
+
+        if (chain.getHandlerSize() == 0) { // 没有找到处理器 404
+            new ErrorHandler(null, request.getRequestURI() + " not found", HttpServletResponse.SC_NOT_FOUND).render(
+                    request, response);
+            return;
+        }
+        // 执行对应的方法，返回方法指定的View
+        View v = chain.doNext(request, response, chain);
+        // 返回View为null，此时一般是在该方法内，直接采用了response返回，故需要判断response是否提交，若没提交，则认为是出错了
+        if (v == null) {
+            if (!response.isCommitted()) {
+                new ErrorHandler(null, "Server internal error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(
+                        request, response);
+            }
+            return;
+        }
+
+        try {
+            v.render(request, response);
+        }
+        catch (Throwable t) {
+            new ErrorHandler(t, "dispatcher error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(request,
+                    response);
+            return;
+        }
+    }
+
+    
+    // /////////////Override the HttpServlet's methods////////////////
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        dispatcher(request, response);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        dispatcher(request, response);
+    }
+
+    @Override
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        dispatcher(request, response);
+
+    }
+
+    @Override
+    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        dispatcher(request, response);
+    }
+
 }

@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.handler;
 
@@ -32,6 +34,8 @@ import org.zollty.framework.mvc.view.HtmlView;
 import org.zollty.framework.mvc.view.JsonView;
 import org.zollty.framework.mvc.view.JspView;
 import org.zollty.framework.mvc.view.TextView;
+import org.zollty.framework.util.MvcRuntimeException;
+import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -71,15 +75,22 @@ abstract public class AbstractHandlerMapping implements HandlerMapping {
 						String uri = null;
 						if(array.length==1){
 							uri = value;
-							allowHttpMethods = new String[]{"GET","POST"};
+							allowHttpMethods = new String[]{"GET","POST","PUT","DELETE"};
 						}else{ //length==2
 							allowHttpMethods = array[0].split("\\|");
 							uri = array[1];
 						}
-                        controllerResource.addController( new ControllerMetaInfo(beanDefinition.getObject(), m, allowHttpMethods, uri) );
-                        if (LogFactory.isDebugEnabled()) {
-                            log.debug("controller uri: {} {}", uri, Arrays.toString(allowHttpMethods));
+						if(MvcUtils.StringUtil.isBlank(uri)){
+                            throw new IllegalArgumentException("controller uri can't be blank! Bean="+beanDefinition.getClassName()+", method="+m.getName());
                         }
+						try {
+                            controllerResource.addController( new ControllerMetaInfo(beanDefinition.getObject(), m, allowHttpMethods, uri) );
+                            if (LogFactory.isDebugEnabled()) {
+                                log.debug("controller uri: {} {}", uri, Arrays.toString(allowHttpMethods));
+                            }
+						} catch (MvcRuntimeException e){
+						    throw new MvcRuntimeException(e, "[Bean="+beanDefinition.getClassName()+", method="+m.getName()+"] ");
+						}
 					}
 				}
 			} else if (beanDef instanceof InterceptorBeanDefinition) {

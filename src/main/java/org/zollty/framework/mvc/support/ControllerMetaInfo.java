@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.support;
 
@@ -31,12 +33,12 @@ import org.zollty.framework.util.MvcReflectUtils;
  */
 public class ControllerMetaInfo extends HandlerMetaInfo {
 
-	 // @HttpParam标注的类的元信息
+	// @HttpParam标注的类的元信息
 	private final ParamMetaInfo[] paramMetaInfos;
 	private final BasicParamMetaInfo[] bParamMetas;
 	private final String[] allowHttpMethods;
 	
-	private final String servletURI;
+    private final String servletURI;
 	
 	private List<String> paramsName;
 	
@@ -76,7 +78,7 @@ public class ControllerMetaInfo extends HandlerMetaInfo {
 				} else if(anno.annotationType().equals(URIParam.class)) {
 				    if ( MvcConvertUtils.canConvert(paraTypes[i])!=null ){
 				        URIParam pv = (URIParam) anno;
-                        bParamMetas[i] = new BasicParamMetaInfo(paraTypes[i], pv.value(), pv.setAttr());
+                        bParamMetas[i] = new BasicParamMetaInfo(paraTypes[i], pv.value(), false);
                         paramType[i] = BasicParamMetaInfo.URI_PARAM;
                     }
 				}
@@ -109,6 +111,10 @@ public class ControllerMetaInfo extends HandlerMetaInfo {
         }
         return false;
     }
+    
+    public String[] getAllowHttpMethods() {
+        return allowHttpMethods;
+    }
 	
     public String getAllowMethod() {
         StringBuilder s = new StringBuilder();
@@ -121,7 +127,7 @@ public class ControllerMetaInfo extends HandlerMetaInfo {
 
 	@Override
 	public String toString() {
-		return "ControllerMetaInfo [servletURI="+servletURI+", allowMethod=" + getAllowMethod() + "]";
+	    return "ControllerMetaInfo [Class="+object.getClass().getSimpleName()+"#"+method.getName()+", URI="+servletURI+", Method=" + getAllowMethod() + "]";
 	}
 
 	/**

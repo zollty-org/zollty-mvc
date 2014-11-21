@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - version 1.1
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.annotation;
 
@@ -18,10 +20,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Hold the placeholder's value in the URL path 
+ * @author zollty
+ */
 @Target( { ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface URIParam {
+    
+    /**
+     * match the placeholder's name in the URL path
+     */
     String value() default "";
-    boolean setAttr() default true;
+    
 }

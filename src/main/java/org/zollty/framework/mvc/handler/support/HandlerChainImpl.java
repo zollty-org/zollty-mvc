@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by zollty on 2013-9-16 [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.handler.support;
 
@@ -36,6 +38,10 @@ public class HandlerChainImpl implements HandlerChain {
 		return list.size();
 	}
 	
+	/**
+	 * 
+	 * @param webHandler
+	 */
 	public void add(WebHandler webHandler) {
 		list.add(webHandler);
 	}
@@ -44,6 +50,13 @@ public class HandlerChainImpl implements HandlerChain {
 		iterator = list.iterator();
 	}
 
+	/**
+     * This method [ chain.doNext(...) ] would be recursive invocation.<p>
+     * First invoking at this place, then it could be invoking by InterceptorHandlers of the APP definition.
+     * e.g. The APP has a AdminRightInterceptor, it could invoking: </p>
+     * <p><code>return chain.doNext(request, response, chain); </code> </p>
+     * <p>then the request will back to this place [ chain.doNext(...) ].</p>
+     */
 	@Override
 	public View doNext(HttpServletRequest request,
 			HttpServletResponse response, HandlerChain chain) {

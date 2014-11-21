@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou (Contact: zollty@163.com, http://blog.zollty.com)
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.core.beans.support;
 
@@ -30,7 +32,7 @@ public class XmlBeanTest {
 
     @Test
     public void testSimpleBeanFactory() {
-        
+
         SimpleBeanFactory sbf = new SimpleBeanFactory();
         List<BeanDefinition> beanslist = new XmlBeanReader(Thread.currentThread().getContextClassLoader(), XML_PATH)
                 .loadBeanDefinitions();
@@ -38,7 +40,7 @@ public class XmlBeanTest {
         sbf.refresh();
 
         ArrayBean aBean = sbf.getBean("arrayBean");
-        
+
         assertNotNull(aBean);
         assertArrayEquals(aBean.getCodes(), new int[] { 128, 16 });
     }

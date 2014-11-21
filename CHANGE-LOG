@@ -11,7 +11,7 @@ Create this project. It's only a rudiment, which expected to help servlet dispat
 Changes in version 0.0.2 (2013-08-05)
 -------------------------------------
 The first inner version. Reference for the design of Spring and Struts 2. Integrate 
-some good ideas like OSChina.NET.
+some good ideas like the URLMatcher of OSChina.NET.
 
 
 Changes in version 0.0.3 (2013-09-16)
@@ -41,7 +41,7 @@ Add lightweight JDBC module, 80% of the JDBC code reference from Spring Framewor
 
 Changes in version 0.0.8 (1.0.0.RELEASE) (2014-02-18)
 -------------------------------------
-After many projects to use, we release the 1.0.0 stable version.
+After many projects use, we release the 1.0.0 stable version.
 
 
 Changes in version 0.0.9 (2014-03-18)
@@ -56,6 +56,10 @@ Support StaticResourceView. Can read static resource (like HTML, CSS, JS, PNG fi
 
 Changes in version 0.1.1 (1.0.2.RELEASE) (2014-06-12)
 -------------------------------------
-The new path matching pattern design. A bit like AntPathMatcher, but more advanced (more suitable URL match).
+The new path matching pattern design. A bit like AntPathMatcher, but more advanced (more suitable URL match, the speed is 3~4 times of AntPathMatcher).
 
+
+Changes in version 0.1.2 (1.1.0.RELEASE) (2014-11-21)
+-------------------------------------
+Optimizations of Controller and Dispatcher, to make it more efficient. The version 1.1.0.RELEASE is a recommended stable version with interceptor. Later, we'll release another new version without interceptor, will reach unprecedented efficiency.
 

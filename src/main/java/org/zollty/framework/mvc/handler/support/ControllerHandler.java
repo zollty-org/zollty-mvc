@@ -8,7 +8,9 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.handler.support;
 
@@ -36,34 +38,24 @@ public class ControllerHandler implements WebHandler {
     private final ControllerMetaInfo controller;
     private Map<String, String> paramsMap;
 	
+    public ControllerHandler(ControllerMetaInfo controller) {
+        this.controller = controller;
+    }
+    
     public ControllerHandler(ControllerMetaInfo controller, Map<String, String> paramsMap) {
         this.controller = controller;
         this.paramsMap = paramsMap;
     }
 	
-	public Map<String, String> getParamsMap() {
-		return paramsMap;
-	}
-	
-	public void setParamsMap(Map<String, String> paramsMap) {
-		this.paramsMap = paramsMap;
-	}
-	
 	@Override
 	public View invoke(HttpServletRequest request, HttpServletResponse response, HandlerChain chain) {
-		if(!controller.allowMethod(request.getMethod())) {
-			return notAllowMethodResponse(request, response);
-		}
+	    // modified by ZOLLTY 2014-11-19 - 'notAllowMethod' request would never reached this step.
+//		if(!controller.allowMethod(request.getMethod())) {
+//			return notAllowMethodResponse(request, response);
+//		}
 		
 		Object[] p = getParams(request, response);
 		return controller.invokeMethod(p, request, response);
-	}
-	
-	private View notAllowMethodResponse(HttpServletRequest request, HttpServletResponse response) {
-		String allowMethod = controller.getAllowMethod();
-		response.setHeader("Allow", allowMethod);
-		return new ErrorHandler(null, "Only support " + allowMethod + " method", 
-				HttpServletResponse.SC_METHOD_NOT_ALLOWED).doErrorPage(request, response);
 	}
 	
 	/**
@@ -126,9 +118,24 @@ public class ControllerHandler implements WebHandler {
 		return p;
 	}
 	
+	public ControllerMetaInfo getController() {
+        return controller;
+    }
+	
+	public Map<String, String> getParamsMap() {
+        return paramsMap;
+    }
+	
 	@Override
 	public String toString() {
-	    return "[controller=" + controller + ", params=" + getParamsMap().toString() + "]";
+	    return "[controller=" + controller + ", params=" + getParamsMap() + "]";
 	}
+	
+//  private View notAllowMethodResponse(HttpServletRequest request, HttpServletResponse response) {
+//      String allowMethod = controller.getAllowMethod();
+//      response.setHeader("Allow", allowMethod);
+//      return new ErrorHandler(null, "Only support " + allowMethod + " method", 
+//          HttpServletResponse.SC_METHOD_NOT_ALLOWED).doErrorPage(request, response);
+//  }
 
 }

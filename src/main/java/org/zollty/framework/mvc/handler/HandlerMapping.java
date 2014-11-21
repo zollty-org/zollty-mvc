@@ -8,22 +8,26 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by zollty on 2013-9-15 [http://blog.csdn.net/zollty (or GitHub)]
+ * Zollty Framework MVC Source Code - Since v1.0
+ * Author(s): 
+ * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.handler;
 
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.zollty.framework.mvc.handler.support.HandlerChainImpl;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-15
  */
 public interface HandlerMapping {
 
-	HandlerChainImpl match(String servletURI);
-	
+    HandlerChainImpl match(String servletURI, HttpServletRequest request);
+
     /**
      * @return the excludeSuffix
      */
@@ -33,4 +37,5 @@ public interface HandlerMapping {
      * @return the excludeprefix
      */
     public Set<String> getExcludePrefixes();
+    
 }
