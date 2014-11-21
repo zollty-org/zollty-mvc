@@ -17,7 +17,7 @@
 	<groupId>org.zollty</groupId>
 	<artifactId>zollty-mvc</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1.0.RELEASE</version>
+	<version>1.2.0.RELEASE</version>
 	<name>zollty-mvc</name>
 	<url>https://github.com/zollty-org/zollty-mvc</url>
 	<description>The ZolltyMVC is a lightweight Java MVC Framework. It can help development teams build simple, portable, fast and flexible Java applications.</description>

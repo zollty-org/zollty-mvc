@@ -18,148 +18,121 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zollty.framework.core.annotation.Component;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.annotation.AbstractAnnotationBeanReader;
 import org.zollty.framework.core.support.annotation.AnnotatedBeanDefinition;
 import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
-import org.zollty.framework.mvc.annotation.Interceptor;
 import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.util.MvcReflectUtils;
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-15
  */
 public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
 
-	private Logger log = LogFactory.getLogger(WebAnnotationBeanReader.class);
+    private Logger log = LogFactory.getLogger(WebAnnotationBeanReader.class);
 
-	public WebAnnotationBeanReader(ClassLoader beanClassLoader) {
-		super.setBeanClassLoader(beanClassLoader);
-		super.init();
-	}
+    public WebAnnotationBeanReader(ClassLoader beanClassLoader) {
+        super.setBeanClassLoader(beanClassLoader);
+        super.init();
+    }
 
-	@Override
-	protected BeanDefinition getBeanDefinition(Class<?> c) {
-		if ( c.isAnnotationPresent(Component.class)) {
-			log.info("classes - " + c.getName());
-			return componentParser(c);
-		} else if ( c.isAnnotationPresent(Controller.class) ) {
-			log.info("classes - " + c.getName());
-			return controllerParser(c);
-		} else if (c.isAnnotationPresent(Interceptor.class)) {
-			log.info("classes - " + c.getName());
-			return interceptorParser(c);
-		} 
-		else
-			return null;
-	}
-	
-	protected BeanDefinition controllerParser(Class<?> c) {
-		ControllerBeanDefinition beanDefinition = new ControllerAnnotatedBeanDefinition();
-		setWebBeanDefinition(beanDefinition, c);
+    @Override
+    protected BeanDefinition getBeanDefinition(Class<?> c) {
+        if (c.isAnnotationPresent(Component.class)) {
+            log.info("classes - " + c.getName());
+            return componentParser(c);
+        }
+        else if (c.isAnnotationPresent(Controller.class)) {
+            log.info("classes - " + c.getName());
+            return controllerParser(c);
+        }
+        else
+            return null;
+    }
 
-		List<Method> reqMethods = getReqMethods(c);
-		beanDefinition.setReqMethods(reqMethods);
-		return beanDefinition;
-	}
-	
+    protected BeanDefinition controllerParser(Class<?> c) {
+        ControllerBeanDefinition beanDefinition = new ControllerAnnotatedBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
 
-	protected BeanDefinition componentParser(Class<?> c) {
-		AnnotationBeanDefinition annotationBeanDefinition = new AnnotatedBeanDefinition();
-		annotationBeanDefinition.setClassName(c.getName());
+        List<Method> reqMethods = getReqMethods(c);
+        beanDefinition.setReqMethods(reqMethods);
+        return beanDefinition;
+    }
 
-		Component component = c.getAnnotation(Component.class);
-		String id = component.value();
-		annotationBeanDefinition.setId(id);
+    protected BeanDefinition componentParser(Class<?> c) {
+        AnnotationBeanDefinition annotationBeanDefinition = new AnnotatedBeanDefinition();
+        annotationBeanDefinition.setClassName(c.getName());
 
-		String[] names = MvcReflectUtils.getInterfaceNames(c);
-		annotationBeanDefinition.setInterfaceNames(names);
+        Component component = c.getAnnotation(Component.class);
+        String id = component.value();
+        annotationBeanDefinition.setId(id);
 
-		List<Field> fields = getInjectField(c);
-		annotationBeanDefinition.setInjectFields(fields);
+        String[] names = MvcReflectUtils.getInterfaceNames(c);
+        annotationBeanDefinition.setInterfaceNames(names);
 
-		List<Method> methods = getInjectMethod(c);
-		annotationBeanDefinition.setInjectMethods(methods);
+        List<Field> fields = getInjectField(c);
+        annotationBeanDefinition.setInjectFields(fields);
 
-		try {
-			Object object = c.newInstance();
-			annotationBeanDefinition.setObject(object);
-		} catch (Throwable t) {
-			log.error(t, "component parser error");
-		}
-		return annotationBeanDefinition;
-	}
+        List<Method> methods = getInjectMethod(c);
+        annotationBeanDefinition.setInjectMethods(methods);
 
-	private BeanDefinition interceptorParser(Class<?> c) {
-		InterceptorBeanDefinition beanDefinition = new InterceptorAnnotatedBeanDefinition();
-		setWebBeanDefinition(beanDefinition, c);
-		
-		beanDefinition.setDisposeMethod(getInterceptors(c));
-		String[] uriPattern = c.getAnnotation(Interceptor.class).uri();
-		//String uriPattern = uris[0];
-		beanDefinition.setUriPattern(uriPattern);
+        try {
+            Object object = c.newInstance();
+            annotationBeanDefinition.setObject(object);
+        }
+        catch (Throwable t) {
+            log.error(t, "component parser error");
+        }
+        return annotationBeanDefinition;
+    }
 
-		Integer order = c.getAnnotation(Interceptor.class).order();
-		beanDefinition.setOrder(order);
-		return beanDefinition;
-	}
+    private void setWebBeanDefinition(AnnotationBeanDefinition beanDefinition, Class<?> c) {
+        beanDefinition.setClassName(c.getName());
 
-	private void setWebBeanDefinition(AnnotationBeanDefinition beanDefinition,
-			Class<?> c) {
-		beanDefinition.setClassName(c.getName());
+        String id = getId(c);
+        beanDefinition.setId(id);
 
-		String id = getId(c);
-		beanDefinition.setId(id);
+        String[] names = MvcReflectUtils.getInterfaceNames(c);
+        beanDefinition.setInterfaceNames(names);
 
-		String[] names = MvcReflectUtils.getInterfaceNames(c);
-		beanDefinition.setInterfaceNames(names);
+        List<Field> fields = getInjectField(c);
+        beanDefinition.setInjectFields(fields);
 
-		List<Field> fields = getInjectField(c);
-		beanDefinition.setInjectFields(fields);
+        List<Method> methods = getInjectMethod(c);
+        beanDefinition.setInjectMethods(methods);
 
-		List<Method> methods = getInjectMethod(c);
-		beanDefinition.setInjectMethods(methods);
+        try {
+            Object object = c.newInstance();
+            beanDefinition.setObject(object);
+        }
+        catch (Throwable t) {
+            log.error(t, "set web bean error");
+        }
+    }
 
-		try {
-			Object object = c.newInstance();
-			beanDefinition.setObject(object);
-		} catch (Throwable t) {
-			log.error(t, "set web bean error");
-		}
-	}
+    private String getId(Class<?> c) {
+        if (c.isAnnotationPresent(Controller.class))
+            return c.getAnnotation(Controller.class).value();
+        else if (c.isAnnotationPresent(Component.class))
+            return c.getAnnotation(Component.class).value();
+        else
+            return "";
+    }
 
-	private String getId(Class<?> c) {
-		if (c.isAnnotationPresent(Controller.class))
-			return c.getAnnotation(Controller.class).value();
-		else if (c.isAnnotationPresent(Interceptor.class))
-			return c.getAnnotation(Interceptor.class).value();
-		else if (c.isAnnotationPresent(Component.class))
-			return c.getAnnotation(Component.class).value();
-		else
-			return "";
-	}
-
-	private List<Method> getReqMethods(Class<?> c) {
-		Method[] methods = c.getMethods();
-		List<Method> list = new ArrayList<Method>();
-		for (Method m : methods) {
-			if (m.isAnnotationPresent(RequestMapping.class)) {
-				list.add(m);
-			}
-		}
-		return list;
-	}
-
-	private Method getInterceptors(Class<?> c) {
-		for (Method m : c.getMethods()) {// 验证方法名
-			if (m.getName().equals("dispose"))
-				return m;
-		}
-		return null;
-	}
+    private List<Method> getReqMethods(Class<?> c) {
+        Method[] methods = c.getMethods();
+        List<Method> list = new ArrayList<Method>();
+        for (Method m : methods) {
+            if (m.isAnnotationPresent(RequestMapping.class)) {
+                list.add(m);
+            }
+        }
+        return list;
+    }
 
 }
