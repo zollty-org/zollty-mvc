@@ -78,7 +78,7 @@ abstract public class AbstractHandlerMapping implements HandlerMapping {
 							allowHttpMethods = new String[]{"GET","POST","PUT","DELETE"};
 						}else{ //length==2
 							allowHttpMethods = array[0].split("\\|");
-							uri = array[1];
+							uri = array[1].trim();
 						}
 						if(MvcUtils.StringUtil.isBlank(uri)){
                             throw new IllegalArgumentException("controller uri can't be blank! Bean="+beanDefinition.getClassName()+", method="+m.getName());
