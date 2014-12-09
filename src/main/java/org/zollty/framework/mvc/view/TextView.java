@@ -1,4 +1,4 @@
-/* @(#)TextView.java 
+/* 
  * Copyright (C) 2013-2014 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by zollty on 2013-8-05 [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by Zollty Tsou (Contact: zollty@163.com, http://blog.zollty.com)
  */
 package org.zollty.framework.mvc.view;
 
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -27,40 +28,43 @@ import org.zollty.framework.mvc.View;
  */
 public class TextView implements View {
 
-	private static String encoding;
-	private final String text;
-	private final String mimeType;
+    private static String encoding;
+    private final String text;
+    private final String mimeType;
 
-	public static void setEncoding(String encoding) {
-		if (TextView.encoding == null && encoding != null)
-			TextView.encoding = encoding;
-	}
+    public static void setEncoding(String encoding) {
+        if (TextView.encoding == null && encoding != null)
+            TextView.encoding = encoding;
+    }
 
-	public TextView(String text) {
-		this.text = text;
-		this.mimeType = null;
-	}
-	
-	public TextView(String text, String mimeType) {
-		this.text = text;
-		this.mimeType = mimeType;
-	}
+    public TextView(String text) {
+        this.text = text;
+        this.mimeType = null;
+    }
 
-	@Override
-	public void render(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.setCharacterEncoding(TextView.encoding);
-		if( null != mimeType){
-			response.setHeader("Content-Type", mimeType + "; charset=" + TextView.encoding);
-		}else{
-			response.setHeader("Content-Type", "text/plain; charset=" + TextView.encoding);
-		}
-		PrintWriter writer = response.getWriter();
-		try {
-			writer.print(text);
-		} finally {
-			writer.close();
-		}
-	}
+    public TextView(String text, String mimeType) {
+        this.text = text;
+        this.mimeType = mimeType;
+    }
+
+    @Override
+    public void render(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        response.setCharacterEncoding(TextView.encoding);
+        if (null != mimeType) {
+            response.setHeader("Content-Type", mimeType + "; charset=" + TextView.encoding);
+        }
+        else {
+            response.setHeader("Content-Type", "text/plain; charset=" + TextView.encoding);
+        }
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(text);
+        }
+        finally {
+            MvcUtils.IOUtil.closeIO(writer);
+        }
+    }
 
 }

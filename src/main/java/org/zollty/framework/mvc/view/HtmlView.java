@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -44,12 +45,14 @@ public class HtmlView implements View {
 			throws ServletException, IOException {
 		response.setCharacterEncoding(HtmlView.encoding);
 		response.setHeader("Content-Type", "text/html;charset=UTF-8");
-		PrintWriter writer = response.getWriter();
-		try {
-			writer.print(text);
-		} finally {
-			writer.close();
-		}
+		PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(text);
+        }
+        finally {
+            MvcUtils.IOUtil.closeIO(writer);
+        }
 	}
 
 }
