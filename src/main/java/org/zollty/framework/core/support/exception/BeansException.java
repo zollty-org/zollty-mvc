@@ -12,14 +12,25 @@
  */
 package org.zollty.framework.core.support.exception;
 
-@SuppressWarnings("serial")
-public abstract class BeansException extends RuntimeException {
+import org.zollty.util.BasicRuntimeException;
 
-	public BeansException(String msg) {
-		super(msg);
-	}
-	
-	public BeansException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+@SuppressWarnings("serial")
+public class BeansException extends BasicRuntimeException {
+
+    public BeansException() {
+        super();
+    }
+
+    public BeansException(String message, String... args) {
+        super(message, args);
+    }
+
+    public BeansException(Throwable e, String message, String... args) {
+        super(e, message, args);
+    }
+
+    public BeansException(Throwable e) {
+        super(e);
+    }
+    
 }

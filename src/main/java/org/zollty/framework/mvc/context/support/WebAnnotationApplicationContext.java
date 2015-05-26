@@ -16,9 +16,8 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.zollty.framework.core.config.ConfigReader;
+import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.mvc.handler.HandlerMapping;
 import org.zollty.framework.mvc.handler.HttpServletDispatcherHandler;
 import org.zollty.framework.mvc.support.WebAnnotationBeanReader;
 import org.zollty.log.LogFactory;
@@ -32,26 +31,21 @@ public class WebAnnotationApplicationContext extends AbstractWebApplicationConte
 
     private Logger log;
     
-    private HandlerMapping handlerMapping;
-    
-    public WebAnnotationApplicationContext(String configLocation,
-            ServletContext servletContext){
-        this(configLocation, servletContext, null);
-    }
-    
-    public WebAnnotationApplicationContext(String configLocation,
-            ServletContext servletContext, ClassLoader beanClassLoader){
-        super(configLocation, servletContext, beanClassLoader);
-//        setServletContext(servletContext);
-//        setBeanClassLoader(beanClassLoader);
-//        refresh();
-//        handlerMapping = new HttpServletDispatcherHandler(beanDefinitions);
-//        log.debug("AnnotationWebApplicationContext ...");
-        refresh();
-    }
-    
     private long beginTimeMs;
+    
+    public WebAnnotationApplicationContext(IServletContextFileConfig config) {
+        super(config);
+    }
 
+    public WebAnnotationApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader) {
+        super(config, beanClassLoader);
+    }
+
+    public WebAnnotationApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader,
+            ServletContext servletContext) {
+        super(config, beanClassLoader, servletContext);
+    }
+    
     @Override
     protected void doBeforeRefresh() {
         beginTimeMs = System.currentTimeMillis();
@@ -59,33 +53,36 @@ public class WebAnnotationApplicationContext extends AbstractWebApplicationConte
         if (LogFactory.isDebugEnabled()) {
             log.debug("load {} ...", getClass().getSimpleName());
         }
-        ConfigReader.getInstance().load(getConfigLocation(), getBeanClassLoader());
     }
 
     @Override
     protected void doAfterRefresh() {
+
+        new BeanAopAnnotationParser(beanDefinitions);
+
+        handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
+
         if (LogFactory.isDebugEnabled()) {
             log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
         }
-        handlerMapping = new HttpServletDispatcherHandler(beanDefinitions);
     }
     
 
     @Override
     protected List<BeanDefinition> loadBeanDefinitions() {
-        List<BeanDefinition> list1 = new WebAnnotationBeanReader( getBeanClassLoader() ).loadBeanDefinitions(); 
+        IServletContextFileConfig config = (IServletContextFileConfig)getConfig();
+        
+        List<BeanDefinition> list1 = new WebAnnotationBeanReader(
+                config.getScanningPackages(), getBeanClassLoader(), null).loadBeanDefinitions(); 
         if (list1 != null) {
-            log.debug("-- WebAnnotation bean --");
+            log.debug("-- WebAnnotation bean -- size = {}", list1.size());
             return list1;
         }
         return null;
     }
-    
-    /**
-     * @return the handlerMapping
-     */
-    public final HandlerMapping getHandlerMapping() {
-        return handlerMapping;
-    }
 
+    @Override
+    protected void doAfterClose() {
+        handlerMapping = null;
+    }
 }

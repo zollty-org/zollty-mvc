@@ -17,7 +17,7 @@
 	<groupId>org.zollty</groupId>
 	<artifactId>zollty-mvc</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1.0.RELEASE</version>
+	<version>1.4.0.RELEASE</version>
 	<name>zollty-mvc</name>
 	<url>https://github.com/zollty-org/zollty-mvc</url>
 	<description>The ZolltyMVC is a lightweight Java MVC Framework. It can help development teams build simple, portable, fast and flexible Java applications.</description>
@@ -38,10 +38,18 @@
 		<dependency>
 			<groupId>org.zollty</groupId>
 			<artifactId>zollty-util</artifactId>
-			<version>1.8</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/zollty-util-1.8.jar</systemPath>
+			<version>2.0</version>
+			<!-- <scope>system</scope>
+			<systemPath>${project.basedir}/lib/zollty-util-1.9.1.jar</systemPath> -->
 		</dependency>
+		<dependency>
+			<groupId>org.zollty</groupId>
+			<artifactId>zollty-util-web</artifactId>
+			<version>1.0</version>
+			<!-- <scope>system</scope>
+			<systemPath>${project.basedir}/lib/zollty-util-1.9.1.jar</systemPath> -->
+		</dependency>
+		
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

@@ -16,11 +16,10 @@ package org.zollty.framework.core.beans;
  * @author zollty 
  * @since 2013-10-11
  */
-public interface ConfigurableBeanFactory extends BeanFactory {
+public interface ConfigurableBeanFactory extends ListableBeanFactory {
 
 	void refresh();
 	
 	void close();
 	
-	void setBeanClassLoader(ClassLoader beanClassLoader);
 }

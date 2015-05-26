@@ -112,4 +112,9 @@ public class XmlGenericBeanDefinition implements XmlBeanDefinition {
 		this.methodName = methodName;
 	}
 
+    @Override
+    public String toString() {
+        return "XmlGenericBeanDefinition [id=" + id + ", className=" + className + "]";
+    }
+
 }

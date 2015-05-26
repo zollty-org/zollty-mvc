@@ -18,148 +18,130 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zollty.framework.core.annotation.Component;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.annotation.AbstractAnnotationBeanReader;
-import org.zollty.framework.core.support.annotation.AnnotatedBeanDefinition;
 import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
-import org.zollty.framework.mvc.annotation.Interceptor;
 import org.zollty.framework.mvc.annotation.RequestMapping;
+import org.zollty.framework.mvc.aop.MvcBefore;
+import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.util.MvcReflectUtils;
+import org.zollty.framework.util.MvcUtils;
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
+import org.zollty.util.resource.support.ResourcePatternResolver;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-15
  */
 public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
 
-	private Logger log = LogFactory.getLogger(WebAnnotationBeanReader.class);
+    private Logger log = LogFactory.getLogger(WebAnnotationBeanReader.class);
+    
+    public WebAnnotationBeanReader(String[] scanningPackages, 
+            ClassLoader beanClassLoader, ResourcePatternResolver resourcePatternResolver) {
+        
+        super(scanningPackages, beanClassLoader, resourcePatternResolver);
+        
+    }
 
-	public WebAnnotationBeanReader(ClassLoader beanClassLoader) {
-		super.setBeanClassLoader(beanClassLoader);
-		super.init();
-	}
+    @Override
+    protected BeanDefinition getBeanDefinition(Class<?> c) {
+        BeanDefinition ret = null;
+        if (c.isAnnotationPresent(Component.class)) {
+            ret = componentParser(c);
+        }
+        else if (c.isAnnotationPresent(Controller.class)) {
+            ret = controllerParser(c);
+        }
+        // else if (c.isAnnotationPresent(Interceptor.class)) {
+        // ret = interceptorParser(c);
+        // }
+        else if (MvcBefore.class.isAssignableFrom(c)) {
+            ret = aopParser(c);
+        }
+        if (ret != null) {
+            log.info("classes - " + c.getName());
+        }
+        return ret;
+    }
 
-	@Override
-	protected BeanDefinition getBeanDefinition(Class<?> c) {
-		if ( c.isAnnotationPresent(Component.class)) {
-			log.info("classes - " + c.getName());
-			return componentParser(c);
-		} else if ( c.isAnnotationPresent(Controller.class) ) {
-			log.info("classes - " + c.getName());
-			return controllerParser(c);
-		} else if (c.isAnnotationPresent(Interceptor.class)) {
-			log.info("classes - " + c.getName());
-			return interceptorParser(c);
-		} 
-		else
-			return null;
-	}
-	
-	protected BeanDefinition controllerParser(Class<?> c) {
-		ControllerBeanDefinition beanDefinition = new ControllerAnnotatedBeanDefinition();
-		setWebBeanDefinition(beanDefinition, c);
+    protected BeanDefinition controllerParser(Class<?> c) {
+        ControllerBeanDefinition beanDefinition = new ControllerAnnotatedBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
 
-		List<Method> reqMethods = getReqMethods(c);
-		beanDefinition.setReqMethods(reqMethods);
-		return beanDefinition;
-	}
-	
+        List<Method> reqMethods = getReqMethods(c);
+        beanDefinition.setReqMethods(reqMethods);
 
-	protected BeanDefinition componentParser(Class<?> c) {
-		AnnotationBeanDefinition annotationBeanDefinition = new AnnotatedBeanDefinition();
-		annotationBeanDefinition.setClassName(c.getName());
+        String uriPrefix = c.getAnnotation(Controller.class).value();
+        beanDefinition.setUriPrefix(uriPrefix);
 
-		Component component = c.getAnnotation(Component.class);
-		String id = component.value();
-		annotationBeanDefinition.setId(id);
+        return beanDefinition;
+    }
 
-		String[] names = MvcReflectUtils.getInterfaceNames(c);
-		annotationBeanDefinition.setInterfaceNames(names);
+    private BeanDefinition aopParser(Class<?> c) {
+        MvcBeforeBeanDefinition beanDefinition = new MvcBeforeBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
 
-		List<Field> fields = getInjectField(c);
-		annotationBeanDefinition.setInjectFields(fields);
+        for (Method m : c.getMethods()) {
+            if (m.getName().equals("aspect")) {
+                beanDefinition.setDisposeMethod(m);
+                break;
+            }
+        }
 
-		List<Method> methods = getInjectMethod(c);
-		annotationBeanDefinition.setInjectMethods(methods);
+        return beanDefinition;
+    }
 
-		try {
-			Object object = c.newInstance();
-			annotationBeanDefinition.setObject(object);
-		} catch (Throwable t) {
-			log.error(t, "component parser error");
-		}
-		return annotationBeanDefinition;
-	}
+    private void setWebBeanDefinition(AnnotationBeanDefinition beanDefinition, Class<?> c) {
+        beanDefinition.setClassName(c.getName());
 
-	private BeanDefinition interceptorParser(Class<?> c) {
-		InterceptorBeanDefinition beanDefinition = new InterceptorAnnotatedBeanDefinition();
-		setWebBeanDefinition(beanDefinition, c);
-		
-		beanDefinition.setDisposeMethod(getInterceptors(c));
-		String[] uriPattern = c.getAnnotation(Interceptor.class).uri();
-		//String uriPattern = uris[0];
-		beanDefinition.setUriPattern(uriPattern);
+        String id = getId(c);
+        beanDefinition.setId(id);
 
-		Integer order = c.getAnnotation(Interceptor.class).order();
-		beanDefinition.setOrder(order);
-		return beanDefinition;
-	}
+        String[] names = MvcReflectUtils.getInterfaceNames(c);
+        beanDefinition.setInterfaceNames(names);
 
-	private void setWebBeanDefinition(AnnotationBeanDefinition beanDefinition,
-			Class<?> c) {
-		beanDefinition.setClassName(c.getName());
+        List<Field> fields = getInjectField(c);
+        beanDefinition.setInjectFields(fields);
 
-		String id = getId(c);
-		beanDefinition.setId(id);
+        List<Method> methods = getInjectMethod(c);
+        beanDefinition.setInjectMethods(methods);
 
-		String[] names = MvcReflectUtils.getInterfaceNames(c);
-		beanDefinition.setInterfaceNames(names);
+        try {
+            Object object = c.newInstance();
+            beanDefinition.setObject(object);
+        }
+        catch (Throwable t) {
+            log.error(t, "set web bean error");
+        }
+    }
 
-		List<Field> fields = getInjectField(c);
-		beanDefinition.setInjectFields(fields);
+    private String getId(Class<?> c) {
+        if (c.isAnnotationPresent(Controller.class))
+            // return c.getAnnotation(Controller.class).value();
+            // modified by zollty 12/15/2014 contoller bean don't need exact id
+            return MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        // else if (c.isAnnotationPresent(Interceptor.class))
+        // return c.getAnnotation(Interceptor.class).value();
+        else if (c.isAnnotationPresent(Component.class))
+            return c.getAnnotation(Component.class).value();
+        else if (MvcBefore.class.isAssignableFrom(c))
+            return MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        else
+            return "";
+    }
 
-		List<Method> methods = getInjectMethod(c);
-		beanDefinition.setInjectMethods(methods);
-
-		try {
-			Object object = c.newInstance();
-			beanDefinition.setObject(object);
-		} catch (Throwable t) {
-			log.error(t, "set web bean error");
-		}
-	}
-
-	private String getId(Class<?> c) {
-		if (c.isAnnotationPresent(Controller.class))
-			return c.getAnnotation(Controller.class).value();
-		else if (c.isAnnotationPresent(Interceptor.class))
-			return c.getAnnotation(Interceptor.class).value();
-		else if (c.isAnnotationPresent(Component.class))
-			return c.getAnnotation(Component.class).value();
-		else
-			return "";
-	}
-
-	private List<Method> getReqMethods(Class<?> c) {
-		Method[] methods = c.getMethods();
-		List<Method> list = new ArrayList<Method>();
-		for (Method m : methods) {
-			if (m.isAnnotationPresent(RequestMapping.class)) {
-				list.add(m);
-			}
-		}
-		return list;
-	}
-
-	private Method getInterceptors(Class<?> c) {
-		for (Method m : c.getMethods()) {// 验证方法名
-			if (m.getName().equals("dispose"))
-				return m;
-		}
-		return null;
-	}
-
+    private List<Method> getReqMethods(Class<?> c) {
+        Method[] methods = c.getMethods();
+        List<Method> list = new ArrayList<Method>();
+        for (Method m : methods) {
+            if (m.isAnnotationPresent(RequestMapping.class)) {
+                list.add(m);
+            }
+        }
+        return list;
+    }
+    
 }

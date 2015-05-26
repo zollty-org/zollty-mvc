@@ -21,26 +21,43 @@ import java.util.Set;
  */
 public interface IApplicationConfig {
     
-    public String getViewPath();
-
-    public String getEncoding();
-
-    public String[] getPaths();
+    String DEFAULT_VIEW_PATH = "/WEB-INF/views";
+    String DEFAULT_VIEW_ENCODING = "UTF-8";
+    // List<String> defaultExcludeSuffixes  = Arrays.asList(new String[]{".css",".jpg",".png",".gif",".js",".html"});
+    
+    /**
+     * @return the view basic path (relative to webroot path)
+     */
+    String getViewPath();
 
     /**
-     * @return the excludeSuffix
+     * @return the global charactor encoding (view, resquest, response, and so on)
      */
-    public Set<String> getExcludeSuffixes();
+    String getEncoding();
 
     /**
-     * @return the excludeprefix
+     * @return the class scanning packages
      */
-    public Set<String> getExcludePrefixes();
+    String[] getScanningPackages();
+    
+    /**
+     * @return the view excludeSuffix
+     */
+    Set<String> getExcludeSuffixes();
 
-
-    public String getErrorPagePath();
-
-
-    public String getLogLevel();
+    /**
+     * @return the view excludeprefix
+     */
+    Set<String> getExcludePrefixes();
+    
+    /**
+     * @return the special error page full path (relative to webroot path)
+     */
+    String getErrorPagePath();
+    
+    /**
+     * @return the special log level using to init log lib like zollty-log.
+     */
+    String getLogLevel();
 
 }

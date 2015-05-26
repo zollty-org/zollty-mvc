@@ -31,7 +31,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.framework.util.resource.PathMatchingResourcePatternResolver;
 
 /**
  * 
@@ -55,26 +54,38 @@ public class DefaultDom implements Dom {
 	}
 	
 	
-	@Override
-	public Document getDocument(String resourceLocation) {
-		return getDocument(resourceLocation, null);
-	}
-	
-	@Override
-	public Document getDocument(String resourceLocation, ClassLoader classLoader) {
-        Document doc = null;
-        if (resourceLocation != null && resourceLocation.endsWith(".xml")) {
-            if (classLoader == null) {
-                doc = getDocument(PathMatchingResourcePatternResolver.getResourceInputStream(resourceLocation));
-            }
-            else {
-                doc = getDocument(PathMatchingResourcePatternResolver.getResourceInputStream(resourceLocation, classLoader));
-            }
-        } else {
-            log.warn("config file is not end with 'xml' suffix. resourceLocation=[{}]", resourceLocation);
-        }
-        return doc;
-    }
+//	@Override
+//	public Document getDocument(String resourceLocation) {
+//		return getDocument(resourceLocation, null);
+//	}
+//	
+//    
+// 
+//     @Override
+//     public Document getDocument(String resourceLocation, ClassLoader classLoader) {
+//         return getDocument(resourceLocation, classLoader, null);
+//     }
+//
+//	
+//	@Override
+//    public Document getDocument(String resourceLocation, ClassLoader classLoader, ServletContext servletContext) {
+//        Document doc = null;
+//        if (resourceLocation != null && resourceLocation.endsWith(".xml")) {
+//            
+//            InputStream in = null;
+//            try {
+//                in = ResourceUtils.getResourceInputStream(resourceLocation, classLoader, servletContext);
+//            }
+//            catch (IOException e) {
+//                throw new NestedRuntimeException(e);
+//            }
+//            
+//            doc = getDocument(in);
+//        } else {
+//            log.warn("config file is not end with 'xml' suffix. resourceLocation=[{}]", resourceLocation);
+//        }
+//        return doc;
+//    }
 
 	@Override
 	public Document getDocument(InputStream is) {

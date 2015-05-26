@@ -12,9 +12,6 @@
  */
 package org.zollty.framework.core.beans;
 
-import java.util.List;
-
-import org.zollty.framework.core.support.BeanDefinition;
 
 /**
  * @author zollty 
@@ -26,9 +23,8 @@ public interface BeanFactory {
 
 	<T> T getBean(String id);
 	
-	List<BeanDefinition> getBeanDefinitions();
-	
-	String[] getBeanDefinitionNames();
+	// String[] getBeanDefinitionNames();
 	
 	ClassLoader getBeanClassLoader();
+	
 }

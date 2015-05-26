@@ -6,28 +6,25 @@
  */
 package org.zollty.framework.core.support.annotation;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.JarURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.jar.JarEntry;
 
+import org.zollty.framework.core.annotation.Component;
 import org.zollty.framework.core.annotation.Inject;
-import org.zollty.framework.core.config.ApplicationConfig;
-import org.zollty.framework.core.config.ConfigReader;
 import org.zollty.framework.core.support.AbstractBeanReader;
 import org.zollty.framework.core.support.BeanDefinition;
+import org.zollty.framework.util.MvcReflectUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
+import org.zollty.util.Assert;
+import org.zollty.util.ResourceUtils;
+import org.zollty.util.resource.Resource;
+import org.zollty.util.resource.support.PathMatchingResourcePatternResolver;
+import org.zollty.util.resource.support.ResourcePatternResolver;
 
 /**
  * @author zollty 
@@ -38,118 +35,56 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
 	private Logger log = LogFactory.getLogger(AbstractAnnotationBeanReader.class);
 	
 	/** ClassLoader to resolve bean class names with, if necessary */
-	private ClassLoader beanClassLoader = MvcUtils.ClassUtil.getDefaultClassLoader();
+	private ClassLoader beanClassLoader;
 	
-	protected void setBeanClassLoader(ClassLoader beanClassLoader) {
-		this.beanClassLoader = (beanClassLoader != null ? beanClassLoader : MvcUtils.ClassUtil.getDefaultClassLoader());
-	}
+	private ResourcePatternResolver resourcePatternResolver;
 	
-	public ClassLoader getBeanClassLoader() {
-		return this.beanClassLoader;
-	}
+	private String[] scanningPackages;
 	
-	protected void init(){
-		beanDefinitions = new ArrayList<BeanDefinition>();
-		ApplicationConfig config = ConfigReader.getInstance().getConfig();//ConfigReader.getInstance().load(file);
-		for (String pack : config.getPaths()) {
-			log.info("componentPath = " + pack);
-			scan(pack.trim());
-		}
-	}
-
-    private void scan(String packageName) {
-        String packageDirName = packageName.replace('.', '/');
-        URL[] urls = findAllClassPathResources(packageDirName);
-        if (urls == null) {
-            error(packageName + " can not be found");
-        }
-        for (URL url : urls) {
-            String protocol = url.getProtocol();
-            if ("file".equals(protocol)) {
-                parseFile(url, packageDirName);
-            }
-            else if ("jar".equals(protocol)) {
-                parseJar(url, packageDirName);
-            }
-        }
+	public AbstractAnnotationBeanReader(String[] scanningPackages, ClassLoader beanClassLoader, ResourcePatternResolver resourcePatternResolver) {
+	    Assert.notNull(scanningPackages);
+	    this.scanningPackages = scanningPackages;
+        this.beanClassLoader = (beanClassLoader != null ? beanClassLoader : MvcUtils.ClassUtil.getDefaultClassLoader());
+        this.resourcePatternResolver = (resourcePatternResolver !=null ? resourcePatternResolver : new PathMatchingResourcePatternResolver(this.beanClassLoader));
+    }
+	
+	
+    @Override
+    public List<BeanDefinition> loadBeanDefinitions() {
+        init();
+        return beanDefinitions;
     }
     
-//    private void scan(String packageName) {
-//        String packageDirName = packageName.replace('.', '/');
-//        URL url = getBeanClassLoader().getResource(packageDirName);
-//        if (url == null)
-//            error(packageName + " can not be found");
-//        String protocol = url.getProtocol();
-//        if ("file".equals(protocol)) {
-//            parseFile(url, packageDirName);
-//        } else if ("jar".equals(protocol)) {
-//            parseJar(url, packageDirName);
-//        }
-//    }
-
-    protected URL[] findAllClassPathResources(String location) {
-        String path = location;
-        if (path.startsWith("/")) {
-            path = path.substring(1);
+    private void init(){
+        beanDefinitions = new ArrayList<BeanDefinition>();
+        for (String pack : scanningPackages) {
+            log.info("------------------------------componentPath = [{}]", pack);
+            scan(pack.trim());
         }
-        Enumeration<URL> resourceUrls = null;
+    }
+	
+	
+	protected void scan(String packageName) {
+        String packageDirName = packageName.replace('.', '/');
+        String packageSearchPath = ResourceUtils.CLASSPATH_ALL_URL_PREFIX +
+                packageDirName + "/**/*.class";
         try {
-            resourceUrls = getBeanClassLoader().getResources(path);
+            Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
+            
+            log.debug("resources size under [{}] = {}", packageSearchPath, resources.length);
+            log.debug("resources type = [{}]", resources[0].getClass().getName());
+            
+            for(Resource r: resources){
+                String org = r.getURL().toString();
+                String className = org.substring(org.indexOf(packageDirName), org.length()-6).replace('/', '.'); // length-6 去掉“.class”
+                parseClass(className);
+            }
         }
         catch (IOException e) {
-            log.error(e, "find resources error");
-            return null;
+            error("Pattern = [" + packageSearchPath + "] can not be found.");
         }
-        Set<URL> result = new LinkedHashSet<URL>(16);
-        while (resourceUrls.hasMoreElements()) {
-            URL url = resourceUrls.nextElement();
-            result.add(url);
-        }
-        return result.toArray(new URL[result.size()]);
     }
 
-	private void parseFile(URL url, final String packageDirName) {
-		File path = null;
-		try {
-			path = new File(url.toURI());
-		} catch (Throwable t) {
-			log.error(t, "parse file error");
-			return;
-		}
-        path.listFiles(new FileFilter() {
-            public boolean accept(File file) {
-                String name = file.getName();
-                if (name.endsWith(".class") && !name.contains("$")) {
-                    parseClass(packageDirName.replace('/', '.') + "." + name.substring(0, file.getName().length() - 6));
-                } else if (file.isDirectory()) {
-                    try {
-                        parseFile(file.toURI().toURL(), packageDirName + "/" + name);
-                    } catch (Throwable t) {
-                        log.error(t, "parse file error");
-                    }
-                }
-                return false;
-            }
-        });
-    }
-
-	private void parseJar(URL url, String packageDirName) {
-		Enumeration<JarEntry> entries = null;
-        try {
-            entries = ((JarURLConnection) url.openConnection()).getJarFile().entries();
-        } catch (Throwable t) {
-            log.error(t, "parse jar error");
-            return;
-        }
-		while (entries.hasMoreElements()) {
-			String name = entries.nextElement().getName();
-			if (!name.endsWith(".class") || name.contains("$")
-					|| !name.startsWith(packageDirName + "/"))
-				continue;
-			parseClass(name.substring(0, name.length() - 6).replace('/', '.'));
-		}
-
-	}
 
 	private void parseClass(String className) {
 		
@@ -176,6 +111,34 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
 	// let subclass override it
 	abstract protected BeanDefinition getBeanDefinition(Class<?> c);
 	
+	
+    protected BeanDefinition componentParser(Class<?> c) {
+        AnnotationBeanDefinition annotationBeanDefinition = new AnnotatedBeanDefinition();
+        annotationBeanDefinition.setClassName(c.getName());
+
+        Component component = c.getAnnotation(Component.class);
+        String id = component.value();
+        annotationBeanDefinition.setId(id);
+
+        String[] names = MvcReflectUtils.getInterfaceNames(c);
+        annotationBeanDefinition.setInterfaceNames(names);
+
+        List<Field> fields = getInjectField(c);
+        annotationBeanDefinition.setInjectFields(fields);
+
+        List<Method> methods = getInjectMethod(c);
+        annotationBeanDefinition.setInjectMethods(methods);
+
+        try {
+            Object object = c.newInstance();
+            annotationBeanDefinition.setObject(object);
+        }
+        catch (Throwable t) {
+            log.error(t, "component parser error");
+        }
+        return annotationBeanDefinition;
+    }
+	
 	protected List<Field> getInjectField(Class<?> c) {
 		Field[] fields = c.getDeclaredFields();
 		List<Field> list = new ArrayList<Field>();
@@ -197,4 +160,29 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
 		}
 		return list;
 	}
+	
+	
+	public void setBeanClassLoader(ClassLoader beanClassLoader) {
+        this.beanClassLoader = beanClassLoader;
+    }
+    
+    public ClassLoader getBeanClassLoader() {
+        return this.beanClassLoader;
+    }
+
+    public ResourcePatternResolver getResourcePatternResolver() {
+        return resourcePatternResolver;
+    }
+
+    public void setResourcePatternResolver(ResourcePatternResolver resourcePatternResolver) {
+        this.resourcePatternResolver = resourcePatternResolver;
+    }
+    
+    public String[] getScanningPackages() {
+        return scanningPackages;
+    }
+
+    public void setScanningPackages(String[] scanningPackages) {
+        this.scanningPackages = scanningPackages;
+    }
 }

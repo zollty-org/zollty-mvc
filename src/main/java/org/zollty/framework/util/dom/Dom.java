@@ -25,14 +25,17 @@ import org.w3c.dom.Element;
  */
 public interface Dom {
 
-	/**
-	 * 根据文件读取文档对象
-	 * @param file
-	 */
-	Document getDocument(String file);
-	
-	
-	Document getDocument(String resourceLocation, ClassLoader classLoader);
+//	/**
+//	 * 根据文件读取文档对象
+//	 * @param file
+//	 */
+//	Document getDocument(String file);
+//	
+//	
+//	Document getDocument(String resourceLocation, ClassLoader classLoader);
+//	
+//	
+//	Document getDocument(String resourceLocation, ClassLoader classLoader, ServletContext servletContext);
 	
 	/**
 	 * 

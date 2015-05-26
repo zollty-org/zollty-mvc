@@ -16,9 +16,15 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.mvc.aop.ControllerAopDefinition;
 
-public interface ControllerBeanDefinition extends AnnotationBeanDefinition {
-	List<Method> getReqMethods();
+public interface ControllerBeanDefinition extends AnnotationBeanDefinition, ControllerAopDefinition {
+	
+    String getUriPrefix();
+    
+    void setUriPrefix(String uriPrefix);
+    
+    List<Method> getReqMethods();
 
 	void setReqMethods(List<Method> reqMethods);
 }

@@ -29,7 +29,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.zollty.framework.core.config.ApplicationConfig;
+import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.ext.Constants;
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.handler.support.ErrorHandler;
@@ -42,7 +42,7 @@ public class StaticFileView implements View {
 	private Logger log = LogFactory.getLogger(StaticFileView.class);
 	public static final String CRLF = "\r\n";
 	private static Set<String> ALLOW_METHODS = new HashSet<String>(Arrays.asList("GET", "POST", "HEAD"));
-	private static ApplicationConfig CONFIG;
+	private static IApplicationConfig CONFIG;
 	private static String RANGE_ERROR_HTML;
 	private static String TEMPLATE_PATH;
 	private final String inputPath;
@@ -63,7 +63,7 @@ public class StaticFileView implements View {
 		this.inputPath = path;
 	}
 	
-	public static void init(ApplicationConfig serverConfig, String tempPath) {
+	public static void init(IApplicationConfig serverConfig, String tempPath) {
 		if(CONFIG == null && serverConfig != null)
 			CONFIG = serverConfig;
 		

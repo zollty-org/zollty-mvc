@@ -32,11 +32,11 @@ import org.zollty.framework.core.support.xml.ManagedValue;
 import org.zollty.framework.core.support.xml.XmlBeanDefinition;
 import org.zollty.framework.core.support.xml.XmlGenericBeanDefinition;
 import org.zollty.framework.util.MvcReflectUtils;
-import org.zollty.framework.util.MvcRuntimeException;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.dom.Dom;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
+import org.zollty.util.NestedRuntimeException;
 
 public class BeanNodeParser {
 
@@ -116,7 +116,7 @@ public class BeanNodeParser {
 				clazz = beanClassLoader.loadClass(className);
 				obj = clazz.newInstance();
 			} catch (Exception e) {
-				throw new MvcRuntimeException(e,"beanClassLoader.loadClass error!");
+				throw new NestedRuntimeException(e,"beanClassLoader.loadClass error!");
 			}
 			xmlBeanDefinition.setObject(obj);
 

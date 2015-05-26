@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.util.MvcUtils;
 
@@ -31,11 +32,6 @@ public class HtmlView implements View {
 	private static String encoding;
 	private final String text;
 
-	public static void setEncoding(String encoding) {
-		if (HtmlView.encoding == null && encoding != null)
-			HtmlView.encoding = encoding;
-	}
-
 	public HtmlView(String text) {
 		this.text = text;
 	}
@@ -43,8 +39,8 @@ public class HtmlView implements View {
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setCharacterEncoding(HtmlView.encoding);
-		response.setHeader("Content-Type", "text/html;charset=UTF-8");
+		response.setCharacterEncoding(getEncoding());
+		response.setHeader("Content-Type", "text/html; charset=" + getEncoding());
 		PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -55,4 +51,14 @@ public class HtmlView implements View {
         }
 	}
 
+    public static void setEncoding(String encoding) {
+        HtmlView.encoding = encoding;
+    }
+    
+    public static String getEncoding() {
+        if (HtmlView.encoding == null) {
+            setEncoding(IApplicationConfig.DEFAULT_VIEW_ENCODING);
+        }
+        return encoding;
+    }
 }

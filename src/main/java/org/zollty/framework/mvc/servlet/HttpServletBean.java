@@ -17,7 +17,6 @@ package org.zollty.framework.mvc.servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.zollty.framework.core.config.ConfigReader;
 import org.zollty.framework.mvc.context.ContextLoader;
 import org.zollty.framework.mvc.context.WebApplicationContext;
 import org.zollty.framework.mvc.context.WebApplicationContextUtils;
@@ -58,7 +57,8 @@ abstract public class HttpServletBean extends HttpServlet {
 
         defaultServlet = new WebContainerDefaultServlet(getServletContext());
 
-        encoding = ConfigReader.getInstance().getConfig().getEncoding();
+        // ConfigReader.getInstance().getConfig().getEncoding();
+        encoding = webApplicationContext.getHandlerMapping().getEncoding();
 
         initDispatcher();
 

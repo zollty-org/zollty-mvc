@@ -16,7 +16,6 @@
 
 package org.zollty.dbk.support;
 
-import org.zollty.framework.util.MvcUtils;
 import org.zollty.dbk.temp.core.SpringUtils;
 
 /**
@@ -101,7 +100,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setBadSqlGrammarCodes(String badSqlGrammarCodes) {// String[] 
-		this.badSqlGrammarCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(badSqlGrammarCodes, ','));
+		this.badSqlGrammarCodes = SpringUtils.sortStringArray(SpringUtils.split(badSqlGrammarCodes, ','));
 	}
 
 	public String[] getBadSqlGrammarCodes() {
@@ -109,7 +108,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setInvalidResultSetAccessCodes(String invalidResultSetAccessCodes) {
-		this.invalidResultSetAccessCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(invalidResultSetAccessCodes, ','));
+		this.invalidResultSetAccessCodes = SpringUtils.sortStringArray(SpringUtils.split(invalidResultSetAccessCodes, ','));
 	}
 
 	public String[] getInvalidResultSetAccessCodes() {
@@ -121,11 +120,11 @@ public class SQLErrorCodes {
 	}
 
 	public void setDuplicateKeyCodes(String duplicateKeyCodes) {
-		this.duplicateKeyCodes = MvcUtils.StringSplitUtil.split(duplicateKeyCodes, ',');
+		this.duplicateKeyCodes = SpringUtils.split(duplicateKeyCodes, ',');
 	}
 
 	public void setDataIntegrityViolationCodes(String dataIntegrityViolationCodes) {
-		this.dataIntegrityViolationCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(dataIntegrityViolationCodes, ','));
+		this.dataIntegrityViolationCodes = SpringUtils.sortStringArray(SpringUtils.split(dataIntegrityViolationCodes, ','));
 	}
 
 	public String[] getDataIntegrityViolationCodes() {
@@ -133,7 +132,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setPermissionDeniedCodes(String permissionDeniedCodes) {
-		this.permissionDeniedCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(permissionDeniedCodes, ','));
+		this.permissionDeniedCodes = SpringUtils.sortStringArray(SpringUtils.split(permissionDeniedCodes, ','));
 	}
 
 	public String[] getPermissionDeniedCodes() {
@@ -141,7 +140,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setDataAccessResourceFailureCodes(String dataAccessResourceFailureCodes) {
-		this.dataAccessResourceFailureCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(dataAccessResourceFailureCodes, ','));
+		this.dataAccessResourceFailureCodes = SpringUtils.sortStringArray(SpringUtils.split(dataAccessResourceFailureCodes, ','));
 	}
 
 	public String[] getDataAccessResourceFailureCodes() {
@@ -149,7 +148,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setTransientDataAccessResourceCodes(String transientDataAccessResourceCodes) {
-		this.transientDataAccessResourceCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(transientDataAccessResourceCodes, ','));
+		this.transientDataAccessResourceCodes = SpringUtils.sortStringArray(SpringUtils.split(transientDataAccessResourceCodes, ','));
 	}
 
 	public String[] getTransientDataAccessResourceCodes() {
@@ -157,7 +156,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setCannotAcquireLockCodes(String cannotAcquireLockCodes) {
-		this.cannotAcquireLockCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(cannotAcquireLockCodes, ','));
+		this.cannotAcquireLockCodes = SpringUtils.sortStringArray(SpringUtils.split(cannotAcquireLockCodes, ','));
 	}
 
 	public String[] getCannotAcquireLockCodes() {
@@ -165,7 +164,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setDeadlockLoserCodes(String deadlockLoserCodes) {
-		this.deadlockLoserCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(deadlockLoserCodes, ','));
+		this.deadlockLoserCodes = SpringUtils.sortStringArray(SpringUtils.split(deadlockLoserCodes, ','));
 	}
 
 	public String[] getDeadlockLoserCodes() {
@@ -173,7 +172,7 @@ public class SQLErrorCodes {
 	}
 
 	public void setCannotSerializeTransactionCodes(String cannotSerializeTransactionCodes) {
-		this.cannotSerializeTransactionCodes = SpringUtils.sortStringArray(MvcUtils.StringSplitUtil.split(cannotSerializeTransactionCodes, ','));
+		this.cannotSerializeTransactionCodes = SpringUtils.sortStringArray(SpringUtils.split(cannotSerializeTransactionCodes, ','));
 	}
 
 	public String[] getCannotSerializeTransactionCodes() {
@@ -209,5 +208,5 @@ public class SQLErrorCodes {
 	public SQLExceptionTranslator getCustomSqlExceptionTranslator() {
 		return this.customSqlExceptionTranslator;
 	}
-
+	
 }

@@ -18,7 +18,7 @@ import javax.servlet.ServletContext;
  * @author zollty 
  * @since 2013-10-11
  */
-public interface ConfigurableWebApplicationContext extends WebApplicationContext{
+public interface ConfigurableWebApplicationContext extends WebApplicationContext {
 
 	public void setServletContext(ServletContext servletContext);
 }

@@ -61,7 +61,7 @@ public class ControllerResourceTest {
 
     private static void runURIMapping(String uriPattern, String servletURI, HashMap<String, String> params) {
         Method me = MvcReflectUtils.findMethod(Pattern.class, "compile");
-        ControllerMetaInfo cm = new ControllerMetaInfo(null, me, new String[] { "GET" }, uriPattern);
+        ControllerMetaInfo cm = new ControllerMetaInfo(null, me, new String[] { "GET" }, uriPattern, null);
         ControllerResource cr = new ControllerResource();
         cr.addController(cm);
         ControllerHandler ha = (ControllerHandler) cr.getHandler(servletURI, new FakeHttpServletRequest("GET"));

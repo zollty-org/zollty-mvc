@@ -14,43 +14,29 @@ package org.zollty.framework.core.context.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.config.ConfigReader;
+import org.zollty.framework.core.config.IFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.annotation.AnnotationBeanReader;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-10-11
  */
 public class ClassPathAnnotationApplicationContext extends AbstractApplicationContext {
 
-	private Logger log;
-	
-	public ClassPathAnnotationApplicationContext(){
-	    this(Const.DEFAULT_CONFIG_LOCATION, null);
-	}
-	
-	public ClassPathAnnotationApplicationContext(ClassLoader beanClassLoader){
-	    this(Const.DEFAULT_CONFIG_LOCATION, beanClassLoader);
-	}
-	
-	public ClassPathAnnotationApplicationContext(String configLocation){
-	    this(configLocation, null);
-	}
-
-	public ClassPathAnnotationApplicationContext(String configLocation, ClassLoader beanClassLoader){
-	    super(configLocation, beanClassLoader);
-//		ConfigReader.getInstance().load(configLocation);
-//		setBeanClassLoader(beanClassLoader);
-//		refresh();
-//		BeanFactoryHelper.setBeanFactory(this);
-	    refresh();
-	}
-	
+    private Logger log;
+    
     private long beginTimeMs;
+
+    public ClassPathAnnotationApplicationContext(IFileConfig config) {
+        super(config);
+    }
+
+    public ClassPathAnnotationApplicationContext(IFileConfig config, ClassLoader beanClassLoader) {
+        super(config, beanClassLoader);
+    }
 
     @Override
     protected void doBeforeRefresh() {
@@ -59,24 +45,29 @@ public class ClassPathAnnotationApplicationContext extends AbstractApplicationCo
         if (LogFactory.isDebugEnabled()) {
             log.debug("load {} ...", getClass().getSimpleName());
         }
-        ConfigReader.getInstance().load(getConfigLocation(), getBeanClassLoader());
     }
 
     @Override
     protected void doAfterRefresh() {
         if (LogFactory.isDebugEnabled()) {
-            log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
+            log.debug("{} completed in {} ms.", getClass().getSimpleName(), System.currentTimeMillis() - beginTimeMs);
         }
     }
-	
-	@Override
-	protected List<BeanDefinition> loadBeanDefinitions() {
-		List<BeanDefinition> list1 = new AnnotationBeanReader( getBeanClassLoader() ).loadBeanDefinitions(); 
-		if (list1 != null) {
-			log.debug("-- Annotation bean --");
-			return list1;
-		}
-		return null;
-	}
+
+    @Override
+    protected List<BeanDefinition> loadBeanDefinitions() {
+        IFileConfig config = (IFileConfig)getConfig();
+        List<BeanDefinition> list = new AnnotationBeanReader(
+                config.getScanningPackages(), getBeanClassLoader(), null).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- Annotation bean -- size = {}", list.size());
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    protected void doAfterClose() {
+    }
 
 }

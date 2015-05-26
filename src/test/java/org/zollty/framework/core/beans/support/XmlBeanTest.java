@@ -14,13 +14,12 @@
  */
 package org.zollty.framework.core.beans.support;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
+import org.zollty.framework.util.ResourcContext;
 
 /**
  * @author zollty
@@ -28,16 +27,13 @@ import org.zollty.framework.core.support.xml.XmlBeanReader;
  */
 public class XmlBeanTest {
 
-    private static final String XML_PATH = "org/zollty/framework/core/beans/support/bean-test.xml";
+    private static final String XML_PATH = "classpath:org/zollty/framework/core/beans/support/bean-test.xml";
 
     @Test
     public void testSimpleBeanFactory() {
 
-        SimpleBeanFactory sbf = new SimpleBeanFactory();
-        List<BeanDefinition> beanslist = new XmlBeanReader(Thread.currentThread().getContextClassLoader(), XML_PATH)
-                .loadBeanDefinitions();
-        sbf.loadBeanDefinitions(beanslist);
-        sbf.refresh();
+        ResourcContext resourcContext = new ResourcContext(XML_PATH, Thread.currentThread().getContextClassLoader());
+        SimpleBeanFactory sbf = new SimpleBeanFactory( new XmlBeanReader(resourcContext) );
 
         ArrayBean aBean = sbf.getBean("arrayBean");
 

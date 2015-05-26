@@ -14,27 +14,55 @@ package org.zollty.framework.mvc.support;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 import org.zollty.framework.core.support.annotation.AnnotatedBeanDefinition;
+import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-21
  */
-public class ControllerAnnotatedBeanDefinition extends AnnotatedBeanDefinition
-		implements ControllerBeanDefinition {
+public class ControllerAnnotatedBeanDefinition extends AnnotatedBeanDefinition implements ControllerBeanDefinition {
 
-	private List<Method> reqMethods;
+    private List<Method> reqMethods;
 
+    private Map<Method, List<MvcBeforeBeanDefinition>> reqMethodsAOP;
 
-	@Override
-	public List<Method> getReqMethods() {
-		return reqMethods;
-	}
-	
-	@Override
-	public void setReqMethods(List<Method> reqMethods) {
-		this.reqMethods = reqMethods;
-	}
+    private String uriPrefix;
 
+    @Override
+    public List<Method> getReqMethods() {
+        return reqMethods;
+    }
+
+    @Override
+    public void setReqMethods(List<Method> reqMethods) {
+        this.reqMethods = reqMethods;
+    }
+
+    @Override
+    public Map<Method, List<MvcBeforeBeanDefinition>> getReqMethodsAOP() {
+        return reqMethodsAOP;
+    }
+
+    @Override
+    public void setReqMethodsAOP(Map<Method, List<MvcBeforeBeanDefinition>> reqMethodsAOP) {
+        this.reqMethodsAOP = reqMethodsAOP;
+    }
+
+    @Override
+    public String getUriPrefix() {
+        return uriPrefix;
+    }
+
+    @Override
+    public void setUriPrefix(String uriPrefix) {
+        this.uriPrefix = uriPrefix;
+    }
+
+    @Override
+    public String toString() {
+        return "ControllerAnnotatedBeanDefinition [id=" + getId() + ", className=" + getClassName() + "]";
+    }
 }

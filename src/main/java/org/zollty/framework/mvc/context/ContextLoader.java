@@ -17,11 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 
-import org.zollty.framework.core.BeanFactoryHelper;
 import org.zollty.framework.core.Const;
+import org.zollty.framework.core.config.IServletContextFileConfig;
+import org.zollty.framework.core.config.impl.DefaultTextFileConfig;
+import org.zollty.framework.core.config.impl.DefaultXmlConfig;
 import org.zollty.framework.mvc.context.support.WebAnnotationAndXmlApplicationContext;
+import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
+import org.zollty.util.NestedRuntimeException;
 
 /**
  * @author zollty 
@@ -76,50 +80,52 @@ public class ContextLoader {
 				this.context = createWebApplicationContext(servletContext);
 			}
 			
-			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
-			BeanFactoryHelper.setBeanFactory(this.context);
-			
-			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
-			if (ccl == ContextLoader.class.getClassLoader()) {
-				currentContext = this.context;
-			}
-			else if (ccl != null) {
-				currentContextPerThread.put(ccl, this.context);
-			}
-			
-			long elapsedTime = System.currentTimeMillis() - startTime;
-			logger.info("Root WebApplicationContext: initialization completed in " + elapsedTime + " ms ------------------");
-			
-			return this.context;
-		}
-		catch (RuntimeException ex) {
-			logger.error(ex, "Context initialization failed");
-			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, ex);
-			throw ex;
+            servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
+
+            ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+            if (ccl == ContextLoader.class.getClassLoader()) {
+                currentContext = this.context;
+            }
+            else if (ccl != null) {
+                currentContextPerThread.put(ccl, this.context);
+            }
+
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            logger.info("Root WebApplicationContext: initialization completed in " + elapsedTime + " ms ------------------");
+
+            return this.context;
 		}
 		catch (Throwable err) {
 			logger.error(err, "Context initialization failed");
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, err);
-			throw new RuntimeException();
+			throw new NestedRuntimeException(err);
 		}
 	}
 	
-	
-	protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
-		String configLocation = sc.getInitParameter(CONFIG_LOCATION_PARAM);
-		
-		if(null!=configLocation) logger.info("CONFIG_LOCATION at Context initParameter = " + configLocation);
-		
-		if(configLocation==null){
-			configLocation = Const.DEFAULT_CONFIG_LOCATION;
-		}else if(configLocation.startsWith("/")){
-			configLocation = configLocation.substring(1);
-		}
-		
-		//ConfigReader.getInstance().load(configLocation, sc.getRealPath("/"));
-		
-		return new WebAnnotationAndXmlApplicationContext(configLocation,sc);
-	}
+    protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+        String configLocation = sc.getInitParameter(CONFIG_LOCATION_PARAM);
+
+        if (null != configLocation)
+            logger.info("CONFIG_LOCATION at Context initParameter = " + configLocation);
+
+        if (configLocation == null) {
+            configLocation = Const.DEFAULT_CONFIG_LOCATION_XML;
+        }
+        else if (configLocation.startsWith("/")) {
+            configLocation = configLocation.substring(1);
+        }
+
+        if (configLocation != null && configLocation.endsWith("xml")) {
+            return new WebAnnotationAndXmlApplicationContext(new DefaultXmlConfig(configLocation, sc), null, sc);
+        }
+
+        if (configLocation != null && configLocation.endsWith("properties")) {
+            return new WebAnnotationAndXmlApplicationContext(new DefaultTextFileConfig(configLocation, null, sc), null, sc);
+        }
+
+        return new WebAnnotationAndXmlApplicationContext(
+                (IServletContextFileConfig) MvcUtils.ClassUtil.newInstance(configLocation, null), null, sc);
+    }
 
 
 	/**

@@ -14,6 +14,7 @@
  */
 package org.zollty.framework.mvc.handler.support;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +22,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.zollty.framework.mvc.handler.WebHandler;
+import org.zollty.framework.mvc.support.BasicParamMetaInfo;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.util.match.PathMatcher;
 import org.zollty.util.match.ZolltyPathMatcher;
 
 /**
@@ -36,7 +37,7 @@ public class ControllerHandlerPattern {
     private static Logger LOG = LogFactory.getLogger(ControllerHandlerPattern.class);
 
     private final ControllerMetaInfo controller;
-    private PathMatcher pattern;
+    private ZolltyPathMatcher pattern;
     private final List<String> paramsName;
     private final String patternStr;
 
@@ -47,6 +48,24 @@ public class ControllerHandlerPattern {
     public ControllerHandlerPattern(ControllerMetaInfo controller, List<String> paramsName) {
         this.controller = controller;
         this.paramsName = paramsName;
+        
+        // Check Params
+        byte[] paramType = controller.getParamType();
+        BasicParamMetaInfo[] bParamMetas = controller.getbParamMetas();
+        for (int i = 0; i < paramType.length; i++) {
+            if(paramType[i]==BasicParamMetaInfo.URI_PARAM) {
+                BasicParamMetaInfo pb = bParamMetas[i];
+                int pos = Arrays.binarySearch(paramsName.toArray(new String[paramsName.size()]), pb.getAttribute());
+                // 如果参数的名称是在 URI 参数列表中，则OK，否则报错。
+                if (pos < 0) {
+                    throw new IllegalArgumentException(
+                            "URIParam definition error, can't find the variable '"+pb.getAttribute()+"' in URI param(such as /{v1}{v2}/).");
+                }
+            }
+            
+        }
+        
+        
         String pstr = controller.getServletURI();
         for (String str : paramsName) {
             pstr = pstr.replace("{" + str + "}", "*");

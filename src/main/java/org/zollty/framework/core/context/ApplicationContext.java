@@ -12,13 +12,13 @@
  */
 package org.zollty.framework.core.context;
 
-import org.zollty.framework.core.beans.BeanFactory;
+import org.zollty.framework.core.beans.ConfigurableBeanFactory;
 
 
 /**
  * @author zollty 
  * @since 2013-10-11
  */
-public interface ApplicationContext extends BeanFactory{
+public interface ApplicationContext extends ConfigurableBeanFactory {
 
 }

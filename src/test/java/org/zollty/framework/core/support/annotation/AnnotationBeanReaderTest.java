@@ -32,7 +32,7 @@ public class AnnotationBeanReaderTest {
     @Test
     public void testInject() {
 
-        AbstractAnnotationBeanReader beanReader = new AbstractAnnotationBeanReader() {
+        AbstractAnnotationBeanReader beanReader = new AbstractAnnotationBeanReader(new String[0], null, null) {
             @Override
             protected BeanDefinition getBeanDefinition(Class<?> c) {
                 return null;

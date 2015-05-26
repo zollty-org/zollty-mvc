@@ -33,6 +33,7 @@ import java.util.List;
 import org.zollty.dbk.temp.beans.BeanInstantiationException;
 import org.zollty.dbk.util.ReflectionUtils;
 import org.zollty.framework.util.Assert;
+import org.zollty.framework.util.MvcUtils;
 
 
 /**
@@ -183,6 +184,10 @@ public class SpringUtils {
 		Arrays.sort(array);
 		return array;
 	}
+	
+	public static String[] split(String str, char separatorChar) {
+	    return MvcUtils.StringSplitUtil.splitIgnoreEmpty(str, separatorChar);
+    }
 	
 	
 	public static final int BUFFER_SIZE = 4096;

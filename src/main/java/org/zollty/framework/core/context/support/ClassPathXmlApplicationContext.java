@@ -14,43 +14,30 @@ package org.zollty.framework.core.context.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.config.ConfigReader;
+import org.zollty.framework.core.config.IFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
+import org.zollty.framework.util.ResourcContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-10-11
  */
-public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
+public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
-	private Logger log;
-	
-	public ClassPathXmlApplicationContext(){
-	    this(Const.DEFAULT_CONFIG_LOCATION, null);
-	}
-	
-	public ClassPathXmlApplicationContext(ClassLoader beanClassLoader){
-	    this(Const.DEFAULT_CONFIG_LOCATION, beanClassLoader);
-	}
-	
-	public ClassPathXmlApplicationContext(String configLocation){
-		this(configLocation, null);
-	}
-
-	public ClassPathXmlApplicationContext(String configLocation, ClassLoader beanClassLoader){
-	    super(configLocation, beanClassLoader);
-//		ConfigReader.getInstance().load(configLocation);
-//		setBeanClassLoader(beanClassLoader);
-//		refresh();
-//		BeanFactoryHelper.setBeanFactory(this);
-	    refresh();
-	}
-	
+    private Logger log;
+    
     private long beginTimeMs;
+
+    public ClassPathXmlApplicationContext(IFileConfig config) {
+        super(config);
+    }
+
+    public ClassPathXmlApplicationContext(IFileConfig config, ClassLoader beanClassLoader) {
+        super(config, beanClassLoader);
+    }
 
     @Override
     protected void doBeforeRefresh() {
@@ -59,7 +46,6 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
         if (LogFactory.isDebugEnabled()) {
             log.debug("load {} ...", getClass().getSimpleName());
         }
-        ConfigReader.getInstance().load(getConfigLocation(), getBeanClassLoader());
     }
 
     @Override
@@ -68,15 +54,21 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
             log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
         }
     }
-	
-	@Override
-	protected List<BeanDefinition> loadBeanDefinitions() {
-		List<BeanDefinition> list2 = new XmlBeanReader( getBeanClassLoader() ).loadBeanDefinitions();
-		if (list2 != null) {
-			log.debug("-- xml bean --");
-			return list2;
-		}
-		return null;
-	}
+
+    @Override
+    protected List<BeanDefinition> loadBeanDefinitions() {
+        IFileConfig config = (IFileConfig) getConfig();
+        ResourcContext resourcContext = new ResourcContext(config.getConfigLocation(), config.getClassLoader());
+        List<BeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- xml bean --size = {}", list.size());
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    protected void doAfterClose() {
+    }
 
 }

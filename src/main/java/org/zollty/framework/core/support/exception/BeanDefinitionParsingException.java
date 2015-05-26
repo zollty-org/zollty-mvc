@@ -19,8 +19,16 @@ package org.zollty.framework.core.support.exception;
 @SuppressWarnings("serial")
 public class BeanDefinitionParsingException extends BeansException {
 
-	public BeanDefinitionParsingException(String msg) {
-		super(msg);
-	}
+    public BeanDefinitionParsingException(String message, String... args) {
+        super(message, args);
+    }
+
+    public BeanDefinitionParsingException(Throwable e, String message, String... args) {
+        super(e, message, args);
+    }
+
+    public BeanDefinitionParsingException(Throwable e) {
+        super(e);
+    }
 
 }

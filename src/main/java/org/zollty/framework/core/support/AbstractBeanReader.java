@@ -14,32 +14,23 @@ package org.zollty.framework.core.support;
 
 import java.util.List;
 
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
 import org.zollty.framework.core.support.exception.BeanDefinitionParsingException;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-21
  */
 abstract public class AbstractBeanReader implements BeanReader {
-	private Logger log = LogFactory.getLogger(AbstractBeanReader.class);
-	protected List<BeanDefinition> beanDefinitions;
+    
+    protected List<BeanDefinition> beanDefinitions;
 
-	@Override
-	public List<BeanDefinition> loadBeanDefinitions() {
-		return beanDefinitions;
-	}
+    /**
+     * 处理异常
+     * 
+     * @param msg 异常信息
+     */
+    protected void error(String msg) {
+        throw new BeanDefinitionParsingException(msg);
+    }
 
-	/**
-	 * 处理异常
-	 * 
-	 * @param msg
-	 *            异常信息
-	 */
-	protected void error(String msg) {
-		log.error(msg);
-		throw new BeanDefinitionParsingException(msg);
-	}
-	
 }

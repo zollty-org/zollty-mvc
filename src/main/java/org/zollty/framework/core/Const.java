@@ -18,5 +18,7 @@ package org.zollty.framework.core;
  */
 public class Const {
 
-	public static final String DEFAULT_CONFIG_LOCATION = "zollty-mvc.xml";
+	public static final String DEFAULT_CONFIG_LOCATION_XML = "classpath:zollty-mvc.xml";
+	
+	public static final String DEFAULT_CONFIG_LOCATION_PROP = "classpath:zollty-mvc.properties";
 }

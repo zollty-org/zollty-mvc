@@ -13,32 +13,43 @@
 package org.zollty.framework.core.context.support;
 
 import org.zollty.framework.core.beans.support.AbstractBeanFactory;
+import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.context.ApplicationContext;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-10-11
  */
-abstract public class AbstractApplicationContext extends AbstractBeanFactory implements ApplicationContext {
-    
-    public AbstractApplicationContext(){
+public abstract class AbstractApplicationContext extends AbstractBeanFactory implements ApplicationContext {
+
+    private IApplicationConfig config;
+
+    public AbstractApplicationContext(IApplicationConfig config) {
         super();
-    }
-    
-    private String configLocation;
-    
-    public AbstractApplicationContext(String configLocation, ClassLoader beanClassLoader) {
-        super();
-        setConfigLocation(configLocation);
-        setBeanClassLoader(beanClassLoader);
+        
+        // 配置好了，才能刷新
+        this.config = config;
+        //ConfigReader.getInstance().load(config);
+        
+        refresh();
     }
 
-    public String getConfigLocation() {
-        return configLocation;
+    public AbstractApplicationContext(IApplicationConfig config, ClassLoader beanClassLoader) {
+        super(beanClassLoader);
+        
+        // 配置好了，才能刷新
+        this.config = config;
+        //ConfigReader.getInstance().load(config);
+        
+        refresh();
     }
 
-    public void setConfigLocation(String configLocation) {
-        this.configLocation = configLocation;
+    public IApplicationConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(IApplicationConfig config) {
+        this.config = config;
     }
 
 }

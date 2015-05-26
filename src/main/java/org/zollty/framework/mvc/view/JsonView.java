@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.mvc.View;
 
 /**
@@ -26,41 +27,46 @@ import org.zollty.framework.mvc.View;
  * @since 2013-8-05
  */
 public class JsonView implements View {
-	
-	private static String encoding;
-	private final String jsonStr;
-	
-	public static void setEncoding(String encoding) {
-		if(JsonView.encoding == null && encoding != null)
-			JsonView.encoding = encoding;
-	}
-	
-	public JsonView(String jsonStr) {
-		this.jsonStr = jsonStr;
-	}
 
-	public String getJsonStr() {
-		return jsonStr;
-	}
+    private static String encoding;
+    private final String jsonStr;
 
-	@Override
-	public void render(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if(jsonStr != null) {
-			response.setCharacterEncoding(JsonView.encoding);
-			response.setHeader("Content-Type", "application/json; charset=" + JsonView.encoding);
-			PrintWriter writer = response.getWriter();
-			try{
-				writer.print(jsonStr);
-//				if(String.class.equals(jsonStr.getClass())){ //字符串不予解析
-//					writer.print(jsonStr);
-//				}else{
-//					writer.print(Json.toJson(obj));
-//				}
-			} finally {
-				writer.close();
-			}
-		}
-	}
+    public JsonView(String jsonStr) {
+        this.jsonStr = jsonStr;
+    }
 
+    public String getJsonStr() {
+        return jsonStr;
+    }
+
+    @Override
+    public void render(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (jsonStr != null) {
+            response.setCharacterEncoding(getEncoding());
+            response.setHeader("Content-Type", "application/json; charset=" + getEncoding());
+            PrintWriter writer = response.getWriter();
+            try {
+                writer.print(jsonStr);
+                // if(String.class.equals(jsonStr.getClass())){ //字符串不予解析
+                // writer.print(jsonStr);
+                // }else{
+                // writer.print(Json.toJson(obj));
+                // }
+            }
+            finally {
+                writer.close();
+            }
+        }
+    }
+
+    public static void setEncoding(String encoding) {
+        JsonView.encoding = encoding;
+    }
+
+    public static String getEncoding() {
+        if (JsonView.encoding == null) {
+            setEncoding(IApplicationConfig.DEFAULT_VIEW_ENCODING);
+        }
+        return encoding;
+    }
 }

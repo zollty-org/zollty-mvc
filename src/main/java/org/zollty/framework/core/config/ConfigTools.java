@@ -38,7 +38,7 @@ public class ConfigTools {
             }
         }
         if (bt) {
-            tarry = MvcUtils.StringSplitUtil.split(prefix, ',');
+            tarry = MvcUtils.StringSplitUtil.splitIgnoreEmpty(prefix, ',');
             // 检测前缀
             String add = "/";
             String tmp = null;
@@ -84,7 +84,7 @@ public class ConfigTools {
             }
         }
         if (bt) {
-            tarry = MvcUtils.StringSplitUtil.split(suffix, ',');
+            tarry = MvcUtils.StringSplitUtil.splitIgnoreEmpty(suffix, ',');
             excludeSuffixes.addAll(MvcConvertUtils.arrayToSet(tarry));
         }
 

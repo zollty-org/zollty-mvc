@@ -35,7 +35,7 @@ public class MvcReflectUtils {
         for (Class<?> i : interfaces) {
             names.add(i.getName());
         }
-        return names.toArray(new String[0]);
+        return names.toArray(new String[interfaces.length]);
     }
 
     public static interface BeanMethodFilter {

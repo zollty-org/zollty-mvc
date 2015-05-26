@@ -14,7 +14,6 @@ package org.zollty.framework.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.zollty.util.ClassUtils;
 import org.zollty.util.CollectionUtils;
@@ -24,10 +23,10 @@ import org.zollty.util.FileUtils;
 import org.zollty.util.IOUtils;
 import org.zollty.util.RandomUtils;
 import org.zollty.util.ReflectionUtils;
-import org.zollty.util.ResourceUtils;
 import org.zollty.util.StringSplitUtils;
 import org.zollty.util.StringUtils;
 import org.zollty.util.ThreadUtils;
+import org.zollty.util.WebResourceUtils;
 
 /**
  * @author zollty 
@@ -61,64 +60,6 @@ public class MvcUtils {
     
     
     public static class StringSplitUtil extends StringSplitUtils {
-        
-        /**
-         * Tokenize the given String into a String array via a StringTokenizer.
-         * Trims tokens and omits empty tokens.
-         * <p>The given delimiters string is supposed to consist of any number of
-         * delimiter characters. Each of those characters can be used to separate
-         * tokens. A delimiter is always a single character; for multi-character
-         * delimiters, consider using <code>delimitedListToStringArray</code>
-         * @param str the String to tokenize
-         * @param delimiters the delimiter characters, assembled as String
-         * (each of those characters is individually considered as delimiter).
-         * @return an array of the tokens
-         * @see java.util.StringTokenizer
-         * @see java.lang.String#trim()
-         * @see #delimitedListToStringArray
-         */
-        public static String[] tokenizeToStringArray(String str, String delimiters) {
-            return tokenizeToStringArray(str, delimiters, true, true);
-        }
-
-        /**
-         * Tokenize the given String into a String array via a StringTokenizer.
-         * <p>The given delimiters string is supposed to consist of any number of
-         * delimiter characters. Each of those characters can be used to separate
-         * tokens. A delimiter is always a single character; for multi-character
-         * delimiters, consider using <code>delimitedListToStringArray</code>
-         * @param str the String to tokenize
-         * @param delimiters the delimiter characters, assembled as String
-         * (each of those characters is individually considered as delimiter)
-         * @param trimTokens trim the tokens via String's <code>trim</code>
-         * @param ignoreEmptyTokens omit empty tokens from the result array
-         * (only applies to tokens that are empty after trimming; StringTokenizer
-         * will not consider subsequent delimiters as token in the first place).
-         * @return an array of the tokens (<code>null</code> if the input String
-         * was <code>null</code>)
-         * @see java.util.StringTokenizer
-         * @see java.lang.String#trim()
-         * @see #delimitedListToStringArray
-         */
-        public static String[] tokenizeToStringArray(
-                String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
-
-            if (str == null) {
-                return null;
-            }
-            StringTokenizer st = new StringTokenizer(str, delimiters);
-            List<String> tokens = new ArrayList<String>();
-            while (st.hasMoreTokens()) {
-                String token = st.nextToken();
-                if (trimTokens) {
-                    token = token.trim();
-                }
-                if (!ignoreEmptyTokens || token.length() > 0) {
-                    tokens.add(token);
-                }
-            }
-            return (String[])MvcConvertUtils.convert(tokens, String[].class);
-        }
     }
 
     public static class FileUtil extends FileUtils {
@@ -130,7 +71,7 @@ public class MvcUtils {
     public static class RandomUtil extends RandomUtils {
     }
 
-    public static class ResourceUtil extends ResourceUtils {
+    public static class ResourceUtil extends WebResourceUtils {
     }
 
     public static class ThreadUtil extends ThreadUtils {

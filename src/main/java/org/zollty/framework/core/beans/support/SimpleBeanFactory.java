@@ -15,6 +15,9 @@ package org.zollty.framework.core.beans.support;
 import java.util.List;
 
 import org.zollty.framework.core.support.BeanDefinition;
+import org.zollty.framework.core.support.BeanReader;
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
 
 /**
  * @author zollty
@@ -22,27 +25,62 @@ import org.zollty.framework.core.support.BeanDefinition;
  */
 public class SimpleBeanFactory extends AbstractBeanFactory {
 
-    @Override
-    public void refresh() {
-        check(); // 冲突检测
-        addObjectToContext();
+    private Logger log;
+    
+    private long beginTimeMs;
+    
+    private BeanReader beanReader;
+    
+    public SimpleBeanFactory(BeanReader beanReader) {
+        super();
+        this.beanReader = beanReader;
+        
+        refresh();
     }
 
-    @Override
-    protected List<BeanDefinition> loadBeanDefinitions() {
-        return this.beanDefinitions;
-    }
-
-    public void loadBeanDefinitions(List<BeanDefinition> beandef) {
-        this.beanDefinitions = beandef;
+    public SimpleBeanFactory(BeanReader beanReader, ClassLoader beanClassLoader) {
+        super(beanClassLoader);
+        this.beanReader = beanReader;
+        
+        refresh();
     }
 
     @Override
     protected void doBeforeRefresh() {
+        beginTimeMs = System.currentTimeMillis();
+        log = LogFactory.getLogger(getClass());
+        if (LogFactory.isDebugEnabled()) {
+            log.debug("load {} start...", getClass().getSimpleName());
+        }
     }
 
     @Override
     protected void doAfterRefresh() {
+        if (LogFactory.isDebugEnabled()) {
+            log.debug("{} completed in {} ms.", getClass().getSimpleName(), System.currentTimeMillis() - beginTimeMs);
+        }
+    }
+
+    @Override
+    protected List<BeanDefinition> loadBeanDefinitions() {
+        List<BeanDefinition> list = beanReader.loadBeanDefinitions();
+        if (list != null) {
+            log.trace("beans type = [{}] size = {}", beanReader.getClass().getName(), list.size());
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    protected void doAfterClose() {
+    }
+
+    public BeanReader getBeanReader() {
+        return beanReader;
+    }
+
+    public void setBeanReader(BeanReader beanReader) {
+        this.beanReader = beanReader;
     }
 
 }

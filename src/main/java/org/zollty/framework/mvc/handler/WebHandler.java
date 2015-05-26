@@ -22,6 +22,6 @@ import org.zollty.framework.mvc.View;
  * @since 2013-9-15
  */
 public interface WebHandler {
-	
-	View invoke(HttpServletRequest request, HttpServletResponse response, HandlerChain chain);
+
+    View invoke(HttpServletRequest request, HttpServletResponse response);
 }

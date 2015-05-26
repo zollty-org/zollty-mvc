@@ -18,16 +18,14 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.zollty.framework.mvc.handler.support.HandlerChainImpl;
-
 /**
  * @author zollty
  * @since 2013-9-15
  */
 public interface HandlerMapping {
 
-    HandlerChainImpl match(String servletURI, HttpServletRequest request);
-
+    WebHandler match(String servletURI, HttpServletRequest request);
+    
     /**
      * @return the excludeSuffix
      */
@@ -37,5 +35,7 @@ public interface HandlerMapping {
      * @return the excludeprefix
      */
     public Set<String> getExcludePrefixes();
+    
+    String getEncoding();
     
 }

@@ -14,8 +14,10 @@ package org.zollty.framework.mvc.context.support;
 
 import javax.servlet.ServletContext;
 
+import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.context.support.AbstractApplicationContext;
 import org.zollty.framework.mvc.context.ConfigurableWebApplicationContext;
+import org.zollty.framework.mvc.handler.HandlerMapping;
 
 /**
  * @author zollty 
@@ -25,20 +27,22 @@ abstract public class AbstractWebApplicationContext extends AbstractApplicationC
 
 	private ServletContext servletContext;
 	
-	public AbstractWebApplicationContext(){
-        super();
-    }
-    
-    public AbstractWebApplicationContext(String configLocation, ClassLoader beanClassLoader) {
-        super(configLocation, beanClassLoader);
-    }
-    
-    public AbstractWebApplicationContext(String configLocation,
-            ServletContext servletContext, ClassLoader beanClassLoader){
-        super(configLocation, beanClassLoader);
-        setServletContext(servletContext);
+	protected HandlerMapping handlerMapping;
+
+    public AbstractWebApplicationContext(IApplicationConfig config) {
+        super(config);
     }
 
+   public AbstractWebApplicationContext(IApplicationConfig config, ClassLoader beanClassLoader) {
+       super(config, beanClassLoader);
+   }
+   
+   public AbstractWebApplicationContext(IApplicationConfig config, ClassLoader beanClassLoader, ServletContext servletContext) {
+       super(config, beanClassLoader);
+       
+       this.servletContext = servletContext;
+   }
+	
 	@Override
 	public ServletContext getServletContext() {
 		return this.servletContext;
@@ -48,4 +52,12 @@ abstract public class AbstractWebApplicationContext extends AbstractApplicationC
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
+	
+    /**
+     * @return the handlerMapping
+     */
+    @Override
+    public final HandlerMapping getHandlerMapping() {
+        return handlerMapping;
+    }
 }

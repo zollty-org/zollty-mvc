@@ -21,16 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.zollty.framework.mvc.handler.WebHandler;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
-import org.zollty.framework.util.MvcRuntimeException;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
+import org.zollty.util.BasicRuntimeException;
+import org.zollty.util.match.ZolltyPathMatcher;
 
 /**
  * @author zollty
  * @since 2014-5-29
  */
 public class ControllerResource {
-    
+
     private static final Logger LOG = LogFactory.getLogger(ControllerResource.class);
 
     protected final List<ControllerHandlerPattern> patternControllerList = new ArrayList<ControllerHandlerPattern>();
@@ -44,15 +45,16 @@ public class ControllerResource {
         // }
         List<String> list = parseUriPathVariable(uri);
         if (list.size() == 0) {
-            if(this.isDuplicate(uri, controller.getAllowHttpMethods())) {
-                throw new MvcRuntimeException("the controller definition is a duplicate!");
+            if (this.isDuplicate(uri, controller.getAllowHttpMethods())) {
+                throw new BasicRuntimeException("the controller definition is a duplicate!");
             }
+
             simpleControllerList.add(new ControllerHandler(controller));
         }
         else {
             ControllerHandlerPattern chp = new ControllerHandlerPattern(controller, list);
-            if(this.isDuplicate(chp)) {
-                throw new MvcRuntimeException("the controller definition is a duplicate!");
+            if (this.isDuplicate(chp)) {
+                throw new BasicRuntimeException("the controller definition is a duplicate!");
             }
             patternControllerList.add(chp);
         }
@@ -78,53 +80,37 @@ public class ControllerResource {
                 }
             }
         }
-        
+
         // 检测 如果有已定义的 ControllerHandlerPattern 包含了当前的普通ControllerHandler定义，则给出WARN级别的提示。
         for (ControllerHandlerPattern chp : patternControllerList) {
             for (String me : allowHttpMethods) {
-                if(chp.getController().allowMethod(me)){
-                    if(chp.getHandler(uri, me)!=null)
+                if (chp.getController().allowMethod(me)) {
+                    if (chp.getHandler(uri, me) != null)
                         LOG.warn("'{}' is included by '{}'", uri, chp.getController().getServletURI());
                 }
             }
         }
         return false;
     }
-    
+
     /**
      * 针对pattern模糊匹配的URI，判断 uri+allowHttpMethods 是否有重复(会冲突)的定义
      * <p>
-     * 注意： uri里的斜杠也算作一个有效字符
+     * 注意： uri里的斜杠也算作一个有效字符。
+     * <p>
+     * 注意： 当两个Pattern存在交集时，该方法并不能全面检测出URI的重复匹配。
+     * @see ZolltyPathMatcher.isTwoPatternSimilar()
      */
     protected boolean isDuplicate(ControllerHandlerPattern chp) {
-        
-        // 以下两个for循环，第一个是检测当前的ControllerHandlerPattern（CHP）是否被其他已经定义了的CHP所包含
-        // 比如 已存在了/app/*/*，那么当前如果是 /app/user/*，则是冲突的
+
         for (ControllerHandlerPattern chpa : patternControllerList) {
-            for (String me : chp.getController().getAllowHttpMethods()) {
-                if(chpa.getController().allowMethod(me)){
-                    if(chpa.getHandler(chp.getPatternStr().replace('*', 'a'), me)!=null){
-                        LOG.error("'{}' is a duplicate of '{}'", chp.getController(), chpa.getController());
-                        return true;
-                    }
-                    break;
-                }
+            if (isAllowMethod(chp, chpa) // 如果两者有HTTP METHOD 重叠
+                    && ZolltyPathMatcher.isTwoPatternSimilar(chp.getPatternStr(), chpa.getPatternStr())) { // 且URL Pattern有重叠
+                LOG.error("'{}' is a duplicate of '{}'", chp.getController(), chpa.getController());
+                return true;
             }
         }
-        // 第二个for循环是为了检测当前的ControllerHandlerPattern是否可以包含其他已定义了的CHP
-        // 比如 已存在了/app/user/*，那么当前如果是 /app/*/*，则是冲突的
-        for (ControllerHandlerPattern chpa : patternControllerList) {
-            for (String me : chpa.getController().getAllowHttpMethods()) {
-                if(chp.getController().allowMethod(me)){
-                    if(chp.getHandler(chpa.getPatternStr().replace('*', 'a'), me)!=null){
-                        LOG.error("'{}' is a duplicate of '{}'", chp.getController(), chpa.getController());
-                        return true;
-                    }
-                    break;
-                }
-            }
-        }
-        
+
         // 检测 如果有已定义的 普通ControllerHandler 被当前的ControllerHandlerPattern所匹配到，则给出WARN级别的提示。
         for (ControllerHandler ch : simpleControllerList) {
             ControllerMetaInfo ctrl = ch.getController();
@@ -136,7 +122,19 @@ public class ControllerResource {
                 }
             }
         }
-        
+
+        return false;
+    }
+
+    protected boolean isAllowMethod(ControllerHandlerPattern chp1, ControllerHandlerPattern chp2) {
+        for (String me : chp1.getController().getAllowHttpMethods()) {
+            if (chp2.getController().allowMethod(me))
+                return true;
+        }
+        for (String me : chp2.getController().getAllowHttpMethods()) {
+            if (chp1.getController().allowMethod(me))
+                return true;
+        }
         return false;
     }
 

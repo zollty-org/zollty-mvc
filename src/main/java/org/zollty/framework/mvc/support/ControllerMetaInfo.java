@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.annotation.HttpParam;
 import org.zollty.framework.mvc.annotation.URIParam;
+import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.handler.HandlerMetaInfo;
 import org.zollty.framework.util.MvcConvertUtils;
 import org.zollty.framework.util.MvcReflectUtils;
@@ -47,10 +48,11 @@ public class ControllerMetaInfo extends HandlerMetaInfo {
 	}
 	
 	
-	public ControllerMetaInfo(Object object, Method method, String[] allowHttpMethods, String servletURI) {
+	public ControllerMetaInfo(Object object, Method method, String[] allowHttpMethods, String servletURI, MvcBeforeBeanDefinition[] beforeInvoke) {
 		super(object, method);
 		this.allowHttpMethods = allowHttpMethods;
 		this.servletURI = servletURI;
+		this.beforeInvoke = beforeInvoke;
 		
 		Class<?>[] paraTypes = method.getParameterTypes();
 		

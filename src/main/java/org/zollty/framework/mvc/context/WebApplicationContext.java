@@ -15,12 +15,13 @@ package org.zollty.framework.mvc.context;
 import javax.servlet.ServletContext;
 
 import org.zollty.framework.core.context.ApplicationContext;
+import org.zollty.framework.mvc.handler.HandlerMapping;
 
 /**
  * @author zollty 
  * @since 2013-10-11
  */
-public interface WebApplicationContext extends ApplicationContext{
+public interface WebApplicationContext extends ApplicationContext {
 
 	/**
 	 * Context attribute to bind root WebApplicationContext to on successful startup.
@@ -31,4 +32,6 @@ public interface WebApplicationContext extends ApplicationContext{
 	public static String ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE = WebApplicationContext.class.getName() + ".ROOT";
 	
 	public ServletContext getServletContext();
+	
+	public HandlerMapping getHandlerMapping();
 }

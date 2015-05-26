@@ -16,70 +16,70 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.zollty.framework.core.config.ConfigReader;
+import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
-import org.zollty.framework.mvc.handler.HandlerMapping;
 import org.zollty.framework.mvc.handler.HttpServletDispatcherHandler;
+import org.zollty.framework.util.ResourcContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-10-11
  */
-public class WebXmlApplicationContext extends AbstractWebApplicationContext{
+public class WebXmlApplicationContext extends AbstractWebApplicationContext {
 
     private Logger log;
-    
-    private HandlerMapping handlerMapping;
-    
-    public WebXmlApplicationContext(String configLocation,
-            ServletContext servletContext){
-        this(configLocation, servletContext, null);
-    }
-    
-    public WebXmlApplicationContext(String configLocation,
-            ServletContext servletContext, ClassLoader beanClassLoader){
-        super(configLocation, servletContext, beanClassLoader);
-        refresh();
-    }
-    
-    private long beginTimeMs;
-    @Override
-    protected void doBeforeRefresh(){
-        beginTimeMs = System.currentTimeMillis();
-        log = LogFactory.getLogger(getClass());
-        if(LogFactory.isDebugEnabled()){
-            log.debug("load {} ...", getClass().getSimpleName());
-        }
-        ConfigReader.getInstance().load(getConfigLocation(), getServletContext().getRealPath("/"), getBeanClassLoader());
-    }
-    
-    @Override
-    protected void doAfterRefresh(){
-      if(LogFactory.isDebugEnabled()){
-          log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis()-beginTimeMs));
-      }
-      handlerMapping = new HttpServletDispatcherHandler(beanDefinitions);
+
+    public WebXmlApplicationContext(IServletContextFileConfig config) {
+        super(config);
     }
 
+    public WebXmlApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader) {
+        super(config, beanClassLoader);
+    }
+
+    public WebXmlApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader,
+            ServletContext servletContext) {
+        super(config, beanClassLoader, servletContext);
+    }
+
+    private long beginTimeMs;
+
+    @Override
+    protected void doBeforeRefresh() {
+        beginTimeMs = System.currentTimeMillis();
+        log = LogFactory.getLogger(getClass());
+        if (LogFactory.isDebugEnabled()) {
+            log.debug("load {} ...", getClass().getSimpleName());
+        }
+    }
+
+    @Override
+    protected void doAfterRefresh() {
+        handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
+        
+        if (LogFactory.isDebugEnabled()) {
+            log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
+        }
+    }
 
     @Override
     protected List<BeanDefinition> loadBeanDefinitions() {
-        List<BeanDefinition> list1 = new XmlBeanReader( getBeanClassLoader() ).loadBeanDefinitions();
-        if (list1 != null) {
-            log.debug("-- WebXml bean --");
-            return list1;
+        IServletContextFileConfig config = (IServletContextFileConfig) super.getConfig();
+        ResourcContext resourcContext = new ResourcContext(config.getConfigLocation(), config.getClassLoader(), config.getServletContext());
+        List<BeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- WebXml bean --size = {}", list.size());
+            return list;
         }
         return null;
     }
-    
-    /**
-     * @return the handlerMapping
-     */
-    public final HandlerMapping getHandlerMapping() {
-        return handlerMapping;
+
+    @Override
+    protected void doAfterClose() {
+        handlerMapping = null;
     }
 
 }
