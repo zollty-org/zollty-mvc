@@ -22,6 +22,9 @@ import java.sql.Types;
 import java.util.Collection;
 
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
+import org.zollty.util.ObjectUtils;
 
 /**
  * Simple adapter for {@link PreparedStatementSetter} that applies
@@ -31,6 +34,8 @@ import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
  * @since 3.2.3
  */
 public class ArgumentTypePreparedStatementSetter implements PreparedStatementSetter, ParameterDisposer {
+    
+    private static final Logger LOG = LogFactory.getLogger(ArgumentTypePreparedStatementSetter.class);
 
 	private final Object[] args;
 
@@ -52,7 +57,8 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 	}
 
 
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public void setValues(PreparedStatement ps) throws SQLException {
 		int parameterPosition = 1;
 		if (this.args != null) {
@@ -79,6 +85,7 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 					parameterPosition++;
 				}
 			}
+			LOG.debug(ObjectUtils.arrayToString(args));
 		}
 	}
 

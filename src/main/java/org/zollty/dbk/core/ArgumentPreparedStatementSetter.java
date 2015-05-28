@@ -19,6 +19,10 @@ package org.zollty.dbk.core;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
+import org.zollty.util.ObjectUtils;
+
 /**
  * Simple adapter for {@link PreparedStatementSetter} that applies a given array of arguments.
  *
@@ -26,6 +30,8 @@ import java.sql.SQLException;
  * @since 3.2.3
  */
 public class ArgumentPreparedStatementSetter implements PreparedStatementSetter, ParameterDisposer {
+    
+    private static final Logger LOG = LogFactory.getLogger(ArgumentPreparedStatementSetter.class);
 
 	private final Object[] args;
 
@@ -46,6 +52,7 @@ public class ArgumentPreparedStatementSetter implements PreparedStatementSetter,
 				Object arg = this.args[i];
 				doSetValue(ps, i + 1, arg);
 			}
+			LOG.debug(ObjectUtils.arrayToString(args));
 		}
 	}
 
