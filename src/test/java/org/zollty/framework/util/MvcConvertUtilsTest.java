@@ -15,9 +15,6 @@
 package org.zollty.framework.util;
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,11 +27,22 @@ import org.junit.runners.JUnit4;
 public class MvcConvertUtilsTest {
     
     @Test
-    public void testCollectionConvert() {
-        String[] res = new String[]{"aa", "bbb", "ccc"};
-        List<String> list = Arrays.asList(res);
-        String[] ary = (String[]) MvcConvertUtils.convert(list, String[].class);
-        assertArrayEquals(res, ary);
+    public void testCanConvert() {
+        
+        assertNotNull(MvcConvertUtils.canConvert(String.class));
+        
+        assertNull(MvcConvertUtils.canConvert(String[].class));
+    }
+    
+    
+    @Test
+    public void testConvert() {
+        
+        assertEquals(new Integer(1243), MvcConvertUtils.convert("1243", Integer.class));
+        
+        
+        assertEquals(new Boolean(true), MvcConvertUtils.convert("true", Boolean.class));
+        
     }
 
 }

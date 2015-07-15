@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zollty.dbk.dao.DataAccessException;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Implementation of {@link PersistenceExceptionTranslator} that supports chaining,

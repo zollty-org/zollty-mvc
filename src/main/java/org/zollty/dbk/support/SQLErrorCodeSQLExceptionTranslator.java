@@ -20,6 +20,7 @@ import java.lang.reflect.Constructor;
 import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.util.Arrays;
+
 import javax.sql.DataSource;
 
 import org.zollty.dbk.dao.CannotAcquireLockException;
@@ -312,7 +313,8 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 	 * sqlEx parameter as a nested root cause.
 	 * @see CustomSQLErrorCodesTranslation#setExceptionClass
 	 */
-	protected DataAccessException createCustomException(
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    protected DataAccessException createCustomException(
 			String task, String sql, SQLException sqlEx, Class exceptionClass) {
 
 		// find appropriate constructor
@@ -376,17 +378,13 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 					exceptionConstructor = exceptionClass.getConstructor(messageOnlyArgsClass);
 					return (DataAccessException) exceptionConstructor.newInstance(messageOnlyArgs);
 				default:
-					if (logger.isEnabledFor("WARN")) {
-						logger.warn("Unable to find appropriate constructor of custom exception class [" +
+					logger.warn("Unable to find appropriate constructor of custom exception class [" +
 								exceptionClass.getName() + "]");
-					}
 					return null;
 				}
 		}
 		catch (Throwable ex) {
-			if (logger.isEnabledFor("WARN")) {
-				logger.warn("Unable to instantiate custom exception class [" + exceptionClass.getName() + "]", ex);
-			}
+			logger.warn("Unable to instantiate custom exception class [" + exceptionClass.getName() + "]", ex);
 			return null;
 		}
 	}

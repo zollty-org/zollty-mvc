@@ -21,8 +21,8 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.temp.core.SpringUtils;
+import org.zollty.util.Assert;
 
 /**
  * Simple implementation of the standard JDBC {@link javax.sql.DataSource} interface,

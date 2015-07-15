@@ -33,7 +33,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Miscellaneous class utility methods. Mainly for internal use within the
@@ -896,13 +896,13 @@ public abstract class ClassUtils {
 			return true;
 		}
 		if (lhsType.isPrimitive()) {
-			Class resolvedPrimitive = primitiveWrapperTypeMap.get(rhsType);
+			Class<?> resolvedPrimitive = primitiveWrapperTypeMap.get(rhsType);
 			if (resolvedPrimitive != null && lhsType.equals(resolvedPrimitive)) {
 				return true;
 			}
 		}
 		else {
-			Class resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
+			Class<?> resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
 			if (resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper)) {
 				return true;
 			}
@@ -1004,7 +1004,8 @@ public abstract class ClassUtils {
 	 * @return a String of form "[com.foo.Bar, com.foo.Baz]"
 	 * @see java.util.AbstractCollection#toString()
 	 */
-	public static String classNamesToString(Class... classes) {
+	@SuppressWarnings("rawtypes")
+    public static String classNamesToString(Class... classes) {
 		return classNamesToString(Arrays.asList(classes));
 	}
 
@@ -1017,7 +1018,8 @@ public abstract class ClassUtils {
 	 * @return a String of form "[com.foo.Bar, com.foo.Baz]"
 	 * @see java.util.AbstractCollection#toString()
 	 */
-	public static String classNamesToString(Collection<Class> classes) {
+	@SuppressWarnings("rawtypes")
+    public static String classNamesToString(Collection<Class> classes) {
 		if (classes == null || classes.isEmpty()) {
 			return "[]";
 		}
@@ -1078,7 +1080,8 @@ public abstract class ClassUtils {
 	 * (may be {@code null} when accepting all declared interfaces)
 	 * @return all interfaces that the given object implements as array
 	 */
-	public static Class<?>[] getAllInterfacesForClass(Class<?> clazz, ClassLoader classLoader) {
+	@SuppressWarnings("rawtypes")
+    public static Class<?>[] getAllInterfacesForClass(Class<?> clazz, ClassLoader classLoader) {
 		Set<Class> ifcs = getAllInterfacesForClassAsSet(clazz, classLoader);
 		return ifcs.toArray(new Class[ifcs.size()]);
 	}
@@ -1089,7 +1092,8 @@ public abstract class ClassUtils {
 	 * @param instance the instance to analyze for interfaces
 	 * @return all interfaces that the given instance implements as Set
 	 */
-	public static Set<Class> getAllInterfacesAsSet(Object instance) {
+	@SuppressWarnings("rawtypes")
+    public static Set<Class> getAllInterfacesAsSet(Object instance) {
 		Assert.notNull(instance, "Instance must not be null");
 		return getAllInterfacesForClassAsSet(instance.getClass());
 	}
@@ -1101,7 +1105,8 @@ public abstract class ClassUtils {
 	 * @param clazz the class to analyze for interfaces
 	 * @return all interfaces that the given object implements as Set
 	 */
-	public static Set<Class> getAllInterfacesForClassAsSet(Class clazz) {
+	@SuppressWarnings("rawtypes")
+    public static Set<Class> getAllInterfacesForClassAsSet(Class clazz) {
 		return getAllInterfacesForClassAsSet(clazz, null);
 	}
 
@@ -1114,7 +1119,8 @@ public abstract class ClassUtils {
 	 * (may be {@code null} when accepting all declared interfaces)
 	 * @return all interfaces that the given object implements as Set
 	 */
-	public static Set<Class> getAllInterfacesForClassAsSet(Class clazz, ClassLoader classLoader) {
+	@SuppressWarnings("rawtypes")
+    public static Set<Class> getAllInterfacesForClassAsSet(Class clazz, ClassLoader classLoader) {
 		Assert.notNull(clazz, "Class must not be null");
 		if (clazz.isInterface() && isVisible(clazz, classLoader)) {
 			return Collections.singleton(clazz);

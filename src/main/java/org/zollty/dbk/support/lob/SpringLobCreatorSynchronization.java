@@ -18,7 +18,7 @@ package org.zollty.dbk.support.lob;
 
 import org.zollty.dbk.datasource.DataSourceUtils;
 import org.zollty.dbk.trans.support.TransactionSynchronizationAdapter;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Callback for resource cleanup at the end of a Spring transaction.

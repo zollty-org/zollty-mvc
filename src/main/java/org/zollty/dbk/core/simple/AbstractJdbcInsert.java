@@ -27,15 +27,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.sql.DataSource;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
-
-import org.zollty.dbk.dao.DataAccessException;
-import org.zollty.dbk.dao.DataIntegrityViolationException;
-import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
-import org.zollty.dbk.dao.InvalidDataAccessResourceUsageException;
 import org.zollty.dbk.core.BatchPreparedStatementSetter;
 import org.zollty.dbk.core.ConnectionCallback;
 import org.zollty.dbk.core.JdbcTemplate;
@@ -44,11 +38,17 @@ import org.zollty.dbk.core.SqlTypeValue;
 import org.zollty.dbk.core.StatementCreatorUtils;
 import org.zollty.dbk.core.metadata.TableMetaDataContext;
 import org.zollty.dbk.core.namedparam.SqlParameterSource;
+import org.zollty.dbk.dao.DataAccessException;
+import org.zollty.dbk.dao.DataIntegrityViolationException;
+import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
+import org.zollty.dbk.dao.InvalidDataAccessResourceUsageException;
 import org.zollty.dbk.support.GeneratedKeyHolder;
 import org.zollty.dbk.support.JdbcUtils;
 import org.zollty.dbk.support.KeyHolder;
 import org.zollty.dbk.support.nativejdbc.NativeJdbcExtractor;
-import org.zollty.framework.util.Assert;
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
+import org.zollty.util.Assert;
 
 /**
  * Abstract class to provide base functionality for easy inserts

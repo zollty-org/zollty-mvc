@@ -32,8 +32,8 @@ import java.util.List;
 
 import org.zollty.dbk.temp.beans.BeanInstantiationException;
 import org.zollty.dbk.util.ReflectionUtils;
-import org.zollty.framework.util.Assert;
 import org.zollty.framework.util.MvcUtils;
+import org.zollty.util.Assert;
 
 
 /**
@@ -545,7 +545,8 @@ public class SpringUtils {
 	 * @return {@code true} if the collection contains a single reference or
 	 * multiple references to the same instance, {@code false} else
 	 */
-	public static boolean hasUniqueObject(Collection collection) {
+	@SuppressWarnings("rawtypes")
+    public static boolean hasUniqueObject(Collection collection) {
 		if (collection == null || collection.isEmpty()) {
 			return false;
 		}
@@ -563,15 +564,5 @@ public class SpringUtils {
 		return true;
 	}
 	
-
-	/**
-	 * Raise an overflow exception for the given number and target class.
-	 * @param number the number we tried to convert
-	 * @param targetClass the target class we tried to convert to
-	 */
-	private static void raiseOverflowException(Number number, Class targetClass) {
-		throw new IllegalArgumentException("Could not convert number [" + number + "] of type [" +
-				number.getClass().getName() + "] to target class [" + targetClass.getName() + "]: overflow");
-	}
 	
 }

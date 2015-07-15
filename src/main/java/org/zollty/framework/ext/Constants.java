@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * @author zollty 
- * @since 2013-10-24
+ * @since 2013-9-11
  */
 public class Constants {
 	public static final Map<Integer, String> STATUS_CODE = new HashMap<Integer, String>();

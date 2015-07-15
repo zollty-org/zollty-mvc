@@ -22,6 +22,7 @@ import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.config.impl.DefaultTextFileConfig;
 import org.zollty.framework.core.config.impl.DefaultXmlConfig;
 import org.zollty.framework.mvc.context.support.WebAnnotationAndXmlApplicationContext;
+import org.zollty.framework.mvc.context.support.WebAnnotationApplicationContext;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -120,7 +121,7 @@ public class ContextLoader {
         }
 
         if (configLocation != null && configLocation.endsWith("properties")) {
-            return new WebAnnotationAndXmlApplicationContext(new DefaultTextFileConfig(configLocation, null, sc), null, sc);
+            return new WebAnnotationApplicationContext(new DefaultTextFileConfig(configLocation, null, sc), null, sc);
         }
 
         return new WebAnnotationAndXmlApplicationContext(

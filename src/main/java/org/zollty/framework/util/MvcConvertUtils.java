@@ -12,31 +12,8 @@
  */
 package org.zollty.framework.util;
 
-import java.lang.reflect.Array;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentNavigableMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.LinkedBlockingDeque;
-
-import org.zollty.framework.util.collection.IdentityHashMap;
-import org.zollty.util.NestedRuntimeException;
 
 /**
  * 类型转换工具类
@@ -47,171 +24,86 @@ import org.zollty.util.NestedRuntimeException;
 public class MvcConvertUtils {
 
     /**
-     * Convert string to class instance.
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T convert(String value, Class<T> obj) {
-        Object ret = null;
-        ParseValue p = obj == null ? null : commonTypeClassMap.get(obj);
-        if (p != null)
-            ret = p.parse(value);
-        else {
-            if (MvcVerifyUtils.isInteger(value)) {
-                ret = Integer.parseInt(value);
-            }
-            else if (MvcVerifyUtils.isLong(value)) {
-                ret = Long.parseLong(value);
-            }
-            else if (MvcVerifyUtils.isDouble(value)) {
-                ret = Double.parseDouble(value);
-            }
-            else if (MvcVerifyUtils.isFloat(value)) {
-                ret = Float.parseFloat(value);
-            }
-            else
-                ret = value;
-        }
-        return (T) ret;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T convert(String value, String typeName) {
-        Object ret = null;
-        ParseValue p = typeName == null ? null : commonTypeStringMap.get(typeName);
-        if (p != null)
-            ret = p.parse(value);
-        else {
-            if (MvcVerifyUtils.isInteger(value)) {
-                ret = Integer.parseInt(value);
-            }
-            else if (MvcVerifyUtils.isLong(value)) {
-                ret = Long.parseLong(value);
-            }
-            else if (MvcVerifyUtils.isDouble(value)) {
-                ret = Double.parseDouble(value);
-            }
-            else if (MvcVerifyUtils.isFloat(value)) {
-                ret = Float.parseFloat(value);
-            }
-            else
-                ret = value;
-        }
-        return (T) ret;
-    }
-
-    /**
-     * 根据类型自动返回一个集合
-     */
-    @SuppressWarnings("rawtypes")
-    public static Collection getCollectionObj(Class<?> clazz) {
-        if (clazz.isInterface()) {
-            if (clazz.isAssignableFrom(List.class))
-                return new ArrayList();
-            else if (clazz.isAssignableFrom(Set.class))
-                return new HashSet();
-            else if (clazz.isAssignableFrom(Queue.class))
-                return new ArrayDeque();
-            else if (clazz.isAssignableFrom(SortedSet.class))
-                return new TreeSet();
-            else if (clazz.isAssignableFrom(BlockingQueue.class))
-                return new LinkedBlockingDeque();
-            else
-                return null;
-        }
-        else {
-            Collection collection = null;
-            try {
-                collection = (Collection) clazz.newInstance();
-            }
-            catch (Exception e) {
-                throw new NestedRuntimeException(e);
-            }
-            return collection;
-        }
-    }
-
-    /**
-     * 根据类型自动返回一个Map
-     */
-    @SuppressWarnings("rawtypes")
-    public static Map getMapObj(Class<?> clazz) {
-        if (clazz.isInterface()) {
-            if (clazz.isAssignableFrom(Map.class))
-                return new HashMap();
-            else if (clazz.isAssignableFrom(ConcurrentMap.class))
-                return new ConcurrentHashMap();
-            else if (clazz.isAssignableFrom(SortedMap.class))
-                return new TreeMap();
-            else if (clazz.isAssignableFrom(NavigableMap.class))
-                return new TreeMap();
-            else if (clazz.isAssignableFrom(ConcurrentNavigableMap.class))
-                return new ConcurrentSkipListMap();
-            else
-                return null;
-        }
-        else {
-            Map map = null;
-            try {
-                map = (Map) clazz.newInstance();
-            }
-            catch (Exception e) {
-                throw new NestedRuntimeException(e);
-            }
-            return map;
-        }
-    }
-
-    public static <T> Set<T> arrayToSet(T... array) {
-        Set<T> set = new HashSet<T>();
-        for (int i = 0; i < array.length; i++) {
-            set.add(array[i]);
-        }
-        return set;
-    }
-
-    /**
-     * 把集合转换为指定类型的数组
-     * <p>
-     * 仅用于类型不确定的情况，如果类型确定，推荐用 Collection.toArray(new T[0])方式
+     * check if the class can be convert by this utils
      * 
-     * @param collection
-     * @param arrayType
-     * @return Array newInstance
+     * @return ParseValue instance for convert using, null if can't be convert.
      */
-    public static Object convert(Collection<?> collection, Class<?> arrayType) {
-        Class<?> componentType = null;
-        if (arrayType == null) {
-            componentType = Object.class;
-        }
-        else {
-            if (!arrayType.isArray())
-                throw new IllegalArgumentException("type is not a array");
-            componentType = arrayType.getComponentType();
-        }
-
-        int size = collection.size();
-        // Allocate a new Array
-        Object newArray = Array.newInstance(componentType, size);
-        Iterator<?> iterator = collection.iterator();
-        // Convert and set each element in the new Array
-        for (int i = 0; i < size; i++) {
-            Object element = iterator.next();
-            Array.set(newArray, i, element);
-        }
-        return newArray;
-    }
-
     public static ParseValue canConvert(Class<?> clazz) {
         return clazz == null ? null : commonTypeClassMap.get(clazz);
     }
+    
+    /**
+     * Convert string to class instance.
+     * 
+     * @param classType the target class type name, e.g. Integer.class
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T convert(String value, Class<T> classType) {
+        Object ret = null;
+        ParseValue p = classType == null ? null : commonTypeClassMap.get(classType);
+        if (p != null)
+            ret = p.parse(value);
+        else {
+            if (MvcVerifyUtils.isInteger(value)) {
+                ret = Integer.parseInt(value);
+            }
+            else if (MvcVerifyUtils.isLong(value)) {
+                ret = Long.parseLong(value);
+            }
+            else if (MvcVerifyUtils.isDouble(value)) {
+                ret = Double.parseDouble(value);
+            }
+            else if (MvcVerifyUtils.isFloat(value)) {
+                ret = Float.parseFloat(value);
+            }
+            else
+                ret = value;
+        }
+        return (T) ret;
+    }
 
-    private static final IdentityHashMap<Class<?>, ParseValue> commonTypeClassMap = new IdentityHashMap<Class<?>, ParseValue>();
+    /**
+     * Convert string to class instance.
+     * 
+     * @param classTypeName the target class type name, e.g. "java.lang.Integer"
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T convert(String value, String classTypeName) {
+        Object ret = null;
+        ParseValue p = classTypeName == null ? null : commonTypeStringMap.get(classTypeName);
+        if (p != null)
+            ret = p.parse(value);
+        else {
+            if (MvcVerifyUtils.isInteger(value)) {
+                ret = Integer.parseInt(value);
+            }
+            else if (MvcVerifyUtils.isLong(value)) {
+                ret = Long.parseLong(value);
+            }
+            else if (MvcVerifyUtils.isDouble(value)) {
+                ret = Double.parseDouble(value);
+            }
+            else if (MvcVerifyUtils.isFloat(value)) {
+                ret = Float.parseFloat(value);
+            }
+            else
+                ret = value;
+        }
+        return (T) ret;
+    }
+    
+    
+    // ~~ helper method for this util
+
+    private static final Map<Class<?>, ParseValue> commonTypeClassMap = new HashMap<Class<?>, ParseValue>();
     private static final Map<String, ParseValue> commonTypeStringMap = new HashMap<String, ParseValue>();
 
     public enum COMMON_TYPE {
-        INT("java.lang.Integer"), LONG("java.lang.Long"), DOUBLE("java.lang.Double"), FLOAT("java.lang.Float"), SHORT(
-                "java.lang.Short"), BYTE("java.lang.Byte"), CHAR("java.lang.Character"), BOOLEAN("java.lang.Boolean"), STRING(
-                "java.lang.String");
+        
+        INT("java.lang.Integer"), LONG("java.lang.Long"), DOUBLE("java.lang.Double"), 
+        FLOAT("java.lang.Float"), SHORT("java.lang.Short"), BYTE("java.lang.Byte"), CHAR(
+                "java.lang.Character"), BOOLEAN("java.lang.Boolean"), STRING("java.lang.String");
+        
         private final String value;
 
         private COMMON_TYPE(String value) {
@@ -339,4 +231,5 @@ public class MvcConvertUtils {
     private interface ParseValue {
         Object parse(String value);
     }
+    
 }

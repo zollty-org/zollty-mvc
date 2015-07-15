@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import org.zollty.framework.mvc.context.ContextLoader;
 import org.zollty.framework.mvc.context.WebApplicationContext;
 import org.zollty.framework.mvc.context.WebApplicationContextUtils;
-import org.zollty.framework.mvc.context.support.WebAnnotationAndXmlApplicationContext;
 import org.zollty.framework.mvc.handler.HandlerMapping;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -69,9 +68,7 @@ abstract public class HttpServletBean extends HttpServlet {
 
     private void initDispatcher() {
 
-        WebAnnotationAndXmlApplicationContext awac = (WebAnnotationAndXmlApplicationContext) webApplicationContext;
-
-        handlerMapping = awac.getHandlerMapping();
+        handlerMapping = webApplicationContext.getHandlerMapping();
     }
 
     /**

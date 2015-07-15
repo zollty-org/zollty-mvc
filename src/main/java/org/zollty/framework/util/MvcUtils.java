@@ -12,9 +12,13 @@
  */
 package org.zollty.framework.util;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
+import org.zollty.util.ArrayUtils;
 import org.zollty.util.ClassUtils;
 import org.zollty.util.CollectionUtils;
 import org.zollty.util.DateFormatUtils;
@@ -135,6 +139,40 @@ public class MvcUtils {
     }
     
     public static class CollectionUtil extends CollectionUtils {
+        /**
+         * 把集合转换为指定类型的数组，zolltyMVC专用
+         * <p>
+         * 仅用于类型不确定的情况，如果类型确定，推荐用 collection.toArray(new T[0])方式，例如list.toArray()
+         * 
+         * @param collection
+         * @param arrayType
+         * @return Array newInstance
+         */
+        public static Object toArrayObj(Collection<?> collection, Class<?> arrayType) {
+            Class<?> componentType = null;
+            if (arrayType == null) {
+                componentType = Object.class;
+            }
+            else {
+                if (!arrayType.isArray())
+                    throw new IllegalArgumentException("type is not a array");
+                componentType = arrayType.getComponentType();
+            }
+
+            int size = collection.size();
+            // Allocate a new Array
+            Object newArray = Array.newInstance(componentType, size);
+            Iterator<?> iterator = collection.iterator();
+            // Convert and set each element in the new Array
+            for (int i = 0; i < size; i++) {
+                Object element = iterator.next();
+                Array.set(newArray, i, element);
+            }
+            return newArray;
+        }
+    }
+    
+    public static class ArrayUtil extends ArrayUtils {
     }
 
 }

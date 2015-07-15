@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.zollty.util.Assert;
+
 /**
  * @author zollty 
  * @since 2013-9-11

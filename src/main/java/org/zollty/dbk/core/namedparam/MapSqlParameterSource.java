@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.zollty.dbk.core.SqlParameterValue;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * {@link SqlParameterSource} implementation that holds a given Map of parameters.

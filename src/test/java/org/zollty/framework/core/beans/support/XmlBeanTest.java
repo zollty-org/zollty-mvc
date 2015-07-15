@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
-import org.zollty.framework.util.ResourcContext;
+import org.zollty.framework.util.ResourceContext;
 
 /**
  * @author zollty
@@ -32,8 +32,8 @@ public class XmlBeanTest {
     @Test
     public void testSimpleBeanFactory() {
 
-        ResourcContext resourcContext = new ResourcContext(XML_PATH, Thread.currentThread().getContextClassLoader());
-        SimpleBeanFactory sbf = new SimpleBeanFactory( new XmlBeanReader(resourcContext) );
+        ResourceContext resourcContext = new ResourceContext(Thread.currentThread().getContextClassLoader(), XML_PATH);
+        SimpleBeanFactory sbf = new SimpleBeanFactory(new XmlBeanReader(resourcContext));
 
         ArrayBean aBean = sbf.getBean("arrayBean");
 

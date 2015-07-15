@@ -18,7 +18,7 @@ import org.zollty.framework.core.config.IFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.annotation.AnnotationBeanReader;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
-import org.zollty.framework.util.ResourcContext;
+import org.zollty.framework.util.ResourceContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -29,7 +29,7 @@ import org.zollty.log.Logger;
 public class ClassPathAnnotationAndXmlApplicationContext extends AbstractApplicationContext {
 
     private Logger log;
-    
+
     private long beginTimeMs;
 
     public ClassPathAnnotationAndXmlApplicationContext(IFileConfig config) {
@@ -58,11 +58,10 @@ public class ClassPathAnnotationAndXmlApplicationContext extends AbstractApplica
 
     @Override
     protected List<BeanDefinition> loadBeanDefinitions() {
-        IFileConfig config = (IFileConfig)getConfig();
-        List<BeanDefinition> list1 = new AnnotationBeanReader(
-                config.getScanningPackages(), getBeanClassLoader(), null).loadBeanDefinitions();
-        
-        ResourcContext resourcContext = new ResourcContext(config.getConfigLocation(), config.getClassLoader());
+        IFileConfig config = (IFileConfig) getConfig();
+        List<BeanDefinition> list1 = new AnnotationBeanReader(config.getScanningPackages(), getBeanClassLoader(), null).loadBeanDefinitions();
+
+        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(), config.getConfigLocation());
         List<BeanDefinition> list2 = new XmlBeanReader(resourcContext).loadBeanDefinitions();
         if (list1 != null && list2 != null) {
             list1.addAll(list2);

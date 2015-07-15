@@ -38,11 +38,10 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.zollty.framework.util.Assert;
+import org.zollty.dbk.SQLWarningException;
 import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
 import org.zollty.dbk.dao.support.DataAccessUtils;
-import org.zollty.dbk.SQLWarningException;
 import org.zollty.dbk.datasource.ConnectionProxy;
 import org.zollty.dbk.datasource.DataSourceUtils;
 import org.zollty.dbk.support.JdbcAccessor;
@@ -52,6 +51,7 @@ import org.zollty.dbk.support.nativejdbc.NativeJdbcExtractor;
 import org.zollty.dbk.support.rowset.SqlRowSet;
 import org.zollty.dbk.temp.core.SpringUtils;
 import org.zollty.dbk.util.LinkedCaseInsensitiveMap;
+import org.zollty.util.Assert;
 
 /**
  * <b>This is the central class in the JDBC core package.</b>
@@ -483,28 +483,8 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	}
 
 	@Override
-	public <T> T queryForObject(String sql, RowMapper<T> rowMapper) throws DataAccessException {
-		List<T> results = query(sql, rowMapper);
-		return DataAccessUtils.requiredSingleResult(results);
-	}
-
-	@Override
 	public <T> T queryForObject(String sql, Class<T> requiredType) throws DataAccessException {
 		return queryForObject(sql, getSingleColumnRowMapper(requiredType));
-	}
-
-	@Override
-	@Deprecated
-	public long queryForLong(String sql) throws DataAccessException {
-		Number number = queryForObject(sql, Long.class);
-		return (number != null ? number.longValue() : 0);
-	}
-
-	@Override
-	@Deprecated
-	public int queryForInt(String sql) throws DataAccessException {
-		Number number = queryForObject(sql, Integer.class);
-		return (number != null ? number.intValue() : 0);
 	}
 
 	@Override
@@ -689,7 +669,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			throws DataAccessException {
 
 		Assert.notNull(rse, "ResultSetExtractor must not be null");
-		logger.debug("Executing prepared SQL query");
+		logger.trace("Executing prepared SQL query");
 
 		return execute(psc, new PreparedStatementCallback<T>() {
 			@Override
@@ -790,6 +770,12 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
 		return query(sql, args, new RowMapperResultSetExtractor<T>(rowMapper));
 	}
+	
+   @Override
+    public <T> T queryForObject(String sql, RowMapper<T> rowMapper) throws DataAccessException {
+        List<T> results = query(sql, rowMapper);
+        return DataAccessUtils.requiredSingleResult(results);
+    }
 
 	@Override
 	public <T> T queryForObject(String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper)
@@ -865,6 +851,21 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 		Number number = queryForObject(sql, args, Integer.class);
 		return (number != null ? number.intValue() : 0);
 	}
+	
+
+    @Override
+    @Deprecated
+    public long queryForLong(String sql) throws DataAccessException {
+        Number number = queryForObject(sql, Long.class);
+        return (number != null ? number.longValue() : 0);
+    }
+
+    @Override
+    @Deprecated
+    public int queryForInt(String sql) throws DataAccessException {
+        Number number = queryForObject(sql, Integer.class);
+        return (number != null ? number.intValue() : 0);
+    }
 
 	@Override
 	public <T> List<T> queryForList(String sql, Object[] args, int[] argTypes, Class<T> elementType) throws DataAccessException {
@@ -904,7 +905,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	protected int update(final PreparedStatementCreator psc, final PreparedStatementSetter pss)
 			throws DataAccessException {
 
-		logger.debug("Executing prepared SQL update");
+		logger.trace("Executing prepared SQL update");
 		return execute(psc, new PreparedStatementCallback<Integer>() {
 			@Override
 			public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException {
@@ -937,7 +938,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			throws DataAccessException {
 
 		Assert.notNull(generatedKeyHolder, "KeyHolder must not be null");
-		logger.debug("Executing SQL update and returning generated keys");
+		logger.trace("Executing SQL update and returning generated keys");
 
 		return execute(psc, new PreparedStatementCallback<Integer>() {
 			@Override

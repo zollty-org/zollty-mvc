@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.zollty.dbk.util.ReflectionUtils;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * This class can be used to parse other classes containing constant definitions

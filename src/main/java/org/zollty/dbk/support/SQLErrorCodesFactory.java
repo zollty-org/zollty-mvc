@@ -16,21 +16,16 @@
 
 package org.zollty.dbk.support;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import javax.sql.DataSource;
 
-import org.zollty.dbk.temp.beans.BeansException;
 import org.zollty.dbk.util.PatternMatchUtils;
-import org.zollty.framework.core.beans.ListableBeanFactory;
-import org.zollty.framework.core.beans.support.SimpleBeanFactory;
-import org.zollty.framework.core.support.xml.XmlBeanReader;
-import org.zollty.framework.util.Assert;
-import org.zollty.framework.util.ResourcContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
+import org.zollty.util.Assert;
 /**
  * Factory for creating {@link SQLErrorCodes} based on the
  * "databaseProductName" taken from the {@link java.sql.DatabaseMetaData}.
@@ -56,7 +51,7 @@ public class SQLErrorCodesFactory {
     /**
      * The name of default SQL error code files, loading from the class path.
      */
-    public static final String SQL_ERROR_CODE_DEFAULT_PATH = "classpath:org/zollty/dbk/support/sql-error-codes.xml";
+//    public static final String SQL_ERROR_CODE_DEFAULT_PATH = "classpath:org/zollty/dbk/support/sql-error-codes.xml";
 
 
     private static final Logger logger = LogFactory.getLogger(SQLErrorCodesFactory.class);
@@ -98,19 +93,130 @@ public class SQLErrorCodesFactory {
     protected SQLErrorCodesFactory() {
         Map<String, SQLErrorCodes> errorCodes;
 
-        try {
-            ResourcContext resourcContext = new ResourcContext(SQL_ERROR_CODE_DEFAULT_PATH, getClass().getClassLoader());
-            SimpleBeanFactory sbf = new SimpleBeanFactory(new XmlBeanReader(resourcContext));
-            // Check all beans of type SQLErrorCodes.
-            errorCodes = ((ListableBeanFactory) sbf ).getBeansOfType(SQLErrorCodes.class);
-            if (logger.isInfoEnabled()) {
-                logger.info("SQLErrorCodes loaded: " + errorCodes.keySet());
-            }
-        }
-        catch (BeansException ex) {
-            logger.warn("Error loading SQL error codes from config file", ex);
-            errorCodes = Collections.emptyMap();
-        }
+//        try {
+//            ResourceContext resourcContext = new ResourceContext(getClass().getClassLoader(), SQL_ERROR_CODE_DEFAULT_PATH);
+//            SimpleBeanFactory sbf = new SimpleBeanFactory(new XmlBeanReader(resourcContext));
+//            // Check all beans of type SQLErrorCodes.
+//            errorCodes = ((ListableBeanFactory) sbf ).getBeansOfType(SQLErrorCodes.class);
+//            if (logger.isInfoEnabled()) {
+//                logger.info("SQLErrorCodes loaded: " + errorCodes.keySet());
+//            }
+//        }
+//        catch (BeansException ex) {
+//            logger.warn("Error loading SQL error codes from config file", ex);
+//            errorCodes = Collections.emptyMap();
+//        }
+        
+        errorCodes = new HashMap<String, SQLErrorCodes>(15);
+        
+        SQLErrorCodes db2 = new SQLErrorCodes();
+        db2.setDatabaseProductName("DB2*");
+        db2.setBadSqlGrammarCodes("-007,-029,-097,-104,-109,-115,-128,-199,-204,-206,-301,-408,-441,-491");
+        db2.setDuplicateKeyCodes("-803");
+        db2.setDataIntegrityViolationCodes("-407,-530,-531,-532,-543,-544,-545,-603,-667");
+        db2.setDataAccessResourceFailureCodes("-904,-971");
+        db2.setTransientDataAccessResourceCodes("-1035,-1218,-30080,-30081");
+        db2.setDeadlockLoserCodes("-911,-913");
+        
+        errorCodes.put("DB2", db2);
+        
+        SQLErrorCodes derby = new SQLErrorCodes();
+        derby.setDatabaseProductName("Apache Derby");
+        derby.setUseSqlStateForTranslation(true);
+        derby.setBadSqlGrammarCodes("42802,42821,42X01,42X02,42X03,42X04,42X05,42X06,42X07,42X08");
+        derby.setDuplicateKeyCodes("23505");
+        derby.setDataIntegrityViolationCodes("22001,22005,23502,23503,23513,X0Y32");
+        derby.setDataAccessResourceFailureCodes("04501,08004,42Y07");
+        derby.setCannotAcquireLockCodes("40XL1");
+        derby.setDeadlockLoserCodes("40001");
+        
+        errorCodes.put("Derby", derby);
+        
+        SQLErrorCodes h2 = new SQLErrorCodes();
+        h2.setBadSqlGrammarCodes("42000,42001,42101,42102,42111,42112,42121,42122,42132");
+        h2.setDuplicateKeyCodes("23001,23505");
+        h2.setDataIntegrityViolationCodes("22001,22003,22012,22018,22025,23000,23002,23003,23502,23503,23506,23507,23513");
+        h2.setDataAccessResourceFailureCodes("90046,90100,90117,90121,90126");
+        h2.setCannotAcquireLockCodes("50200");
+        
+        errorCodes.put("H2", h2);
+        
+        SQLErrorCodes hsql = new SQLErrorCodes();
+        hsql.setDatabaseProductName("HSQL Database Engine");
+        hsql.setBadSqlGrammarCodes("-22,-28");
+        hsql.setDuplicateKeyCodes("-104");
+        hsql.setDataIntegrityViolationCodes("-9");
+        hsql.setDataAccessResourceFailureCodes("-80");
+        
+        errorCodes.put("HSQL", hsql);
+        
+        SQLErrorCodes informix = new SQLErrorCodes();
+        informix.setDatabaseProductName("Informix Dynamic Server");
+        informix.setBadSqlGrammarCodes("-201,-217,-696");
+        informix.setDuplicateKeyCodes("-239,-268,-6017");
+        informix.setDataIntegrityViolationCodes("-692,-11030");
+        
+        errorCodes.put("Informix", informix);
+        
+        SQLErrorCodes mssql = new SQLErrorCodes();
+        mssql.setDatabaseProductName("Microsoft SQL Server");
+        mssql.setBadSqlGrammarCodes("156,170,207,208,209");
+        mssql.setPermissionDeniedCodes("229");
+        mssql.setDuplicateKeyCodes("2601,2627");
+        mssql.setDataIntegrityViolationCodes("544,8114,8115");
+        mssql.setDataAccessResourceFailureCodes("4060");
+        mssql.setCannotAcquireLockCodes("1222");
+        mssql.setDeadlockLoserCodes("1205");
+        
+        errorCodes.put("MS-SQL", mssql);
+        
+        SQLErrorCodes mysql = new SQLErrorCodes();
+        mysql.setBadSqlGrammarCodes("1054,1064,1146");
+        mysql.setDuplicateKeyCodes("1062");
+        mysql.setDataIntegrityViolationCodes("630,839,840,893,1169,1215,1216,1217,1364,1451,1452,1557");
+        mysql.setDataAccessResourceFailureCodes("1");
+        mysql.setCannotAcquireLockCodes("1205");
+        mysql.setDeadlockLoserCodes("1213");
+        
+        errorCodes.put("MySQL", mysql);
+        
+        SQLErrorCodes oracle = new SQLErrorCodes();
+        oracle.setBadSqlGrammarCodes("900,903,904,917,936,942,17006,6550");
+        oracle.setInvalidResultSetAccessCodes("17003");
+        oracle.setDuplicateKeyCodes("1");
+        oracle.setDataIntegrityViolationCodes("1400,1722,2291,2292");
+        oracle.setDataAccessResourceFailureCodes("17002,17447");
+        oracle.setCannotAcquireLockCodes("54,30006");
+        oracle.setCannotSerializeTransactionCodes("8177");
+        oracle.setDeadlockLoserCodes("60");
+        
+        errorCodes.put("Oracle", oracle);
+        
+        SQLErrorCodes postgreSQL = new SQLErrorCodes();
+        postgreSQL.setUseSqlStateForTranslation(true);
+        postgreSQL.setBadSqlGrammarCodes("03000,42000,42601,42602,42622,42804,42P01");
+        postgreSQL.setDuplicateKeyCodes("23505");
+        postgreSQL.setDataIntegrityViolationCodes("23000,23502,23503,23514");
+        postgreSQL.setDataAccessResourceFailureCodes("53000,53100,53200,53300");
+        postgreSQL.setCannotAcquireLockCodes("55P03");
+        postgreSQL.setCannotSerializeTransactionCodes("40001");
+        postgreSQL.setDeadlockLoserCodes("40P01");
+        
+        errorCodes.put("PostgreSQL", postgreSQL);
+        
+        SQLErrorCodes sybase = new SQLErrorCodes();
+        sybase.setDatabaseProductNames(new String[]{"Sybase SQL Server","SQL Server", "Adaptive Server Enterprise", 
+                "ASE", //<!-- name as returned by jTDS driver -->
+                "sql server" //<!-- name as returned by jTDS driver -->
+                });
+        sybase.setBadSqlGrammarCodes("101,102,103,104,105,106,107,108,109,110,111,112,113,116,120,121,123,207,208,213,257,512");
+        sybase.setDuplicateKeyCodes("2601,2615,2626");
+        sybase.setDataIntegrityViolationCodes("233,511,515,530,546,547,2615,2714");
+        sybase.setTransientDataAccessResourceCodes("921,1105");
+        sybase.setCannotAcquireLockCodes("12205");
+        sybase.setDeadlockLoserCodes("1205");
+        
+        errorCodes.put("Sybase", sybase);
 
         this.errorCodesMap = errorCodes;
     }

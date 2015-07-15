@@ -19,7 +19,7 @@ package org.zollty.dbk.trans.support;
 import java.io.Serializable;
 
 import org.zollty.dbk.trans.TransactionDefinition;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * {@link TransactionDefinition} implementation that delegates all calls to a given target

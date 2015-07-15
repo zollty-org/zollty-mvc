@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
+import org.zollty.util.Assert;
 
 /**
  * JDBC {@link javax.sql.DataSource} implementation that delegates all calls

@@ -20,7 +20,7 @@ import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
 import org.zollty.framework.mvc.handler.HttpServletDispatcherHandler;
-import org.zollty.framework.util.ResourcContext;
+import org.zollty.framework.util.ResourceContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -40,8 +40,7 @@ public class WebXmlApplicationContext extends AbstractWebApplicationContext {
         super(config, beanClassLoader);
     }
 
-    public WebXmlApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader,
-            ServletContext servletContext) {
+    public WebXmlApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader, ServletContext servletContext) {
         super(config, beanClassLoader, servletContext);
     }
 
@@ -59,7 +58,7 @@ public class WebXmlApplicationContext extends AbstractWebApplicationContext {
     @Override
     protected void doAfterRefresh() {
         handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
-        
+
         if (LogFactory.isDebugEnabled()) {
             log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
         }
@@ -68,8 +67,8 @@ public class WebXmlApplicationContext extends AbstractWebApplicationContext {
     @Override
     protected List<BeanDefinition> loadBeanDefinitions() {
         IServletContextFileConfig config = (IServletContextFileConfig) super.getConfig();
-        ResourcContext resourcContext = new ResourcContext(config.getConfigLocation(), config.getClassLoader(), config.getServletContext());
-        List<BeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        ResourceContext beanXmlResourceContext = new ResourceContext(config.getClassLoader(), config.getServletContext(), config.getConfigLocation());
+        List<BeanDefinition> list = new XmlBeanReader(beanXmlResourceContext).loadBeanDefinitions();
         if (list != null) {
             log.debug("-- WebXml bean --size = {}", list.size());
             return list;

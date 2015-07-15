@@ -28,7 +28,7 @@ import org.zollty.framework.core.support.AbstractBeanReader;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.parse.XmlNodeStateMachine;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.framework.util.ResourcContext;
+import org.zollty.framework.util.ResourceContext;
 import org.zollty.framework.util.dom.DefaultDom;
 import org.zollty.framework.util.dom.Dom;
 import org.zollty.log.LogFactory;
@@ -46,24 +46,30 @@ public class XmlBeanReader extends AbstractBeanReader {
 
     private Dom dom = new DefaultDom();
 
-    private ResourcContext resourcContext;
+    private ResourceContext beanXmlResourceContext;
 
     private ClassLoader beanClassLoader;
 
     private Set<String> existed = new HashSet<String>();
 
-    public XmlBeanReader(ResourcContext resourcContext) {
-        this.resourcContext = resourcContext;
+    public XmlBeanReader(ResourceContext beanXmlResourceContext) {
+        this.beanXmlResourceContext = beanXmlResourceContext;
         this.beanClassLoader = MvcUtils.ClassUtil.getDefaultClassLoader();
     }
 
-    public XmlBeanReader(ResourcContext resourcContext, ClassLoader beanClassLoader) {
-        this.resourcContext = resourcContext;
+    public XmlBeanReader(ResourceContext beanXmlResourceContext, ClassLoader beanClassLoader) {
+        this.beanXmlResourceContext = beanXmlResourceContext;
         this.beanClassLoader = (beanClassLoader != null ? beanClassLoader : MvcUtils.ClassUtil.getDefaultClassLoader());
     }
 
     private void init() {
         beanDefinitions = new ArrayList<BeanDefinition>();
+        String beanXmlFileLocation = beanXmlResourceContext.getLocation();
+        if(beanXmlFileLocation==null || !beanXmlFileLocation.endsWith(".xml")){
+            LOG.warn("the beanXmlFileLocation [{}] is invalidate! XmlBeanReader just ignore it.", beanXmlFileLocation);
+            return;
+        }
+        
         // 得到所有bean节点
         List<Element> beansList = new ArrayList<Element>();
         parseXml(beansList);
@@ -82,15 +88,15 @@ public class XmlBeanReader extends AbstractBeanReader {
     }
 
     private void parseXml(List<Element> beansList) {
-        recursiveDomParse(beansList, resourcContext.getLocation());
+        recursiveDomParse(beansList, beanXmlResourceContext.getLocation());
         existed = null;
     }
 
-    private void recursiveDomParse(List<Element> beansList, String fileLocation) {
+    private void recursiveDomParse(List<Element> beansList, String beanXmlFileLocation) {
         InputStream in = null;
         try {
-            in = MvcUtils.ResourceUtil.getResourceInputStream(fileLocation, 
-                    resourcContext.getClassLoader(), resourcContext.getServletContext());
+            in = MvcUtils.ResourceUtil.getResourceInputStream(beanXmlFileLocation, 
+                    beanXmlResourceContext.getClassLoader(), beanXmlResourceContext.getServletContext());
         }
         catch (IOException e) {
             IOUtils.closeIO(in);
@@ -98,7 +104,7 @@ public class XmlBeanReader extends AbstractBeanReader {
         }
 
         // 用于判断循环引用
-        existed.add(fileLocation);
+        existed.add(beanXmlFileLocation);
 
         // 获得Xml文档对象
         Document doc = dom.getDocument(in);
@@ -120,7 +126,7 @@ public class XmlBeanReader extends AbstractBeanReader {
                         if (MvcUtils.StringUtil.isNotBlank(resourceLocation) && !existed.contains(resourceLocation)) {
                             recursiveDomParse(beansList, resourceLocation);
                         } else {
-                            LOG.warn("import element [{}] in [{}] is blank or duplicate", resourceLocation, fileLocation);
+                            LOG.warn("import element [{}] in [{}] is blank or duplicate", resourceLocation, beanXmlFileLocation);
                         }
                     }
                 }
@@ -136,12 +142,12 @@ public class XmlBeanReader extends AbstractBeanReader {
         this.beanClassLoader = beanClassLoader;
     }
 
-    public ResourcContext getResourcContext() {
-        return resourcContext;
+    public ResourceContext getBeanXmlResourceContext() {
+        return beanXmlResourceContext;
     }
 
-    public void setResourcContext(ResourcContext resourcContext) {
-        this.resourcContext = resourcContext;
+    public void setBeanXmlResourceContext(ResourceContext beanXmlResourceContext) {
+        this.beanXmlResourceContext = beanXmlResourceContext;
     }
 
 }

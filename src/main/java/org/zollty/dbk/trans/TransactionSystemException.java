@@ -16,7 +16,7 @@
 
 package org.zollty.dbk.trans;
 
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Exception thrown when a general transaction system error is encountered,
@@ -82,7 +82,8 @@ public class TransactionSystemException extends TransactionException {
 		return (this.applicationException != null ? this.applicationException : getCause());
 	}
 
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public boolean contains(Class exType) {
 		return super.contains(exType) || (exType != null && exType.isInstance(this.applicationException));
 	}

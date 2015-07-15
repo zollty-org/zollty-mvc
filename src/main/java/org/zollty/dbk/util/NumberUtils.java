@@ -22,8 +22,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.temp.core.SpringUtils;
+import org.zollty.util.Assert;
 /**
  * Miscellaneous utility methods for number conversion and parsing.
  * Mainly for internal use within the framework; consider Jakarta's
@@ -117,7 +117,7 @@ public abstract class NumberUtils {
 	 * @param number the number we tried to convert
 	 * @param targetClass the target class we tried to convert to
 	 */
-	private static void raiseOverflowException(Number number, Class targetClass) {
+	private static void raiseOverflowException(Number number, Class<?> targetClass) {
 		throw new IllegalArgumentException("Could not convert number [" + number + "] of type [" +
 				number.getClass().getName() + "] to target class [" + targetClass.getName() + "]: overflow");
 	}

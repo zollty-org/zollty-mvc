@@ -98,9 +98,7 @@ public class HttpServletDispatcherHandler extends AbstractHandlerMapping {
                                 new ControllerMetaInfo(beanDefinition.getObject(), method, 
                                         allowHttpMethods, uri, 
                                         parseBeforeValueMethod(beanDefinition,method, beanDefinitions)));
-                        if (LogFactory.isDebugEnabled()) {
-                            log.debug("controller uri: {} {}", uri, Arrays.toString(allowHttpMethods));
-                        }
+                        log.debug("controller uri: {} {}", uri, Arrays.toString(allowHttpMethods));
                     }
                     catch (BasicRuntimeException e) {
                         throw new NestedRuntimeException(e, 

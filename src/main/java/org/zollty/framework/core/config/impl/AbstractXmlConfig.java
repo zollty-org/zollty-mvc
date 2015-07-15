@@ -59,6 +59,10 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
 
     
     private void loadConfig() {
+        String configPath = getConfigLocation();
+        if( configPath == null || !configPath.endsWith(".xml") ) {
+            throw new IllegalArgumentException("config location assume be a xml file but get: " + configPath);
+        }
 
         InputStream in = null;
         try {

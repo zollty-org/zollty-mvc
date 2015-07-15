@@ -18,12 +18,11 @@ package org.zollty.dbk.support;
 
 import java.sql.SQLException;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
-
-import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.UncategorizedSQLException;
-import org.zollty.framework.util.Assert;
+import org.zollty.dbk.dao.DataAccessException;
+import org.zollty.log.LogFactory;
+import org.zollty.log.Logger;
+import org.zollty.util.Assert;
 
 /**
  * Base class for {@link SQLExceptionTranslator} implementations that allow for

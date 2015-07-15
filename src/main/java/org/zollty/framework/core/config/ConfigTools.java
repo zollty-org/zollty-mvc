@@ -12,10 +12,10 @@
  */
 package org.zollty.framework.core.config;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.zollty.framework.util.MvcConvertUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -85,7 +85,7 @@ public class ConfigTools {
         }
         if (bt) {
             tarry = MvcUtils.StringSplitUtil.splitIgnoreEmpty(suffix, ',');
-            excludeSuffixes.addAll(MvcConvertUtils.arrayToSet(tarry));
+            excludeSuffixes.addAll(new HashSet<String>(Arrays.asList(tarry)));
         }
 
         Logger log = LogFactory.getLogger(ConfigTools.class);

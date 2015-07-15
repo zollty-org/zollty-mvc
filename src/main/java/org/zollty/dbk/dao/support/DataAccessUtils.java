@@ -24,7 +24,7 @@ import org.zollty.dbk.dao.IncorrectResultSizeDataAccessException;
 import org.zollty.dbk.dao.TypeMismatchDataAccessException;
 import org.zollty.dbk.temp.core.SpringUtils;
 import org.zollty.dbk.util.NumberUtils;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Miscellaneous utility methods for DAO implementations.
@@ -66,12 +66,15 @@ public abstract class DataAccessUtils {
 	 * has been found in the given Collection
 	 */
 	public static <T> T requiredSingleResult(Collection<T> results) throws IncorrectResultSizeDataAccessException {
-		int size = (results != null ? results.size() : 0);
-		if (size == 0) {
-			throw new EmptyResultDataAccessException(1);
+		if (results==null || results.size()==0) {
+		    return null;
 		}
+//	    int size = (results != null ? results.size() : 0);
+//		if (size == 0) {
+//			throw new EmptyResultDataAccessException(1);
+//		}
 		if (results.size() > 1) {
-			throw new IncorrectResultSizeDataAccessException(1, size);
+			throw new IncorrectResultSizeDataAccessException(1, results.size());
 		}
 		return results.iterator().next();
 	}

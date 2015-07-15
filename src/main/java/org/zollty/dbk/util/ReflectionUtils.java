@@ -28,8 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.temp.core.SpringUtils;
+import org.zollty.util.Assert;
 
 /**
  * Simple utility class for working with the reflection API and handling

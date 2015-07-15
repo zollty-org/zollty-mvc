@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 
 import org.zollty.dbk.trans.support.ResourceHolderSupport;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Connection holder, wrapping a JDBC Connection.

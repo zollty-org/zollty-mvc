@@ -373,7 +373,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
             }
         }
         else { // 根据set方法参数类型获取list类型
-            collection = (setterParamType == null ? new ArrayList() : MvcConvertUtils.getCollectionObj(setterParamType));
+            collection = (setterParamType == null ? new ArrayList() : MvcUtils.CollectionUtil.getCollectionObj(setterParamType));
         }
 
         for (Object item : values) {
@@ -394,7 +394,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
             Object listValue = getInjectArg(item, null);
             collection.add(listValue);
         }
-        return MvcConvertUtils.convert(collection, setterParamType);
+        return MvcUtils.CollectionUtil.toArrayObj(collection, setterParamType);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -409,7 +409,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
             }
         }
         else { // 根据set方法参数类型获取map类型
-            m = (setterParamType == null ? new HashMap() : MvcConvertUtils.getMapObj(setterParamType));
+            m = (setterParamType == null ? new HashMap() : MvcUtils.CollectionUtil.getMapObj(setterParamType));
             //log.debug("map ret - " + m.getClass().getName());
         }
         for (Map.Entry<Object, Object> entry : values.entrySet()) {

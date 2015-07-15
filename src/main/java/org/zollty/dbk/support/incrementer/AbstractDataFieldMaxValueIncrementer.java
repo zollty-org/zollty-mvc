@@ -18,9 +18,9 @@ package org.zollty.dbk.support.incrementer;
 
 import javax.sql.DataSource;
 
-import org.zollty.framework.util.Assert;
 import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
+import org.zollty.util.Assert;
 
 /**
  * Base implementation of {@link DataFieldMaxValueIncrementer} that delegates

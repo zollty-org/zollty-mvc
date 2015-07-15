@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
 import org.zollty.dbk.core.SqlParameter;
 import org.zollty.dbk.core.SqlParameterValue;
-import org.zollty.framework.util.Assert;
+import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
+import org.zollty.util.Assert;
 
 /**
  * Helper methods for named parameter parsing.

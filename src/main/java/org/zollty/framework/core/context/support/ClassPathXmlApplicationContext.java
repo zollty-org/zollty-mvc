@@ -17,7 +17,7 @@ import java.util.List;
 import org.zollty.framework.core.config.IFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
-import org.zollty.framework.util.ResourcContext;
+import org.zollty.framework.util.ResourceContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -28,7 +28,7 @@ import org.zollty.log.Logger;
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
     private Logger log;
-    
+
     private long beginTimeMs;
 
     public ClassPathXmlApplicationContext(IFileConfig config) {
@@ -58,7 +58,7 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     @Override
     protected List<BeanDefinition> loadBeanDefinitions() {
         IFileConfig config = (IFileConfig) getConfig();
-        ResourcContext resourcContext = new ResourcContext(config.getConfigLocation(), config.getClassLoader());
+        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(), config.getConfigLocation());
         List<BeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
         if (list != null) {
             log.debug("-- xml bean --size = {}", list.size());

@@ -19,10 +19,9 @@ package org.zollty.dbk.core.namedparam;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.sql.DataSource;
 
-import org.zollty.dbk.dao.DataAccessException;
-import org.zollty.dbk.dao.support.DataAccessUtils;
 import org.zollty.dbk.core.ColumnMapRowMapper;
 import org.zollty.dbk.core.JdbcOperations;
 import org.zollty.dbk.core.JdbcTemplate;
@@ -35,9 +34,11 @@ import org.zollty.dbk.core.RowMapper;
 import org.zollty.dbk.core.SingleColumnRowMapper;
 import org.zollty.dbk.core.SqlParameter;
 import org.zollty.dbk.core.SqlRowSetResultSetExtractor;
+import org.zollty.dbk.dao.DataAccessException;
+import org.zollty.dbk.dao.support.DataAccessUtils;
 import org.zollty.dbk.support.KeyHolder;
 import org.zollty.dbk.support.rowset.SqlRowSet;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Template class with a basic set of JDBC operations, allowing the use

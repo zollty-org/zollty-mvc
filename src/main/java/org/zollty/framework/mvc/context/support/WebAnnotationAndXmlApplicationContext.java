@@ -21,7 +21,7 @@ import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
 import org.zollty.framework.mvc.handler.HttpServletDispatcherHandler;
 import org.zollty.framework.mvc.support.WebAnnotationBeanReader;
-import org.zollty.framework.util.ResourcContext;
+import org.zollty.framework.util.ResourceContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -52,9 +52,7 @@ public class WebAnnotationAndXmlApplicationContext extends AbstractWebApplicatio
     protected void doBeforeRefresh() {
         beginTimeMs = System.currentTimeMillis();
         log = LogFactory.getLogger(getClass());
-        if (LogFactory.isDebugEnabled()) {
-            log.debug("load {} ...", getClass().getSimpleName());
-        }
+        log.debug("load {} ...", getClass().getSimpleName());
     }
     
 
@@ -65,9 +63,7 @@ public class WebAnnotationAndXmlApplicationContext extends AbstractWebApplicatio
 
         handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
 
-        if (LogFactory.isDebugEnabled()) {
-            log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
-        }
+        log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
     }
     
 
@@ -78,7 +74,7 @@ public class WebAnnotationAndXmlApplicationContext extends AbstractWebApplicatio
         List<BeanDefinition> list1 = new WebAnnotationBeanReader(
                 config.getScanningPackages(), getBeanClassLoader(), null).loadBeanDefinitions(); 
         
-        ResourcContext resourcContext = new ResourcContext(config.getConfigLocation(), config.getClassLoader(), config.getServletContext());
+        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(), config.getServletContext(), config.getConfigLocation());
         List<BeanDefinition> list2 = new XmlBeanReader(resourcContext).loadBeanDefinitions();
         
         if (list1 != null && list2 != null) {

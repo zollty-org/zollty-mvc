@@ -11,6 +11,9 @@ import org.zollty.framework.util.MvcUtils;
 import org.zollty.util.IOUtils;
 import org.zollty.util.NestedRuntimeException;
 
+/**
+ * TextConfig设计的初衷，就是想免去xml的繁琐配置，故TextConfig只支持注解形式的bean，不支持xml形式的bean定义
+ */
 public abstract class AbstractTextConfig extends AbstractFileConfig {
     
     public AbstractTextConfig() {
@@ -32,6 +35,11 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
     
     
     private void loadConfig() {
+        
+        String configPath = getConfigLocation();
+        if( configPath == null || !configPath.endsWith(".properties") ) {
+            throw new IllegalArgumentException("config location assume be a *.properties file but get: " + configPath);
+        }
 
         InputStream in = null;
         try {

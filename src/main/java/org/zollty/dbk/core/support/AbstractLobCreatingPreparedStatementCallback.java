@@ -19,11 +19,11 @@ package org.zollty.dbk.core.support;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.core.PreparedStatementCallback;
+import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.support.lob.LobCreator;
 import org.zollty.dbk.support.lob.LobHandler;
-import org.zollty.framework.util.Assert;
+import org.zollty.util.Assert;
 
 /**
  * Abstract {@link PreparedStatementCallback} implementation that manages a {@link LobCreator}.
