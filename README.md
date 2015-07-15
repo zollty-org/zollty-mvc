@@ -1,6 +1,9 @@
 ZolltyMVC
 ==========
-    
+
+Attention, <span style="color:red;">v1.2.1.RELEASE</span> is not compatible with v1.3.x or later version yet. If you want to upgrade to new version,
+ you may modify some codes (a few modify at resource load and some util methods).
+
 What is ZolltyMVC 
 ----------------------------
 
