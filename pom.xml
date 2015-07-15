@@ -9,7 +9,7 @@
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   Create by Zollty Tsou on 2013-08-25 [http://blog.csdn.net/zollty (or GitHub)]
+   Create by Zollty Tsou on 2013-08-25 [http://blog.zollty.com]
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -203,7 +203,7 @@
 			<!--项目开发者的email -->
 			<email>zolltytsou@gmail.com</email>
 			<!--项目开发者的主页的URL -->
-			<url>http://blog.csdn.net/zollty</url>
+			<url>http://blog.zollty.com</url>
 			<roles>
 				<role>Project Manager</role>
 				<role>Architect</role>
