@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by ZollTy on 2013-9-16 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc;
 
@@ -22,8 +22,9 @@ import org.zollty.framework.mvc.support.ControllerMetaInfo;
  * 
  * @author zollty
  * @since 2013-9-16
+ * @deprecated
  */
-public class Resource {
+public class Resource0 {
 //	public static final String WILDCARD = "?";
 //	private static final String[] EMPTY = new String[0];
 	private String encoding;
@@ -36,7 +37,7 @@ public class Resource {
 	private ControllerMetaInfo controller;
 //	private ResourceSet children = new ResourceSet();
 	
-	public Resource(String encoding) {
+	public Resource0(String encoding) {
 		CONSTANT_URI = new HashMap<String, ControllerHandler>();
 		this.encoding = encoding;
 	}
@@ -44,7 +45,7 @@ public class Resource {
 //	private Resource(boolean root) {
 //		CONSTANT_URI = root ? new HashMap<String, ControllerHandler>() : null;
 //	}
-	private Resource() {
+	private Resource0() {
         CONSTANT_URI = null;
     }
 	
@@ -61,7 +62,7 @@ public class Resource {
         if(last != '/') {
             uri += "/";
         }
-        Resource resource = new Resource();
+        Resource0 resource = new Resource0();
         resource.uri = uri;
         resource.controller = c;
         ControllerHandler result = null;//new ControllerHandler(resource, null);
@@ -250,7 +251,7 @@ public class Resource {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Resource other = (Resource) obj;
+		Resource0 other = (Resource0) obj;
 		if (uri == null) {
 			if (other.uri != null)
 				return false;

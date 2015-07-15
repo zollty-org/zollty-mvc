@@ -20,26 +20,28 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 /**
- * Callback interface to be implemented by classes that need to perform an
- * operation (such as a lookup) in a JNDI context. This callback approach
- * is valuable in simplifying error handling, which is performed by the
- * JndiTemplate class. This is a similar to JdbcTemplate's approach.
+ * Callback interface to be implemented by classes that need to perform an operation (such as a
+ * lookup) in a JNDI context. This callback approach is valuable in simplifying error handling,
+ * which is performed by the JndiTemplate class. This is a similar to JdbcTemplate's approach.
  *
- * <p>Note that there is hardly any need to implement this callback
- * interface, as JndiTemplate provides all usual JNDI operations via
- * convenience methods.
+ * <p>
+ * Note that there is hardly any need to implement this callback interface, as JndiTemplate provides
+ * all usual JNDI operations via convenience methods.
  */
 public interface JndiCallback<T> {
 
-	/**
-	 * Do something with the given JNDI context.
-	 * <p>Implementations don't need to worry about error handling
-	 * or cleanup, as the JndiTemplate class will handle this.
-	 * @param ctx the current JNDI context
-	 * @throws NamingException if thrown by JNDI methods
-	 * @return a result object, or <code>null</code>
-	 */
-	T doInContext(Context ctx) throws NamingException;
+    /**
+     * Do something with the given JNDI context.
+     * <p>
+     * Implementations don't need to worry about error handling or cleanup, as the JndiTemplate
+     * class will handle this.
+     * 
+     * @param ctx
+     *            the current JNDI context
+     * @throws NamingException
+     *             if thrown by JNDI methods
+     * @return a result object, or <code>null</code>
+     */
+    T doInContext(Context ctx) throws NamingException;
 
 }
-

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2013-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou on 2013-6-3 [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by ZollTy on 2014-6-03 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.view;
 
@@ -19,50 +19,50 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.zollty.framework.core.beans.support.BeanFactoryHelper;
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.context.support.AbstractWebApplicationContext;
+import org.zollty.framework.mvc.context.ContextLoader;
 import org.zollty.framework.mvc.handler.support.ErrorHandler;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.tool.web.ServletFileDownload;
 
 /**
  * @author zollty
- * @since 2014-6-3
+ * @since 2014-6-03
  */
 abstract public class AbstractStaticResourceView implements View {
-    
+
     private final String shortPath;
 
     public AbstractStaticResourceView(String shortPath) {
         this.shortPath = shortPath;
     }
-    
+
     /**
      * 资源视图路径的前缀，例如/resources/、classpath:/META-INF/resources/
      */
     abstract public String getViewPathPrefix();
 
     @Override
-    public void render(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void render(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         InputStream in = null;
-        try{
-            //in = InputStreamResourceLoader.getResourceInputStream(getViewPathPrefix()+shortPath);
-            in = MvcUtils.ResourceUtil.getResourceInputStream(getViewPathPrefix()+shortPath, null, ((AbstractWebApplicationContext)BeanFactoryHelper.getBeanFactory()).getServletContext());
-        }catch (Exception e) {
+        try {
+            in = MvcUtils.ResourceUtil.getResourceInputStream(getViewPathPrefix() + shortPath,
+                    null, ContextLoader.getCurrentWebApplicationContext().getServletContext());
+        }
+        catch (Exception e) {
             new ErrorHandler(null, request.getRequestURI() + " not found",
                     HttpServletResponse.SC_NOT_FOUND).render(request, response);
             return;
         }
-        if(in!=null){
+        if (in != null) {
             String contentType = MvcUtils.StringUtil.getFilenameExtension(shortPath);
             contentType = ServletFileDownload.MIME.get(contentType);
-            if(contentType!=null) {
+            if (contentType != null) {
                 response.setHeader("Content-Type", contentType);
             }
             MvcUtils.IOUtil.clone(in, response.getOutputStream());
         }
     }
-
 
 }

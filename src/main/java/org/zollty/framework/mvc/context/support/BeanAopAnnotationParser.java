@@ -1,3 +1,15 @@
+/* 
+ * Copyright (C) 2013-2015 the original author or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Create by ZollTy on 2014-12-9 (http://blog.zollty.com, zollty@163.com)
+ */
 package org.zollty.framework.mvc.context.support;
 
 import java.lang.reflect.Method;
@@ -14,6 +26,11 @@ import org.zollty.framework.mvc.support.ControllerBeanDefinition;
 import org.zollty.util.BasicRuntimeException;
 import org.zollty.util.CollectionUtils;
 
+/**
+ * 
+ * @author zollty
+ * @since 2014-12-9
+ */
 public class BeanAopAnnotationParser {
 
     public BeanAopAnnotationParser(List<BeanDefinition> beanDefinitions) {
@@ -33,13 +50,14 @@ public class BeanAopAnnotationParser {
             CBefore cb = bean.getObject().getClass().getAnnotation(CBefore.class);
             if (cb != null) {
                 Class<?>[] clss = cb.value();
-                
+
                 if (clss.length > 0) {
-                    
-                    if( CollectionUtils.checkDuplication(clss)!=-1 ) {
-                        throw new BasicRuntimeException(bean.getObject().getClass() + " annotation definition duplication!");
+
+                    if (CollectionUtils.checkDuplication(clss) != -1) {
+                        throw new BasicRuntimeException(bean.getObject().getClass()
+                                + " annotation definition duplication!");
                     }
-                    
+
                     List<MvcBeforeBeanDefinition> befores = new ArrayList<MvcBeforeBeanDefinition>();
                     for (int i = 0; i < clss.length; i++) {
                         Class<?> cls = clss[i];
@@ -73,7 +91,7 @@ public class BeanAopAnnotationParser {
                 if (clss.length == 0) {
                     continue;
                 }
-                
+
                 List<MvcBeforeBeanDefinition> befores = new ArrayList<MvcBeforeBeanDefinition>();
                 for (int i = 0; i < clss.length; i++) {
                     Class<?> cls = clss[i];
@@ -90,16 +108,19 @@ public class BeanAopAnnotationParser {
                 }
                 if (mm.get(method) != null) {
                     mm.get(method).addAll(befores);
-                    
-                    if( CollectionUtils.checkDuplication(mm.get(method))!=-1 ) {
-                        throw new BasicRuntimeException(bean.getObject().getClass() + " annotation definition duplication!");
+
+                    if (CollectionUtils.checkDuplication(mm.get(method)) != -1) {
+                        throw new BasicRuntimeException(bean.getObject().getClass()
+                                + " annotation definition duplication!");
                     }
                 }
                 else {
                     mm.put(method, befores);
-                    
-                    if( CollectionUtils.checkDuplication(befores)!=-1 ) {
-                        throw new BasicRuntimeException("{}#{}() annotation definition duplication!", bean.getObject().getClass().getName(), method.getName());
+
+                    if (CollectionUtils.checkDuplication(befores) != -1) {
+                        throw new BasicRuntimeException(
+                                "{}#{}() annotation definition duplication!", bean.getObject()
+                                        .getClass().getName(), method.getName());
                     }
                 }
 

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,9 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Zollty Framework MVC Source Code - Since v1.0
- * Author(s): 
- * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
+ * Create by ZollTy on 2014-9-16 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.handler.support;
 
@@ -31,27 +29,27 @@ import org.zollty.framework.util.MvcUtils;
 import org.zollty.util.BasicRuntimeException;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-16
  */
 public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
 
     private final ControllerMetaInfo controller;
     private Map<String, String> paramsMap;
-	
+
     public ControllerHandler(ControllerMetaInfo controller) {
-        
+
         // Check paramType
         byte[] paramType = controller.getParamType();
-        for(byte type: paramType) {
-            if(type==BasicParamMetaInfo.URI_PARAM) {
+        for (byte type : paramType) {
+            if (type == BasicParamMetaInfo.URI_PARAM) {
                 throw new BasicRuntimeException("the common controller can't use URIParam!");
             }
         }
-        
+
         this.controller = controller;
     }
-    
+
     public ControllerHandler(ControllerMetaInfo controller, Map<String, String> paramsMap) {
         this.controller = controller;
         this.paramsMap = paramsMap;
@@ -127,19 +125,19 @@ public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
 //		}
 //		return p;
 //	}
-	
-	public ControllerMetaInfo getController() {
+
+    public ControllerMetaInfo getController() {
         return controller;
     }
-	
-	public Map<String, String> getParamsMap() {
+
+    public Map<String, String> getParamsMap() {
         return paramsMap;
     }
-	
-	@Override
-	public String toString() {
-	    return "[controller=" + controller + ", params=" + getParamsMap() + "]";
-	}
+
+    @Override
+    public String toString() {
+        return "[controller=" + controller + ", params=" + getParamsMap() + "]";
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -147,7 +145,7 @@ public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
         ControllerMetaInfo info = controller;
         ParamMetaInfo[] paramMetaInfos = info.getParamMetaInfos();
         BasicParamMetaInfo[] bParamMetas = info.getbParamMetas();
-        
+
         byte[] paramType = info.getParamType();
         Object[] p = new Object[paramType.length];
 
@@ -171,7 +169,7 @@ public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
                     String paramValue = request.getParameter(httpParamName);
                     paramMetaInfo.setParam(p[i], httpParamName, paramValue);
                 }
-                if ( MvcUtils.StringUtil.isNotBlank(paramMetaInfo.getAttribute()) ) {
+                if (MvcUtils.StringUtil.isNotBlank(paramMetaInfo.getAttribute())) {
                     request.setAttribute(paramMetaInfo.getAttribute(), p[i]);
                 }
                 break;
@@ -179,22 +177,22 @@ public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
                 BasicParamMetaInfo pb = bParamMetas[i];
                 String sval = paramsMap.get(pb.getAttribute());
                 p[i] = MvcConvertUtils.convert(sval, pb.getParamClass());
-                if( pb.isSetAttr() ) {
-                    request.setAttribute(pb.getAttribute(), p[i]); //默认行为：注入到request中
+                if (pb.isSetAttr()) {
+                    request.setAttribute(pb.getAttribute(), p[i]); // 默认行为：注入到request中
                 }
                 break;
             case BasicParamMetaInfo.HTTP_SIMPLE_VALUE:
                 BasicParamMetaInfo b = bParamMetas[i];
                 p[i] = b.getValue(request);
-                if( b.isSetAttr() ) {
-                    request.setAttribute(b.getAttribute(), p[i]); //默认行为：注入到request中
+                if (b.isSetAttr()) {
+                    request.setAttribute(b.getAttribute(), p[i]); // 默认行为：注入到request中
                 }
                 break;
             }
         }
         return p;
     }
-	
+
 //  private View notAllowMethodResponse(HttpServletRequest request, HttpServletResponse response) {
 //      String allowMethod = controller.getAllowMethod();
 //      response.setHeader("Allow", allowMethod);

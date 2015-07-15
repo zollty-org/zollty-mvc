@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by ZollTy on 2013-9-11 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.util;
 
@@ -23,11 +23,11 @@ import java.util.Map;
 import org.zollty.util.Assert;
 
 /**
- * @author zollty 
+ * @author zollty
  * @since 2013-9-11
  */
 public class MvcReflectUtils {
-	
+
     /**
      * 获取所有接口名称
      */
@@ -53,8 +53,10 @@ public class MvcReflectUtils {
         Method[] methods = clazz.getMethods();
 
         for (Method method : methods) {
-            if (!method.getName().startsWith("set") || Modifier.isStatic(method.getModifiers())
-                    || !method.getReturnType().equals(Void.TYPE) || method.getParameterTypes().length != 1) {
+            if (!method.getName().startsWith("set") 
+                    || Modifier.isStatic(method.getModifiers()) 
+                    || !method.getReturnType().equals(Void.TYPE)
+                    || method.getParameterTypes().length != 1) {
                 continue;
             }
             String propertyName = getPropertyNameBySetterMethod(method);
@@ -71,30 +73,37 @@ public class MvcReflectUtils {
         String propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
         return propertyName;
     }
-	
-	
-	/**
-	 * Attempt to find a {@link Method} on the supplied class with the supplied name
-	 * and no parameters. Searches all superclasses up to <code>Object</code>.
-	 * <p>Returns <code>null</code> if no {@link Method} can be found.
-	 * @param clazz the class to introspect
-	 * @param name the name of the method
-	 * @return the Method object, or <code>null</code> if none found
-	 */
-	public static Method findMethod(Class<?> clazz, String name) {
-		return findMethod(clazz, name, new Class[0]);
-	}
 
-	/**
-	 * Attempt to find a {@link Method} on the supplied class with the supplied name
-	 * and parameter types. Searches all superclasses up to <code>Object</code>.
-	 * <p>Returns <code>null</code> if no {@link Method} can be found.
-	 * @param clazz the class to introspect
-	 * @param name the name of the method
-	 * @param paramTypes the parameter types of the method
-	 * (may be <code>null</code> to indicate any signature)
-	 * @return Method the Method object, or <code>null</code> if none found
-	 */
+    /**
+     * Attempt to find a {@link Method} on the supplied class with the supplied name and no parameters. 
+     * Searches all superclasses up to <code>Object</code>.
+     * <p>
+     * Returns <code>null</code> if no {@link Method} can be found.
+     * 
+     * @param clazz
+     *            the class to introspect
+     * @param name
+     *            the name of the method
+     * @return the Method object, or <code>null</code> if none found
+     */
+    public static Method findMethod(Class<?> clazz, String name) {
+        return findMethod(clazz, name, new Class[0]);
+    }
+
+    /**
+     * Attempt to find a {@link Method} on the supplied class with the supplied name and parameter types. 
+     * Searches all superclasses up to <code>Object</code>.
+     * <p>
+     * Returns <code>null</code> if no {@link Method} can be found.
+     * 
+     * @param clazz
+     *            the class to introspect
+     * @param name
+     *            the name of the method
+     * @param paramTypes
+     *            the parameter types of the method (may be <code>null</code> to indicate any signature)
+     * @return Method the Method object, or <code>null</code> if none found
+     */
     public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
         Assert.notNull(clazz, "Class must not be null");
         Assert.notNull(name, "Method name must not be null");
@@ -102,8 +111,7 @@ public class MvcReflectUtils {
         while (searchType != null) {
             Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
             for (Method method : methods) {
-                if (name.equals(method.getName())
-                        && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
+                if (name.equals(method.getName()) && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
                     return method;
                 }
             }

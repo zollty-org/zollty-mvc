@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou (Contact: zollty@163.com, http://blog.zollty.com)
+ * Create by ZollTy on 2013-9-11 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.util;
 
@@ -31,11 +31,12 @@ public class MvcConvertUtils {
     public static ParseValue canConvert(Class<?> clazz) {
         return clazz == null ? null : commonTypeClassMap.get(clazz);
     }
-    
+
     /**
      * Convert string to class instance.
      * 
-     * @param classType the target class type name, e.g. Integer.class
+     * @param classType
+     *            the target class type name, e.g. Integer.class
      */
     @SuppressWarnings("unchecked")
     public static <T> T convert(String value, Class<T> classType) {
@@ -65,7 +66,8 @@ public class MvcConvertUtils {
     /**
      * Convert string to class instance.
      * 
-     * @param classTypeName the target class type name, e.g. "java.lang.Integer"
+     * @param classTypeName
+     *            the target class type name, e.g. "java.lang.Integer"
      */
     @SuppressWarnings("unchecked")
     public static <T> T convert(String value, String classTypeName) {
@@ -91,19 +93,18 @@ public class MvcConvertUtils {
         }
         return (T) ret;
     }
-    
-    
+
     // ~~ helper method for this util
 
     private static final Map<Class<?>, ParseValue> commonTypeClassMap = new HashMap<Class<?>, ParseValue>();
     private static final Map<String, ParseValue> commonTypeStringMap = new HashMap<String, ParseValue>();
 
     public enum COMMON_TYPE {
-        
-        INT("java.lang.Integer"), LONG("java.lang.Long"), DOUBLE("java.lang.Double"), 
-        FLOAT("java.lang.Float"), SHORT("java.lang.Short"), BYTE("java.lang.Byte"), CHAR(
+
+        INT("java.lang.Integer"), LONG("java.lang.Long"), DOUBLE("java.lang.Double"), FLOAT(
+                "java.lang.Float"), SHORT("java.lang.Short"), BYTE("java.lang.Byte"), CHAR(
                 "java.lang.Character"), BOOLEAN("java.lang.Boolean"), STRING("java.lang.String");
-        
+
         private final String value;
 
         private COMMON_TYPE(String value) {
@@ -231,5 +232,5 @@ public class MvcConvertUtils {
     private interface ParseValue {
         Object parse(String value);
     }
-    
+
 }

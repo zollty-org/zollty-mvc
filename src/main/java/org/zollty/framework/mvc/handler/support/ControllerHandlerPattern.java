@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,9 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Zollty Framework MVC Source Code - Since v1.1
- * Author(s): 
- * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
+ * Create by ZollTy on 2014-5-29 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.handler.support;
 
@@ -48,24 +46,25 @@ public class ControllerHandlerPattern {
     public ControllerHandlerPattern(ControllerMetaInfo controller, List<String> paramsName) {
         this.controller = controller;
         this.paramsName = paramsName;
-        
+
         // Check Params
         byte[] paramType = controller.getParamType();
         BasicParamMetaInfo[] bParamMetas = controller.getbParamMetas();
         for (int i = 0; i < paramType.length; i++) {
-            if(paramType[i]==BasicParamMetaInfo.URI_PARAM) {
+            if (paramType[i] == BasicParamMetaInfo.URI_PARAM) {
                 BasicParamMetaInfo pb = bParamMetas[i];
-                int pos = Arrays.binarySearch(paramsName.toArray(new String[paramsName.size()]), pb.getAttribute());
+                int pos = Arrays.binarySearch(paramsName.toArray(new String[paramsName.size()]),
+                        pb.getAttribute());
                 // 如果参数的名称是在 URI 参数列表中，则OK，否则报错。
                 if (pos < 0) {
                     throw new IllegalArgumentException(
-                            "URIParam definition error, can't find the variable '"+pb.getAttribute()+"' in URI param(such as /{v1}{v2}/).");
+                            "URIParam definition error, can't find the variable '"
+                                    + pb.getAttribute() + "' in URI param(such as /{v1}{v2}/).");
                 }
             }
-            
+
         }
-        
-        
+
         String pstr = controller.getServletURI();
         for (String str : paramsName) {
             pstr = pstr.replace("{" + str + "}", "*");
@@ -76,9 +75,8 @@ public class ControllerHandlerPattern {
                     "URI definition error, any two variables can't be connected. such as /{v1}{v2}/ is BAD. /{v1}-{v2}/ is OK.");
         }
         pattern = new ZolltyPathMatcher(pstr);
-        if (LogFactory.isDebugEnabled()) {
-            LOG.debug("URI Real Pattern={}", pstr);
-        }
+        
+        LOG.debug("URI Real Pattern={}", pstr);
         patternStr = pstr;
     }
 

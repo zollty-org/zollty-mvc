@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,6 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
  */
 package org.zollty.framework.core.support.xml;
 
@@ -16,101 +15,99 @@ import java.util.LinkedHashMap;
 
 /**
  * Xml方式Bean实现
- *
  */
 public class XmlGenericBeanDefinition implements XmlBeanDefinition {
 
-	// id
-	private String id;
+    // id
+    private String id;
 
-	// className
-	private String className;
-	
-	private String beanType = CLASS_BEAN_TYPE;
-	
-	private String methodName;
-	
-	// 属性集合
-	private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>();
-	private String[] names;
-	private Object object;
-	
-	private boolean finished;
+    // className
+    private String className;
 
-	public String getId() {
-		return id;
-	}
+    private String beanType = CLASS_BEAN_TYPE;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private String methodName;
 
-	public String getClassName() {
-		return className;
-	}
+    // 属性集合
+    private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>();
+    private String[] names;
+    private Object object;
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    private boolean finished;
 
-	public LinkedHashMap<String, Object> getProperties() {
-		return properties;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setProperties(LinkedHashMap<String, Object> properties) {
-		this.properties = properties;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	@Override
-	public String[] getInterfaceNames() {
-		return names;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	@Override
-	public Object getObject() {
-		return object;
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-	@Override
-	public void setInterfaceNames(String[] names) {
-		this.names = names;
-	}
+    public LinkedHashMap<String, Object> getProperties() {
+        return properties;
+    }
 
-	@Override
-	public void setObject(Object object) {
-		this.object = object;
-	}
+    public void setProperties(LinkedHashMap<String, Object> properties) {
+        this.properties = properties;
+    }
 
-	@Override
-	public boolean isFinished() {
-		return finished;
-	}
+    @Override
+    public String[] getInterfaceNames() {
+        return names;
+    }
 
-	@Override
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
+    @Override
+    public Object getObject() {
+        return object;
+    }
 
-	@Override
-	public String getBeanType() {
-		return beanType;
-	}
+    @Override
+    public void setInterfaceNames(String[] names) {
+        this.names = names;
+    }
 
-	@Override
-	public void setBeanType(String beanType) {
-		this.beanType = beanType;
-	}
+    @Override
+    public void setObject(Object object) {
+        this.object = object;
+    }
 
-	@Override
-	public String getMethodName() {
-		return methodName;
-	}
+    @Override
+    public boolean isFinished() {
+        return finished;
+    }
 
+    @Override
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 
-	@Override
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
-	}
+    @Override
+    public String getBeanType() {
+        return beanType;
+    }
+
+    @Override
+    public void setBeanType(String beanType) {
+        this.beanType = beanType;
+    }
+
+    @Override
+    public String getMethodName() {
+        return methodName;
+    }
+
+    @Override
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
 
     @Override
     public String toString() {

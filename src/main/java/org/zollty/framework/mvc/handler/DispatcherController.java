@@ -1,5 +1,5 @@
-/* @(#)DispatcherController.java 
- * Copyright (C) 2013-2014 the original author or authors.
+/* 
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,9 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Zollty Framework MVC Source Code - Since v1.0
- * Author(s): 
- * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
+ * Create by ZollTy on 2013-6-02 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.handler;
 
@@ -35,16 +33,14 @@ abstract public class DispatcherController extends HttpServletBean {
 
     private Logger log = LogFactory.getLogger(DispatcherController.class);
 
-    abstract public void dispatcher(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException;
+    abstract public void dispatcher(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException;
 
     /**
      * 前端控制器，处理http请求到相应View
-     * 
-     * @param request HttpServletRequest对象
-     * @param response HttpServletResponse对象
      */
-    public void handleRequest(String servletURI, HttpServletRequest request, HttpServletResponse response) {
+    public void handleRequest(String servletURI, HttpServletRequest request,
+            HttpServletResponse response) {
 
         try {
             request.setCharacterEncoding(encoding);
@@ -54,29 +50,30 @@ abstract public class DispatcherController extends HttpServletBean {
         }
         response.setCharacterEncoding(encoding);
 
-//        HandlerChainImpl chain = handlerMapping.match(servletURI, request);
-//
-//        if (chain.getHandlerSize() == 0) { // 没有找到处理器 404
-//            new ErrorHandler(null, request.getRequestURI() + " not found", HttpServletResponse.SC_NOT_FOUND).render(
-//                    request, response);
-//            return;
-//        }
+        // HandlerChainImpl chain = handlerMapping.match(servletURI, request);
+        //
+        // if (chain.getHandlerSize() == 0) { // 没有找到处理器 404
+        // new ErrorHandler(null, request.getRequestURI() + " not found",
+        // HttpServletResponse.SC_NOT_FOUND).render(
+        // request, response);
+        // return;
+        // }
         WebHandler handler = handlerMapping.match(servletURI, request);
 
         if (handler == null) { // 没有找到处理器 404
-            new ErrorHandler(null, request.getRequestURI() + " not found", HttpServletResponse.SC_NOT_FOUND).render(
-                    request, response);
+            new ErrorHandler(null, request.getRequestURI() + " not found",
+                    HttpServletResponse.SC_NOT_FOUND).render(request, response);
             return;
         }
-        
+
         // 执行对应的方法，返回方法指定的View
-//        View v = chain.doNext(request, response, chain);
+        // View v = chain.doNext(request, response, chain);
         View v = handler.invoke(request, response);
         // 返回View为null，此时一般是在该方法内，直接采用了response返回，故需要判断response是否提交，若没提交，则认为是出错了
         if (v == null) {
             if (!response.isCommitted()) {
-                new ErrorHandler(null, "Server internal error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(
-                        request, response);
+                new ErrorHandler(null, "Server internal error",
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(request, response);
             }
             return;
         }
@@ -85,33 +82,36 @@ abstract public class DispatcherController extends HttpServletBean {
             v.render(request, response);
         }
         catch (Throwable t) {
-            new ErrorHandler(t, "dispatcher error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(request,
-                    response);
+            new ErrorHandler(t, "dispatcher error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .render(request, response);
             return;
         }
     }
 
-    
-    // /////////////Override the HttpServlet's methods////////////////
+    // ------------Override the HttpServlet's methods ---------------------
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         dispatcher(request, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         dispatcher(request, response);
     }
 
     @Override
-    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         dispatcher(request, response);
 
     }
 
     @Override
-    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         dispatcher(request, response);
     }
 

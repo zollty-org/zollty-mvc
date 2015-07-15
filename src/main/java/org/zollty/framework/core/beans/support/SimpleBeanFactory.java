@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou (Contact: zollty@163.com, http://blog.zollty.com)
+ * Create by ZollTy on 2013-12-7 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.core.beans.support;
 
@@ -26,22 +26,22 @@ import org.zollty.log.Logger;
 public class SimpleBeanFactory extends AbstractBeanFactory {
 
     private Logger log;
-    
+
     private long beginTimeMs;
-    
+
     private BeanReader beanReader;
-    
+
     public SimpleBeanFactory(BeanReader beanReader) {
         super();
         this.beanReader = beanReader;
-        
+
         refresh();
     }
 
     public SimpleBeanFactory(BeanReader beanReader, ClassLoader beanClassLoader) {
         super(beanClassLoader);
         this.beanReader = beanReader;
-        
+
         refresh();
     }
 
@@ -49,15 +49,16 @@ public class SimpleBeanFactory extends AbstractBeanFactory {
     protected void doBeforeRefresh() {
         beginTimeMs = System.currentTimeMillis();
         log = LogFactory.getLogger(getClass());
-        if (LogFactory.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("load {} start...", getClass().getSimpleName());
         }
     }
 
     @Override
     protected void doAfterRefresh() {
-        if (LogFactory.isDebugEnabled()) {
-            log.debug("{} completed in {} ms.", getClass().getSimpleName(), System.currentTimeMillis() - beginTimeMs);
+        if (log.isDebugEnabled()) {
+            log.debug("{} completed in {} ms.", getClass().getSimpleName(),
+                    System.currentTimeMillis() - beginTimeMs);
         }
     }
 

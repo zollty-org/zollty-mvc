@@ -1,3 +1,15 @@
+/* 
+ * Copyright (C) 2013-2015 the original author or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Create by ZollTy on 2014-5-21 (http://blog.zollty.com, zollty@163.com)
+ */
 package org.zollty.framework.core.config.impl;
 
 import java.io.IOException;
@@ -13,32 +25,35 @@ import org.zollty.util.NestedRuntimeException;
 
 /**
  * TextConfig设计的初衷，就是想免去xml的繁琐配置，故TextConfig只支持注解形式的bean，不支持xml形式的bean定义
+ * 
+ * @author zollty
+ * @since 2014-5-21
  */
 public abstract class AbstractTextConfig extends AbstractFileConfig {
-    
+
     public AbstractTextConfig() {
         super(Const.DEFAULT_CONFIG_LOCATION_PROP);
         loadConfig();
     }
-    
+
     public AbstractTextConfig(String configLocation) {
         super(configLocation);
         loadConfig();
     }
-    
+
     public AbstractTextConfig(String configLocation, ClassLoader classLoader) {
         super(configLocation, classLoader);
         loadConfig();
     }
-    
+
     public abstract InputStream getResourceInputStream() throws IOException;
-    
-    
+
     private void loadConfig() {
-        
+
         String configPath = getConfigLocation();
-        if( configPath == null || !configPath.endsWith(".properties") ) {
-            throw new IllegalArgumentException("config location assume be a *.properties file but get: " + configPath);
+        if (configPath == null || !configPath.endsWith(".properties")) {
+            throw new IllegalArgumentException(
+                    "config location assume be a *.properties file but get: " + configPath);
         }
 
         InputStream in = null;
@@ -73,5 +88,5 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
             this.setExcludeSuffixes(ConfigTools.parseExcludeSuffix(suffix.toString()));
         }
     }
-     
+
 }

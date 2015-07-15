@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.handler.WebHandler;
-import org.zollty.framework.mvc.servlet.HttpHelper;
 import org.zollty.framework.mvc.view.JspView;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
@@ -99,7 +98,7 @@ public class ErrorHandler implements WebHandler {
             // } catch (IOException e1) { log.debug("response.sendError() failed! ",e1); }
         }
 
-        boolean isAjaxRequest = HttpHelper.isAjaxRequest(request);
+        boolean isAjaxRequest = MvcUtils.WebUtil.isAjaxRequest(request);
         if (!isAjaxRequest && errorPage != null) {
             request.setAttribute("e", e);
             request.setAttribute("msg", msg);

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,23 +8,25 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by ZollTy on 2014-5-21 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.core.config;
 
 import java.util.Set;
 
-
 /**
+ * 
  * @author zollty
  * @since 2014-5-21
  */
 public interface IApplicationConfig {
-    
+
     String DEFAULT_VIEW_PATH = "/WEB-INF/views";
     String DEFAULT_VIEW_ENCODING = "UTF-8";
-    // List<String> defaultExcludeSuffixes  = Arrays.asList(new String[]{".css",".jpg",".png",".gif",".js",".html"});
-    
+
+    // List<String> defaultExcludeSuffixes = Arrays.asList(new
+    // String[]{".css",".jpg",".png",".gif",".js",".html"});
+
     /**
      * @return the view basic path (relative to webroot path)
      */
@@ -39,7 +41,7 @@ public interface IApplicationConfig {
      * @return the class scanning packages
      */
     String[] getScanningPackages();
-    
+
     /**
      * @return the view excludeSuffix
      */
@@ -49,12 +51,12 @@ public interface IApplicationConfig {
      * @return the view excludeprefix
      */
     Set<String> getExcludePrefixes();
-    
+
     /**
      * @return the special error page full path (relative to webroot path)
      */
     String getErrorPagePath();
-    
+
     /**
      * @return the special log level using to init log lib like zollty-log.
      */

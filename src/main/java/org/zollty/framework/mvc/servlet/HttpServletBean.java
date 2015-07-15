@@ -1,5 +1,5 @@
-/* @(#)HttpServletBean.java 
- * Copyright (C) 2013-2014 the original author or authors.
+/* 
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,9 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Zollty Framework MVC Source Code - Since v1.0
- * Author(s): 
- * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
+ * Create by ZollTy on 2013-6-02 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.servlet;
 
@@ -29,7 +27,7 @@ import org.zollty.log.Logger;
  * @since 2013-6-02
  */
 @SuppressWarnings("serial")
-abstract public class HttpServletBean extends HttpServlet {
+public abstract class HttpServletBean extends HttpServlet {
 
     private Logger log = LogFactory.getLogger(HttpServletBean.class);
 
@@ -47,10 +45,12 @@ abstract public class HttpServletBean extends HttpServlet {
         log.debug("Initializing servlet '" + getServletName() + "'");
 
         if (webApplicationContext == null) {
-            webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+            webApplicationContext = WebApplicationContextUtils
+                    .getWebApplicationContext(getServletContext());
             if (webApplicationContext == null) {
                 new ContextLoader().initWebApplicationContext(getServletContext());
-                webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+                webApplicationContext = WebApplicationContextUtils
+                        .getWebApplicationContext(getServletContext());
             }
         }
 

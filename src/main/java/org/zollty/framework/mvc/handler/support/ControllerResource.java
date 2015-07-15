@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,9 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Zollty Framework MVC Source Code - Since v1.1
- * Author(s): 
- * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
+ * Create by ZollTy on 2014-6-29 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.handler.support;
 
@@ -39,10 +37,6 @@ public class ControllerResource {
 
     public void addController(ControllerMetaInfo controller) {
         String uri = controller.getServletURI();
-        // char last = uri.charAt(uri.length() - 1);
-        // if (last != '/') {
-        // uri += "/";
-        // }
         List<String> list = parseUriPathVariable(uri);
         if (list.size() == 0) {
             if (this.isDuplicate(uri, controller.getAllowHttpMethods())) {
@@ -86,7 +80,8 @@ public class ControllerResource {
             for (String me : allowHttpMethods) {
                 if (chp.getController().allowMethod(me)) {
                     if (chp.getHandler(uri, me) != null)
-                        LOG.warn("'{}' is included by '{}'", uri, chp.getController().getServletURI());
+                        LOG.warn("'{}' is included by '{}'", uri, chp.getController()
+                                .getServletURI());
                 }
             }
         }
@@ -99,13 +94,15 @@ public class ControllerResource {
      * 注意： uri里的斜杠也算作一个有效字符。
      * <p>
      * 注意： 当两个Pattern存在交集时，该方法并不能全面检测出URI的重复匹配。
+     * 
      * @see ZolltyPathMatcher.isTwoPatternSimilar()
      */
     protected boolean isDuplicate(ControllerHandlerPattern chp) {
 
         for (ControllerHandlerPattern chpa : patternControllerList) {
             if (isAllowMethod(chp, chpa) // 如果两者有HTTP METHOD 重叠
-                    && ZolltyPathMatcher.isTwoPatternSimilar(chp.getPatternStr(), chpa.getPatternStr())) { // 且URL Pattern有重叠
+                    && ZolltyPathMatcher.isTwoPatternSimilar(chp.getPatternStr(),
+                            chpa.getPatternStr())) { // 且URL Pattern有重叠
                 LOG.error("'{}' is a duplicate of '{}'", chp.getController(), chpa.getController());
                 return true;
             }
@@ -117,7 +114,8 @@ public class ControllerResource {
             for (String me : ctrl.getAllowHttpMethods()) {
                 if (chp.getController().allowMethod(me)) {
                     if (chp.getHandler(ctrl.getServletURI(), me) != null) {
-                        LOG.warn("'{}' is included by '{}'", ctrl.getServletURI(), chp.getController().getServletURI());
+                        LOG.warn("'{}' is included by '{}'", ctrl.getServletURI(), chp
+                                .getController().getServletURI());
                     }
                 }
             }
@@ -145,15 +143,11 @@ public class ControllerResource {
         if (servletURI == null) {
             return null;
         }
-        // char last = servletURI.charAt(servletURI.length() - 1);
-        // String newURI = servletURI;
-        // if (last != '/') {
-        // newURI += "/";
-        // }
         // step 1 首先从普通URI Controller定义中去寻找
         for (final ControllerHandler ch : simpleControllerList) {
             ControllerMetaInfo controller = ch.getController();
-            if (controller.getServletURI().equals(servletURI) && controller.allowMethod(request.getMethod())) {
+            if (controller.getServletURI().equals(servletURI)
+                    && controller.allowMethod(request.getMethod())) {
                 return ch;
             }
         }
@@ -183,10 +177,11 @@ public class ControllerResource {
                 if (a != -1) {
                     b = i;
                     temp = uri.substring(a + 1, b);
-                    if (temp.indexOf("[") != -1 || temp.indexOf("]") != -1 || temp.indexOf("{") != -1
-                            || temp.indexOf("}") != -1) {
+                    if (temp.indexOf("[") != -1 || temp.indexOf("]") != -1
+                            || temp.indexOf("{") != -1 || temp.indexOf("}") != -1) {
                         throw new IllegalArgumentException(
-                                "uri path variable error, can't include those symbols: {, [, }, ]. URI=" + uri);
+                                "uri path variable error, can't include those symbols: {, [, }, ]. URI="
+                                        + uri);
                     }
                     params.add(temp);
                     a = -1;
@@ -201,10 +196,11 @@ public class ControllerResource {
                 if (c != -1) {
                     d = i;
                     temp = uri.substring(c + 1, d);
-                    if (temp.indexOf("[") != -1 || temp.indexOf("]") != -1 || temp.indexOf("{") != -1
-                            || temp.indexOf("}") != -1) {
+                    if (temp.indexOf("[") != -1 || temp.indexOf("]") != -1
+                            || temp.indexOf("{") != -1 || temp.indexOf("}") != -1) {
                         throw new IllegalArgumentException(
-                                "uri path variable error, can't include those symbols: {, [, }, ]. URI=" + uri);
+                                "uri path variable error, can't include those symbols: {, [, }, ]. URI="
+                                        + uri);
                     }
                     params.add(temp);
                     c = -1;

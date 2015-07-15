@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012-2014 the original author or authors.
+ * Copyright (C) 2013-2015 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by Zollty Tsou [http://blog.csdn.net/zollty (or GitHub)]
+ * Create by ZollTy on 2013-10-11 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.context.support;
 
@@ -40,7 +40,8 @@ public class WebXmlApplicationContext extends AbstractWebApplicationContext {
         super(config, beanClassLoader);
     }
 
-    public WebXmlApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader, ServletContext servletContext) {
+    public WebXmlApplicationContext(IServletContextFileConfig config, ClassLoader beanClassLoader,
+            ServletContext servletContext) {
         super(config, beanClassLoader, servletContext);
     }
 
@@ -50,24 +51,23 @@ public class WebXmlApplicationContext extends AbstractWebApplicationContext {
     protected void doBeforeRefresh() {
         beginTimeMs = System.currentTimeMillis();
         log = LogFactory.getLogger(getClass());
-        if (LogFactory.isDebugEnabled()) {
-            log.debug("load {} ...", getClass().getSimpleName());
-        }
+        log.debug("load {} ...", getClass().getSimpleName());
     }
 
     @Override
     protected void doAfterRefresh() {
         handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
 
-        if (LogFactory.isDebugEnabled()) {
-            log.debug("{} completed in {} ms.", getClass().getSimpleName(), (System.currentTimeMillis() - beginTimeMs));
-        }
+        if( log.isDebugEnabled() )
+        log.debug("{} completed in {} ms.", getClass().getSimpleName(),
+                (System.currentTimeMillis() - beginTimeMs));
     }
 
     @Override
     protected List<BeanDefinition> loadBeanDefinitions() {
         IServletContextFileConfig config = (IServletContextFileConfig) super.getConfig();
-        ResourceContext beanXmlResourceContext = new ResourceContext(config.getClassLoader(), config.getServletContext(), config.getConfigLocation());
+        ResourceContext beanXmlResourceContext = new ResourceContext(config.getClassLoader(),
+                config.getServletContext(), config.getConfigLocation());
         List<BeanDefinition> list = new XmlBeanReader(beanXmlResourceContext).loadBeanDefinitions();
         if (list != null) {
             log.debug("-- WebXml bean --size = {}", list.size());
