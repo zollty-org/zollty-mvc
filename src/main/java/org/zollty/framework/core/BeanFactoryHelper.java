@@ -16,6 +16,9 @@ import org.zollty.framework.core.beans.BeanFactory;
 
 
 /**
+ * Get Beans from BeanFactory under single ClassLoader enviriment.
+ * If under Webapp enviriment, use 
+ * {@code ContextLoader.getCurrentWebApplicationContext()} instead.
  * @author zollty 
  * @since 2013-9-22
  */

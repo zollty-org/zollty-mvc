@@ -24,7 +24,6 @@ import org.zollty.framework.mvc.handler.WebHandler;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.util.match.PathMatcher;
 import org.zollty.util.match.ZolltyPathMatcher;
 
 /**
@@ -36,7 +35,7 @@ public class ControllerHandlerPattern {
     private static Logger LOG = LogFactory.getLogger(ControllerHandlerPattern.class);
 
     private final ControllerMetaInfo controller;
-    private PathMatcher pattern;
+    private ZolltyPathMatcher pattern;
     private final List<String> paramsName;
     private final String patternStr;
 

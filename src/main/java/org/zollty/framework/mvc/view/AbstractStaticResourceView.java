@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.handler.support.ErrorHandler;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.framework.util.resource.PathMatchingResourcePatternResolver;
 import org.zollty.tool.web.ServletFileDownload;
 
 /**
@@ -46,7 +45,7 @@ abstract public class AbstractStaticResourceView implements View {
     public void render(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         InputStream in = null;
         try{
-            in = PathMatchingResourcePatternResolver.getResourceInputStream(getViewPathPrefix()+shortPath);
+            in = MvcUtils.ResourceUtil.getResourceInputStream(getViewPathPrefix()+shortPath, null, null);
         }catch (Exception e) {
             new ErrorHandler(null, request.getRequestURI() + " not found",
                     HttpServletResponse.SC_NOT_FOUND).render(request, response);

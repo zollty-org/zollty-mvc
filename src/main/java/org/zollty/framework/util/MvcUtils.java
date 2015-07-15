@@ -12,9 +12,14 @@
  */
 package org.zollty.framework.util;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import javax.servlet.ServletContext;
 
 import org.zollty.util.ClassUtils;
 import org.zollty.util.CollectionUtils;
@@ -24,10 +29,11 @@ import org.zollty.util.FileUtils;
 import org.zollty.util.IOUtils;
 import org.zollty.util.RandomUtils;
 import org.zollty.util.ReflectionUtils;
-import org.zollty.util.ResourceUtils;
 import org.zollty.util.StringSplitUtils;
 import org.zollty.util.StringUtils;
 import org.zollty.util.ThreadUtils;
+import org.zollty.util.WebResourceUtils;
+import org.zollty.util.resource.Resource;
 
 /**
  * @author zollty 
@@ -130,7 +136,22 @@ public class MvcUtils {
     public static class RandomUtil extends RandomUtils {
     }
 
-    public static class ResourceUtil extends ResourceUtils {
+    public static class ResourceUtil extends WebResourceUtils {
+        public static InputStream getResourceInputStream(String resourceLocation, ClassLoader classLoader, ServletContext servletContext) throws IOException {
+            
+            if(resourceLocation==null) {
+                return null;
+            }
+            if(resourceLocation.indexOf(':')==-1){
+                resourceLocation = CLASSPATH_URL_PREFIX + resourceLocation;
+            }
+            
+            Resource resource = getResource(resourceLocation, classLoader, servletContext);
+            if( !resource.exists() ){
+                throw new FileNotFoundException(resourceLocation + " by " + resource.getClass().getName());
+            }
+            return resource.getInputStream();
+        }
     }
 
     public static class ThreadUtil extends ThreadUtils {

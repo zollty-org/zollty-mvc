@@ -29,9 +29,10 @@ import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.framework.util.resource.PathMatchingResourcePatternResolver;
+import org.zollty.util.NestedRuntimeException;
 
 /**
  * 
@@ -64,11 +65,11 @@ public class DefaultDom implements Dom {
 	public Document getDocument(String resourceLocation, ClassLoader classLoader) {
         Document doc = null;
         if (resourceLocation != null && resourceLocation.endsWith(".xml")) {
-            if (classLoader == null) {
-                doc = getDocument(PathMatchingResourcePatternResolver.getResourceInputStream(resourceLocation));
+            try {
+                doc = getDocument(MvcUtils.ResourceUtil.getResourceInputStream(resourceLocation, classLoader, null));
             }
-            else {
-                doc = getDocument(PathMatchingResourcePatternResolver.getResourceInputStream(resourceLocation, classLoader));
+            catch (IOException e) {
+                throw new NestedRuntimeException(e);
             }
         } else {
             log.warn("config file is not end with 'xml' suffix. resourceLocation=[{}]", resourceLocation);

@@ -17,7 +17,7 @@
 	<groupId>org.zollty</groupId>
 	<artifactId>zollty-mvc</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1.0.RELEASE</version>
+	<version>1.2.1.RELEASE</version>
 	<name>zollty-mvc</name>
 	<url>https://github.com/zollty-org/zollty-mvc</url>
 	<description>The ZolltyMVC is a lightweight Java MVC Framework. It can help development teams build simple, portable, fast and flexible Java applications.</description>
@@ -38,9 +38,9 @@
 		<dependency>
 			<groupId>org.zollty</groupId>
 			<artifactId>zollty-util</artifactId>
-			<version>1.8</version>
+			<version>1.9.2</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/zollty-util-1.8.jar</systemPath>
+			<systemPath>${project.basedir}/lib/zollty-util-1.9.2.jar</systemPath>
 		</dependency>
 		<!-- Servlet -->
 		<dependency>
@@ -186,25 +186,6 @@
 								<exclude>**/*.bak</exclude>
 							</excludes>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<testFailureIgnore>true</testFailureIgnore>
-					<parallel>methods</parallel>
-					<threadCount>10</threadCount>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>

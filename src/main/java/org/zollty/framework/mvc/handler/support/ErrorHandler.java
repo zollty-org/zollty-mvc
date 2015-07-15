@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.handler.HandlerChain;
 import org.zollty.framework.mvc.handler.WebHandler;
 import org.zollty.framework.mvc.servlet.HttpHelper;
 import org.zollty.framework.mvc.view.JspView;
@@ -65,7 +64,7 @@ public class ErrorHandler implements WebHandler {
     }
 
     @Override
-    public View invoke(HttpServletRequest request, HttpServletResponse response, HandlerChain chain) {
+    public View invoke(HttpServletRequest request, HttpServletResponse response) {
         return doErrorPage(request, response);
     }
 

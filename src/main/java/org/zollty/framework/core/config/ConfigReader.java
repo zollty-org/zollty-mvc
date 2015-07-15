@@ -12,6 +12,7 @@
  */
 package org.zollty.framework.core.config;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
@@ -24,7 +25,7 @@ import org.zollty.framework.core.config.impl.DefaultXmlApplicationConfigImpl;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.dom.DefaultDom;
 import org.zollty.framework.util.dom.Dom;
-import org.zollty.framework.util.resource.PathMatchingResourcePatternResolver;
+import org.zollty.util.NestedRuntimeException;
 
 /**
  * @author zollty
@@ -91,9 +92,18 @@ public class ConfigReader {
             this.config = new ApplicationConfig(new DefaultXmlApplicationConfigImpl(root, dom));
         }
     }
+    
+    private InputStream getResourceInputStream() {
+        try {
+            return MvcUtils.ResourceUtil.getResourceInputStream(getConfigLocation(), getClassLoader(), null);
+        }
+        catch (IOException e) {
+            throw new NestedRuntimeException(e);
+        }
+    }
 
     private void loadTextConfig() {
-        InputStream in = PathMatchingResourcePatternResolver.getResourceInputStream(getConfigLocation(), getClassLoader());
+        InputStream in = getResourceInputStream();
         Properties props = MvcUtils.ResourceUtil.getProperties(in);
         Map<String, String> propsMap = MvcUtils.ResourceUtil.covertProperties2Map(props);
 
