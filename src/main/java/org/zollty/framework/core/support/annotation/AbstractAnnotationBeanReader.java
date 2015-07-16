@@ -121,7 +121,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
     abstract protected BeanDefinition getBeanDefinition(Class<?> c);
 
     protected BeanDefinition componentParser(Class<?> c) {
-        AnnotationBeanDefinition annotationBeanDefinition = new AnnotatedBeanDefinition();
+        AnnotationBeanDefinition annotationBeanDefinition = new GenericAnnotationBeanDefinition();
         annotationBeanDefinition.setClassName(c.getName());
 
         Component component = c.getAnnotation(Component.class);

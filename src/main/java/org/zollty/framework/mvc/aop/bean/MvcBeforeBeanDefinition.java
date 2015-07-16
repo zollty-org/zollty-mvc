@@ -14,13 +14,13 @@ package org.zollty.framework.mvc.aop.bean;
 
 import java.lang.reflect.Method;
 
-import org.zollty.framework.core.support.annotation.AnnotatedBeanDefinition;
+import org.zollty.framework.core.support.annotation.GenericAnnotationBeanDefinition;
 
 /**
  * @author zollty
  * @since 2015-2-15
  */
-public class MvcBeforeBeanDefinition extends AnnotatedBeanDefinition implements AopBeanDefinition {
+public class MvcBeforeBeanDefinition extends GenericAnnotationBeanDefinition implements AopBeanDefinition {
 
     private Method disposeMethod;
 

@@ -16,14 +16,14 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import org.zollty.framework.core.support.annotation.AnnotatedBeanDefinition;
+import org.zollty.framework.core.support.annotation.GenericAnnotationBeanDefinition;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 
 /**
  * @author zollty
  * @since 2013-9-21
  */
-public class ControllerAnnotatedBeanDefinition extends AnnotatedBeanDefinition implements
+public class ControllerAnnotatedBeanDefinition extends GenericAnnotationBeanDefinition implements
         ControllerBeanDefinition {
 
     private List<Method> reqMethods;

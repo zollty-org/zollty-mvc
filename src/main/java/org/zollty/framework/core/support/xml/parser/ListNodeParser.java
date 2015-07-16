@@ -9,21 +9,26 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
-package org.zollty.framework.core.support.xml.parse;
+package org.zollty.framework.core.support.xml.parser;
+
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.*;
 
 import java.util.List;
+
 import org.w3c.dom.Element;
-import org.zollty.framework.core.support.xml.ManagedArray;
+import org.zollty.framework.core.support.xml.ManagedList;
 import org.zollty.framework.util.dom.Dom;
 
-public class ArrayNodeParser extends AbstractXmlNodeParser {
+public class ListNodeParser extends AbstractXmlNodeParser {
 
     @Override
     public Object parse(Element ele, Dom dom) {
-        ManagedArray<Object> target = new ManagedArray<Object>();
+        String typeName = ele.getAttribute(TYPE_ATTRIBUTE);
+        ManagedList<Object> target = new ManagedList<Object>();
+        target.setTypeName(typeName);
         List<Element> elements = dom.elements(ele);
         for (Element e : elements) {
-            target.add(XmlNodeStateMachine.stateProcessor(e, dom));
+            target.add(XmlNodeParserFactory.getXmlBeanDefinition(e, dom, null));
         }
         return target;
     }

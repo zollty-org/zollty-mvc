@@ -27,10 +27,10 @@ import java.util.Set;
 
 import org.zollty.framework.core.annotation.Inject;
 import org.zollty.framework.core.annotation.MethodBeanId;
+import org.zollty.framework.core.beans.BeansException;
 import org.zollty.framework.core.beans.ConfigurableBeanFactory;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
-import org.zollty.framework.core.support.exception.BeanDefinitionParsingException;
 import org.zollty.framework.core.support.xml.ManagedArray;
 import org.zollty.framework.core.support.xml.ManagedList;
 import org.zollty.framework.core.support.xml.ManagedMap;
@@ -227,7 +227,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
                 BeanDefinition b2 = beanDefinitions.get(j);
                 if (MvcUtils.StringUtil.isNotBlank(b1.getId()) && b1.getId().equals(b2.getId())) {
 
-                    throw new BeanDefinitionParsingException(
+                    throw new BeansException(
                             "bean [{}] and [{}] have duplicate id", b1.getClassName(),
                             b2.getClassName());
                 }
@@ -235,7 +235,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
                     if (MvcUtils.StringUtil.isNullOrEmpty(b1.getId())
                             || MvcUtils.StringUtil.isNullOrEmpty(b2.getId())) {
 
-                        throw new BeanDefinitionParsingException("bean [{}] duplicate definition",
+                        throw new BeansException("bean [{}] duplicate definition",
                                 b1.getClassName());
                     }
                     errorConflict.add(b1.getClassName());
@@ -246,7 +246,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
                             if (MvcUtils.StringUtil.isNullOrEmpty(b1.getId())
                                     || MvcUtils.StringUtil.isNullOrEmpty(b2.getId())) {
 
-                                throw new BeanDefinitionParsingException(
+                                throw new BeansException(
                                         "bean [{}] duplicate definition", iname1);
                             }
                             errorConflict.add(iname1);
@@ -544,7 +544,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
     private Object recursiveInject(String key) {
         BeanDefinition bean = findBeanDefinition(key);
         if (bean == null) {
-            throw new BeanDefinitionParsingException("bean [{}] is null", key);
+            throw new BeansException("bean [{}] is null", key);
         }
 
         return inject(bean);
@@ -578,7 +578,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
      */
     private void checkConflict(String key, String info) {
         if (errorConflict.contains(key)) {
-            throw new BeanDefinitionParsingException(
+            throw new BeansException(
                     "[{}]: Anonymous Inject failure! Bean [{}] has multi matching.", info, key);
         }
     }

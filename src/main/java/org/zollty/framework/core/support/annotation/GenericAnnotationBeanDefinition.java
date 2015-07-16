@@ -8,55 +8,51 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.support.xml;
+package org.zollty.framework.core.support.annotation;
 
-import java.util.LinkedHashMap;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
- * Xml方式Bean实现
+ * 
+ * @author zollty
+ * @since 2013-9-15
  */
-public class XmlGenericBeanDefinition implements XmlBeanDefinition {
+public class GenericAnnotationBeanDefinition implements AnnotationBeanDefinition {
 
-    // id
     private String id;
-
-    // className
     private String className;
+    private String[] names;
+    private List<Field> fields;
+    private List<Method> methods;
+    private Object object;
 
     private String beanType = CLASS_BEAN_TYPE;
-
     private String methodName;
-
-    // 属性集合
-    private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>();
-    private String[] names;
-    private Object object;
 
     private boolean finished;
 
-    public String getId() {
-        return id;
+    @Override
+    public Object getObject() {
+        return object;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public void setObject(Object object) {
+        this.object = object;
     }
 
-    public String getClassName() {
-        return className;
+    @Override
+    public List<Field> getInjectFields() {
+        return fields;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public LinkedHashMap<String, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(LinkedHashMap<String, Object> properties) {
-        this.properties = properties;
+    @Override
+    public List<Method> getInjectMethods() {
+        return methods;
     }
 
     @Override
@@ -65,18 +61,39 @@ public class XmlGenericBeanDefinition implements XmlBeanDefinition {
     }
 
     @Override
-    public Object getObject() {
-        return object;
+    public void setInjectFields(List<Field> fields) {
+        this.fields = fields;
+    }
+
+    @Override
+    public void setInjectMethods(List<Method> methods) {
+        this.methods = methods;
     }
 
     @Override
     public void setInterfaceNames(String[] names) {
         this.names = names;
+
     }
 
     @Override
-    public void setObject(Object object) {
-        this.object = object;
+    public String getClassName() {
+        return className;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -111,7 +128,7 @@ public class XmlGenericBeanDefinition implements XmlBeanDefinition {
 
     @Override
     public String toString() {
-        return "XmlGenericBeanDefinition [id=" + id + ", className=" + className + "]";
+        return "GenericAnnotationBeanDefinition [id=" + id + ", className=" + className + "]";
     }
 
 }

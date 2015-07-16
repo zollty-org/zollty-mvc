@@ -10,14 +10,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.support.xml.parse;
+package org.zollty.framework.core.support.xml.parser;
 
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.CLASS_ATTRIBUTE;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.ID_ATTRIBUTE;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.NAME_ATTRIBUTE;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.PROPERTY_ELEMENT;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.REF_ATTRIBUTE;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.VALUE_ATTRIBUTE;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.CLASS_ATTRIBUTE;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.ID_ATTRIBUTE;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.NAME_ATTRIBUTE;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.PROPERTY_ELEMENT;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.REF_ATTRIBUTE;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.VALUE_ATTRIBUTE;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -26,11 +26,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.core.support.exception.BeanDefinitionParsingException;
+import org.zollty.framework.core.support.BeanDefinitionParsingException;
+import org.zollty.framework.core.support.xml.GenericXmlBeanDefinition;
 import org.zollty.framework.core.support.xml.ManagedRef;
 import org.zollty.framework.core.support.xml.ManagedValue;
 import org.zollty.framework.core.support.xml.XmlBeanDefinition;
-import org.zollty.framework.core.support.xml.XmlGenericBeanDefinition;
 import org.zollty.framework.util.MvcReflectUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.dom.Dom;
@@ -48,7 +48,7 @@ public class BeanNodeParser {
     private static Logger log = LogFactory.getLogger(BeanNodeParser.class);
 
     public static XmlBeanDefinition parse(Element ele, Dom dom, ClassLoader beanClassLoader) {
-        XmlBeanDefinition xmlBeanDefinition = new XmlGenericBeanDefinition();
+        XmlBeanDefinition xmlBeanDefinition = new GenericXmlBeanDefinition();
 
         // 获取所有property
         List<Element> properties = dom.elements(ele, PROPERTY_ELEMENT);
@@ -100,7 +100,7 @@ public class BeanNodeParser {
                 }
                 else if (subElement != null) {
                     // 处理子元素
-                    Object subEle = XmlNodeStateMachine.getXmlBeanDefinition(subElement, dom,
+                    Object subEle = XmlNodeParserFactory.getXmlBeanDefinition(subElement, dom,
                             beanClassLoader);
                     xmlBeanDefinition.getProperties().put(name, subEle);
                 }

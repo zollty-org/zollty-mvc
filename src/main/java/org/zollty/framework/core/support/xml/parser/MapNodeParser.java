@@ -10,14 +10,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.support.xml.parse;
+package org.zollty.framework.core.support.xml.parser;
 
 import java.util.List;
 
 import org.w3c.dom.Element;
-
 import org.zollty.framework.core.support.xml.ManagedMap;
 import org.zollty.framework.core.support.xml.ManagedValue;
+import org.zollty.framework.core.support.xml.XmlNodeConstants;
 import org.zollty.framework.util.dom.Dom;
 
 /**
@@ -70,7 +70,7 @@ public class MapNodeParser extends AbstractXmlNodeParser {
                             key = new ManagedValue(keyText);
                     }
                     else {
-                        key = XmlNodeStateMachine.stateProcessor(subKey.get(0), dom);
+                        key = XmlNodeParserFactory.getXmlBeanDefinition(subKey.get(0), dom, null);
                     }
                 }
             }
@@ -101,7 +101,7 @@ public class MapNodeParser extends AbstractXmlNodeParser {
                             value = new ManagedValue(valueText);
                     }
                     else {
-                        value = XmlNodeStateMachine.stateProcessor(subValue.get(0), dom);
+                        value = XmlNodeParserFactory.getXmlBeanDefinition(subValue.get(0), dom, null);
                     }
                 }
             }

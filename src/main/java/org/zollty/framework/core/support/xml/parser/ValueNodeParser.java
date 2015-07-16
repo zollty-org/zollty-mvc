@@ -9,10 +9,12 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
-package org.zollty.framework.core.support.xml.parse;
+package org.zollty.framework.core.support.xml.parser;
 
 import org.w3c.dom.Element;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.*;
+
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.*;
+
 import org.zollty.framework.core.support.xml.ManagedValue;
 import org.zollty.framework.util.dom.Dom;
 

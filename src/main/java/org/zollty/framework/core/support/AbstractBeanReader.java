@@ -14,8 +14,6 @@ package org.zollty.framework.core.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.support.exception.BeanDefinitionParsingException;
-
 /**
  * @author zollty
  * @since 2013-9-21

@@ -12,8 +12,8 @@
  */
 package org.zollty.framework.core.support.xml;
 
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.BEAN_ELEMENT;
-import static org.zollty.framework.core.support.xml.parse.XmlNodeConstants.IMPORT_ELEMENT;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.BEAN_ELEMENT;
+import static org.zollty.framework.core.support.xml.XmlNodeConstants.IMPORT_ELEMENT;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.zollty.framework.core.support.AbstractBeanReader;
 import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.core.support.xml.parse.XmlNodeStateMachine;
+import org.zollty.framework.core.support.xml.parser.XmlNodeParserFactory;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.ResourceContext;
 import org.zollty.framework.util.dom.DefaultDom;
@@ -78,7 +78,7 @@ public class XmlBeanReader extends AbstractBeanReader {
         // 迭代beans列表
         if (beansList != null && !beansList.isEmpty()) {
             for (Element ele : beansList) {
-                beanDefinitions.add((BeanDefinition) XmlNodeStateMachine.getXmlBeanDefinition(ele,
+                beanDefinitions.add((BeanDefinition) XmlNodeParserFactory.getXmlBeanDefinition(ele,
                         dom, beanClassLoader));
             }
         }
