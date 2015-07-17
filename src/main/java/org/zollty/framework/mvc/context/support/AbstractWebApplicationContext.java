@@ -16,8 +16,8 @@ import javax.servlet.ServletContext;
 
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.context.support.AbstractApplicationContext;
+import org.zollty.framework.mvc.HandlerMapping;
 import org.zollty.framework.mvc.context.ConfigurableWebApplicationContext;
-import org.zollty.framework.mvc.handler.HandlerMapping;
 
 /**
  * @author zollty

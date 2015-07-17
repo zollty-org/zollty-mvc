@@ -15,7 +15,7 @@ package org.zollty.framework.mvc.context;
 import javax.servlet.ServletContext;
 
 import org.zollty.framework.core.context.ApplicationContext;
-import org.zollty.framework.mvc.handler.HandlerMapping;
+import org.zollty.framework.mvc.HandlerMapping;
 
 /**
  * @author zollty

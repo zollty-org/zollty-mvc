@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.handler;
+package org.zollty.framework.mvc;
 
 import java.util.Set;
 
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface HandlerMapping {
 
-    WebHandler match(String servletURI, HttpServletRequest request);
+    ViewHandler match(String servletURI, HttpServletRequest request);
 
     /**
      * @return the excludeSuffix

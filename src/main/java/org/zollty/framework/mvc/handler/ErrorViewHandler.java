@@ -12,7 +12,7 @@
  * Author(s): 
  * Zollty Tsou (zolltytsou@gmail.com, http://blog.zollty.com)
  */
-package org.zollty.framework.mvc.handler.support;
+package org.zollty.framework.mvc.handler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.handler.WebHandler;
+import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.view.JspView;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
@@ -34,9 +34,9 @@ import org.zollty.log.Logger;
  * @author zollty
  * @since 2013-9-16
  */
-public class ErrorHandler implements WebHandler {
+public class ErrorViewHandler implements ViewHandler {
 
-    private static Logger log = LogFactory.getLogger(ErrorHandler.class);
+    private static Logger log = LogFactory.getLogger(ErrorViewHandler.class);
 
     private static String errorPage;
 
@@ -44,19 +44,19 @@ public class ErrorHandler implements WebHandler {
     protected String msg;
     protected int status = -1;
 
-    public ErrorHandler() {
+    public ErrorViewHandler() {
     }
 
-    public ErrorHandler(String msg) {
+    public ErrorViewHandler(String msg) {
         this.msg = msg;
     }
 
-    public ErrorHandler(Throwable e, String msg) {
+    public ErrorViewHandler(Throwable e, String msg) {
         this.e = e;
         this.msg = msg;
     }
 
-    public ErrorHandler(Throwable e, String msg, int status) {
+    public ErrorViewHandler(Throwable e, String msg, int status) {
         this.e = e;
         this.msg = msg;
         this.status = status;
@@ -70,7 +70,7 @@ public class ErrorHandler implements WebHandler {
     /**
      * 提交错误页面视图
      */
-    public void render(HttpServletRequest request, HttpServletResponse response) {
+    public void renderView(HttpServletRequest request, HttpServletResponse response) {
         try {
             View v = doErrorPage(request, response);
             if (null != v)
@@ -179,7 +179,7 @@ public class ErrorHandler implements WebHandler {
     }
 
     public static void setErrorPage(String errorPage) {
-        ErrorHandler.errorPage = errorPage;
+        ErrorViewHandler.errorPage = errorPage;
     }
 
 }

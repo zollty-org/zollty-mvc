@@ -10,18 +10,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.handler;
+package org.zollty.framework.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.zollty.framework.mvc.View;
 
 /**
  * @author zollty
  * @since 2013-9-15
  */
-public interface WebHandler {
+public interface ViewHandler {
 
     View invoke(HttpServletRequest request, HttpServletResponse response);
 }

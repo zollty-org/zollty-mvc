@@ -19,7 +19,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.zollty.framework.mvc.handler.WebHandler;
+import org.zollty.framework.mvc.ViewHandler;
+import org.zollty.framework.mvc.handler.ControllerViewHandler;
 import org.zollty.framework.mvc.support.BasicParamMetaInfo;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.log.LogFactory;
@@ -80,7 +81,7 @@ public class ControllerHandlerPattern {
         patternStr = pstr;
     }
 
-    public WebHandler getHandler(String servletURI, String method) {
+    public ViewHandler getHandler(String servletURI, String method) {
         if (!controller.allowMethod(method)) {
             return null;
         }
@@ -90,12 +91,12 @@ public class ControllerHandlerPattern {
             for (int i = 0; i < paramsName.size(); i++) {
                 paramsMap.put(paramsName.get(i), valueList.get(i));
             }
-            return new ControllerHandler(controller, paramsMap);
+            return new ControllerViewHandler(controller, paramsMap);
         }
         return null;
     }
 
-    public WebHandler getHandler(String servletURI, HttpServletRequest request) {
+    public ViewHandler getHandler(String servletURI, HttpServletRequest request) {
         return getHandler(servletURI, request.getMethod());
     }
 

@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.support;
+package org.zollty.framework.mvc.support.annotation;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -25,6 +25,7 @@ import org.zollty.framework.mvc.annotation.Controller;
 import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.mvc.aop.MvcBefore;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
+import org.zollty.framework.mvc.support.ControllerBeanDefinition;
 import org.zollty.framework.util.MvcReflectUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;

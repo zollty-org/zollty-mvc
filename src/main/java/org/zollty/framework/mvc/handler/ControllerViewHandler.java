@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2014-9-16 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.handler.support;
+package org.zollty.framework.mvc.handler;
 
 import java.util.Enumeration;
 import java.util.Map;
@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.handler.InvokeParamsAdapter;
-import org.zollty.framework.mvc.handler.WebHandler;
+import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.support.BasicParamMetaInfo;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.framework.mvc.support.ParamMetaInfo;
@@ -32,12 +31,12 @@ import org.zollty.util.BasicRuntimeException;
  * @author zollty
  * @since 2013-9-16
  */
-public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
+public class ControllerViewHandler implements ViewHandler, InvokeParamsAdapter {
 
     private final ControllerMetaInfo controller;
     private Map<String, String> paramsMap;
 
-    public ControllerHandler(ControllerMetaInfo controller) {
+    public ControllerViewHandler(ControllerMetaInfo controller) {
 
         // Check paramType
         byte[] paramType = controller.getParamType();
@@ -50,7 +49,7 @@ public class ControllerHandler implements WebHandler, InvokeParamsAdapter {
         this.controller = controller;
     }
 
-    public ControllerHandler(ControllerMetaInfo controller, Map<String, String> paramsMap) {
+    public ControllerViewHandler(ControllerMetaInfo controller, Map<String, String> paramsMap) {
         this.controller = controller;
         this.paramsMap = paramsMap;
     }

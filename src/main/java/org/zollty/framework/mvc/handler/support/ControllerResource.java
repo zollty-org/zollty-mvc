@@ -17,7 +17,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.zollty.framework.mvc.handler.WebHandler;
+import org.zollty.framework.mvc.ViewHandler;
+import org.zollty.framework.mvc.handler.ControllerViewHandler;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -33,7 +34,7 @@ public class ControllerResource {
     private static final Logger LOG = LogFactory.getLogger(ControllerResource.class);
 
     protected final List<ControllerHandlerPattern> patternControllerList = new ArrayList<ControllerHandlerPattern>();
-    protected final List<ControllerHandler> simpleControllerList = new ArrayList<ControllerHandler>();
+    protected final List<ControllerViewHandler> simpleControllerList = new ArrayList<ControllerViewHandler>();
 
     public void addController(ControllerMetaInfo controller) {
         String uri = controller.getServletURI();
@@ -43,7 +44,7 @@ public class ControllerResource {
                 throw new BasicRuntimeException("the controller definition is a duplicate!");
             }
 
-            simpleControllerList.add(new ControllerHandler(controller));
+            simpleControllerList.add(new ControllerViewHandler(controller));
         }
         else {
             ControllerHandlerPattern chp = new ControllerHandlerPattern(controller, list);
@@ -61,7 +62,7 @@ public class ControllerResource {
      */
     protected boolean isDuplicate(String uri, String[] allowHttpMethods) {
         // 当已存在相同的普通URI时，则返回true，代表不允许有两个一模一样的普通URI的定义
-        for (ControllerHandler ch : simpleControllerList) {
+        for (ControllerViewHandler ch : simpleControllerList) {
             ControllerMetaInfo ctrl = ch.getController();
             if (uri.equals(ctrl.getServletURI())) {
                 for (String me : allowHttpMethods) {
@@ -109,7 +110,7 @@ public class ControllerResource {
         }
 
         // 检测 如果有已定义的 普通ControllerHandler 被当前的ControllerHandlerPattern所匹配到，则给出WARN级别的提示。
-        for (ControllerHandler ch : simpleControllerList) {
+        for (ControllerViewHandler ch : simpleControllerList) {
             ControllerMetaInfo ctrl = ch.getController();
             for (String me : ctrl.getAllowHttpMethods()) {
                 if (chp.getController().allowMethod(me)) {
@@ -139,12 +140,12 @@ public class ControllerResource {
     /**
      * 注意： servletURI里的斜杠也算作一个有效字符
      */
-    public WebHandler getHandler(String servletURI, HttpServletRequest request) {
+    public ViewHandler getHandler(String servletURI, HttpServletRequest request) {
         if (servletURI == null) {
             return null;
         }
         // step 1 首先从普通URI Controller定义中去寻找
-        for (final ControllerHandler ch : simpleControllerList) {
+        for (final ControllerViewHandler ch : simpleControllerList) {
             ControllerMetaInfo controller = ch.getController();
             if (controller.getServletURI().equals(servletURI)
                     && controller.allowMethod(request.getMethod())) {
@@ -153,7 +154,7 @@ public class ControllerResource {
         }
         // step 2
         for (final ControllerHandlerPattern chp : patternControllerList) {
-            WebHandler ret = chp.getHandler(servletURI, request);
+            ViewHandler ret = chp.getHandler(servletURI, request);
             if (ret != null) {
                 return ret;
             }

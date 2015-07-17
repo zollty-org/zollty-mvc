@@ -18,8 +18,8 @@ import javax.servlet.ServletContext;
 
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.mvc.handler.HttpServletDispatcherHandler;
-import org.zollty.framework.mvc.support.WebAnnotationBeanReader;
+import org.zollty.framework.mvc.handler.support.HttpRequestHandlerMapping;
+import org.zollty.framework.mvc.support.annotation.WebAnnotationBeanReader;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -59,7 +59,7 @@ public class WebAnnotationApplicationContext extends AbstractWebApplicationConte
 
         new BeanAopAnnotationParser(beanDefinitions);
 
-        handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
+        handlerMapping = new HttpRequestHandlerMapping(beanDefinitions, getConfig());
 
         if( log.isDebugEnabled() )
         log.debug("{} completed in {} ms.", getClass().getSimpleName(),

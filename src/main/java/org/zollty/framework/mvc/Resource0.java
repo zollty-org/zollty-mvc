@@ -15,7 +15,7 @@ package org.zollty.framework.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.zollty.framework.mvc.handler.support.ControllerHandler;
+import org.zollty.framework.mvc.handler.ControllerViewHandler;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 
 /**
@@ -29,7 +29,7 @@ public class Resource0 {
 //	private static final String[] EMPTY = new String[0];
 	private String encoding;
 	
-	private final Map<String, ControllerHandler> CONSTANT_URI;
+	private final Map<String, ControllerViewHandler> CONSTANT_URI;
 	
 	private String uri;
 //	private Pattern pattern;
@@ -38,7 +38,7 @@ public class Resource0 {
 //	private ResourceSet children = new ResourceSet();
 	
 	public Resource0(String encoding) {
-		CONSTANT_URI = new HashMap<String, ControllerHandler>();
+		CONSTANT_URI = new HashMap<String, ControllerViewHandler>();
 		this.encoding = encoding;
 	}
 	
@@ -65,7 +65,7 @@ public class Resource0 {
         Resource0 resource = new Resource0();
         resource.uri = uri;
         resource.controller = c;
-        ControllerHandler result = null;//new ControllerHandler(resource, null);
+        ControllerViewHandler result = null;//new ControllerHandler(resource, null);
         CONSTANT_URI.put(uri, result);
 //		if(uri.contains(WILDCARD)) {
 //			Resource current = this;
@@ -94,13 +94,13 @@ public class Resource0 {
 //		}
 	}
 	
-	public ControllerHandler match(String uri) {
+	public ControllerViewHandler match(String uri) {
 		char last = uri.charAt(uri.length() - 1);
 		if(last != '/') {
 			uri += "/";
 		}
 		
-		ControllerHandler ret = CONSTANT_URI.get(uri);
+		ControllerViewHandler ret = CONSTANT_URI.get(uri);
 		if(ret != null)
 			return ret;
 		

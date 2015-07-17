@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.ext.Constants;
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.handler.support.ErrorHandler;
+import org.zollty.framework.mvc.handler.ErrorViewHandler;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -132,15 +132,15 @@ public class StaticFileView implements View {
 	public void render(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if(!checkPath(inputPath) || inputPath.startsWith(TEMPLATE_PATH)) {
-		    new ErrorHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).render(request, response);
+		    new ErrorViewHandler(null, request.getRequestURI() + " not found",
+                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
 			return;
 		}
 		
 		if(!ALLOW_METHODS.contains(request.getMethod())) {
 			response.setHeader("Allow", "GET,POST,HEAD");
-			new ErrorHandler(null, "Only support GET, POST or HEAD method",
-                    HttpServletResponse.SC_METHOD_NOT_ALLOWED).render(request, response);
+			new ErrorViewHandler(null, "Only support GET, POST or HEAD method",
+                    HttpServletResponse.SC_METHOD_NOT_ALLOWED).renderView(request, response);
 			return;
 		}
 		
@@ -152,8 +152,8 @@ public class StaticFileView implements View {
 		
 		File file = new File(request.getSession().getServletContext().getRealPath(inputPath), path);
 		if (!file.exists() || file.isDirectory()) {
-		    new ErrorHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).render(request, response);
+		    new ErrorViewHandler(null, request.getRequestURI() + " not found",
+                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
             return;
 		}
 

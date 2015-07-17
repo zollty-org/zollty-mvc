@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.aop.MvcContext;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
-import org.zollty.framework.mvc.handler.support.ErrorHandler;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -57,18 +56,18 @@ public abstract class HandlerMetaInfo {
                     mt.invoke(mbd.getObject(), new Object[] { mvcContext });
                 }
                 catch (ClassCastException e) {
-                    return new ErrorHandler(null, "AOP Before Method invoke error: "
+                    return new ErrorViewHandler(null, "AOP Before Method invoke error: "
                             + e.getMessage(), HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                             .doErrorPage(request, response);
                 }
                 catch (InvocationTargetException e) {
-                    return new ErrorHandler(e.getTargetException(),
+                    return new ErrorViewHandler(e.getTargetException(),
                             "AOP Before Method invoke error",
                             HttpServletResponse.SC_INTERNAL_SERVER_ERROR).doErrorPage(request,
                             response);
                 }
                 catch (Throwable e) {
-                    return new ErrorHandler(e, "AOP Before Method invoke error",
+                    return new ErrorViewHandler(e, "AOP Before Method invoke error",
                             HttpServletResponse.SC_INTERNAL_SERVER_ERROR).doErrorPage(request,
                             response);
                 }
@@ -106,7 +105,7 @@ public abstract class HandlerMetaInfo {
             if (v != null) {
                 return v;
             }
-            return new ErrorHandler(null, "handler invoke error: " + e.getMessage(),
+            return new ErrorViewHandler(null, "handler invoke error: " + e.getMessage(),
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR).doErrorPage(request, response);
         }
         catch (InvocationTargetException e) {
@@ -114,7 +113,7 @@ public abstract class HandlerMetaInfo {
             if (v != null) {
                 return v;
             }
-            return new ErrorHandler(e.getTargetException(), "handler invoke error",
+            return new ErrorViewHandler(e.getTargetException(), "handler invoke error",
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR).doErrorPage(request, response);
         }
         catch (Throwable e) {
@@ -122,7 +121,7 @@ public abstract class HandlerMetaInfo {
             if (v != null) {
                 return v;
             }
-            return new ErrorHandler(e, "handler invoke error",
+            return new ErrorViewHandler(e, "handler invoke error",
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR).doErrorPage(request, response);
         }
 

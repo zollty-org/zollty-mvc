@@ -18,13 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.zollty.framework.mvc.handler.DispatcherController;
+import org.zollty.framework.mvc.servlet.HttpRequestHandler;
 
 /**
  * @author zollty
  * @since 2013-6-02
  */
-public class DispatcherServlet extends DispatcherController {
+public class DispatcherServlet extends HttpRequestHandler {
 
     /**
      * serialVersionUID

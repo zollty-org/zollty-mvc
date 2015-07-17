@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-16 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.handler;
+package org.zollty.framework.mvc.handler.support;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -20,10 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.support.BeanDefinition;
+import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.mvc.aop.annotation.AopMapping;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
-import org.zollty.framework.mvc.handler.support.ControllerResource;
+import org.zollty.framework.mvc.handler.AbstractHandlerMapping;
 import org.zollty.framework.mvc.support.ControllerBeanDefinition;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.framework.util.MvcUtils;
@@ -36,14 +37,13 @@ import org.zollty.util.NestedRuntimeException;
  * @author zollty
  * @since 2013-9-16
  */
-public class HttpServletDispatcherHandler extends AbstractHandlerMapping {
+public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
 
-    private Logger log = LogFactory.getLogger(HttpServletDispatcherHandler.class);
+    private Logger log = LogFactory.getLogger(HttpRequestHandlerMapping.class);
 
     protected final ControllerResource controllerResource;
 
-    public HttpServletDispatcherHandler(List<BeanDefinition> beanDefinitions,
-            IApplicationConfig config) {
+    public HttpRequestHandlerMapping(List<BeanDefinition> beanDefinitions, IApplicationConfig config) {
         super(config);
 
         controllerResource = new ControllerResource();
@@ -52,7 +52,7 @@ public class HttpServletDispatcherHandler extends AbstractHandlerMapping {
     }
 
     @Override
-    public WebHandler match(String servletURI, HttpServletRequest request) {
+    public ViewHandler match(String servletURI, HttpServletRequest request) {
         return controllerResource.getHandler(servletURI, request);
     }
 
@@ -122,8 +122,7 @@ public class HttpServletDispatcherHandler extends AbstractHandlerMapping {
             // 首先第一步，解析class上面的AOP注解
             String[] uriMatch = bean.getObject().getClass().getAnnotation(AopMapping.class).value();
             for (String value : uriMatch) {
-                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value,
-                        ":");
+                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value, ":");
                 // TODO
                 String uri = null;
                 if (array.length == 1) {

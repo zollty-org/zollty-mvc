@@ -19,7 +19,7 @@ import javax.servlet.ServletContext;
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.core.support.xml.XmlBeanReader;
-import org.zollty.framework.mvc.handler.HttpServletDispatcherHandler;
+import org.zollty.framework.mvc.handler.support.HttpRequestHandlerMapping;
 import org.zollty.framework.util.ResourceContext;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -56,7 +56,7 @@ public class WebXmlApplicationContext extends AbstractWebApplicationContext {
 
     @Override
     protected void doAfterRefresh() {
-        handlerMapping = new HttpServletDispatcherHandler(beanDefinitions, getConfig());
+        handlerMapping = new HttpRequestHandlerMapping(beanDefinitions, getConfig());
 
         if( log.isDebugEnabled() )
         log.debug("{} completed in {} ms.", getClass().getSimpleName(),

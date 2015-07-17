@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-6-02 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.handler;
+package org.zollty.framework.mvc.servlet;
 
 import java.io.IOException;
 
@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.handler.support.ErrorHandler;
-import org.zollty.framework.mvc.servlet.HttpServletBean;
+import org.zollty.framework.mvc.ViewHandler;
+import org.zollty.framework.mvc.handler.ErrorViewHandler;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -29,9 +29,9 @@ import org.zollty.log.Logger;
  * @since 2013-6-02
  */
 @SuppressWarnings("serial")
-abstract public class DispatcherController extends HttpServletBean {
+abstract public class HttpRequestHandler extends HttpServletBean {
 
-    private Logger log = LogFactory.getLogger(DispatcherController.class);
+    private Logger log = LogFactory.getLogger(HttpRequestHandler.class);
 
     abstract public void dispatcher(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException;
@@ -58,11 +58,11 @@ abstract public class DispatcherController extends HttpServletBean {
         // request, response);
         // return;
         // }
-        WebHandler handler = handlerMapping.match(servletURI, request);
+        ViewHandler handler = handlerMapping.match(servletURI, request);
 
         if (handler == null) { // 没有找到处理器 404
-            new ErrorHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).render(request, response);
+            new ErrorViewHandler(null, request.getRequestURI() + " not found",
+                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
             return;
         }
 
@@ -72,8 +72,8 @@ abstract public class DispatcherController extends HttpServletBean {
         // 返回View为null，此时一般是在该方法内，直接采用了response返回，故需要判断response是否提交，若没提交，则认为是出错了
         if (v == null) {
             if (!response.isCommitted()) {
-                new ErrorHandler(null, "Server internal error",
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR).render(request, response);
+                new ErrorViewHandler(null, "Server internal error",
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR).renderView(request, response);
             }
             return;
         }
@@ -82,8 +82,8 @@ abstract public class DispatcherController extends HttpServletBean {
             v.render(request, response);
         }
         catch (Throwable t) {
-            new ErrorHandler(t, "dispatcher error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                    .render(request, response);
+            new ErrorViewHandler(t, "dispatcher error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .renderView(request, response);
             return;
         }
     }

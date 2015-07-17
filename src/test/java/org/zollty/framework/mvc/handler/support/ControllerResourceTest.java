@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
+import org.zollty.framework.mvc.handler.ControllerViewHandler;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.framework.util.MvcReflectUtils;
 
@@ -64,7 +65,7 @@ public class ControllerResourceTest {
         ControllerMetaInfo cm = new ControllerMetaInfo(null, me, new String[] { "GET" }, uriPattern, null);
         ControllerResource cr = new ControllerResource();
         cr.addController(cm);
-        ControllerHandler ha = (ControllerHandler) cr.getHandler(servletURI, new FakeHttpServletRequest("GET"));
+        ControllerViewHandler ha = (ControllerViewHandler) cr.getHandler(servletURI, new FakeHttpServletRequest("GET"));
         assertNotNull(ha);
         assertEquals(ha.getParamsMap(), params);
     }

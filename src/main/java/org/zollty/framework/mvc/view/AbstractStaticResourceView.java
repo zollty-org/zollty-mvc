@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.context.ContextLoader;
-import org.zollty.framework.mvc.handler.support.ErrorHandler;
+import org.zollty.framework.mvc.handler.ErrorViewHandler;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.tool.web.ServletFileDownload;
 
@@ -51,8 +51,8 @@ abstract public class AbstractStaticResourceView implements View {
                     null, ContextLoader.getCurrentWebApplicationContext().getServletContext());
         }
         catch (Exception e) {
-            new ErrorHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).render(request, response);
+            new ErrorViewHandler(null, request.getRequestURI() + " not found",
+                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
             return;
         }
         if (in != null) {

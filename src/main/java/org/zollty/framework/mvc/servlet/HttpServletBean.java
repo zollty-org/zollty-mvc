@@ -15,10 +15,10 @@ package org.zollty.framework.mvc.servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import org.zollty.framework.mvc.HandlerMapping;
 import org.zollty.framework.mvc.context.ContextLoader;
 import org.zollty.framework.mvc.context.WebApplicationContext;
 import org.zollty.framework.mvc.context.WebApplicationContextUtils;
-import org.zollty.framework.mvc.handler.HandlerMapping;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
