@@ -22,7 +22,6 @@ import org.zollty.framework.core.annotation.Component;
 import org.zollty.framework.core.annotation.Inject;
 import org.zollty.framework.core.support.AbstractBeanReader;
 import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.util.MvcReflectUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -128,7 +127,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
         String id = component.value();
         annotationBeanDefinition.setId(id);
 
-        String[] names = MvcReflectUtils.getInterfaceNames(c);
+        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c);
         annotationBeanDefinition.setInterfaceNames(names);
 
         List<Field> fields = getInjectField(c);

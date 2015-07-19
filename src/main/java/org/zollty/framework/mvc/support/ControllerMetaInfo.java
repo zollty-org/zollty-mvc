@@ -23,8 +23,7 @@ import org.zollty.framework.mvc.annotation.HttpParam;
 import org.zollty.framework.mvc.annotation.URIParam;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.handler.HandlerMetaInfo;
-import org.zollty.framework.util.MvcConvertUtils;
-import org.zollty.framework.util.MvcReflectUtils;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -63,7 +62,7 @@ public class ControllerMetaInfo extends HandlerMetaInfo {
             if (anno != null) {
                 if (anno.annotationType().equals(HttpParam.class)) {
                     HttpParam httpParam = (HttpParam) anno;
-                    if (MvcConvertUtils.canConvert(paraTypes[i]) != null) {
+                    if (MvcUtils.ConvertUtil.canConvert(paraTypes[i]) != null) {
                         // 数据类型为主要类型，可以直接转换，比如int、Long等
                         bParamMetas[i] = new BasicParamMetaInfo(paraTypes[i], httpParam.value(),
                                 httpParam.setAttr());
@@ -72,13 +71,13 @@ public class ControllerMetaInfo extends HandlerMetaInfo {
                     else {
                         // 数据类型为复合类型，需要调用标准setter赋值
                         ParamMetaInfo paramMetaInfo = new ParamMetaInfo(paraTypes[i],
-                                MvcReflectUtils.getSetterMethods(paraTypes[i]), httpParam.value());
+                                MvcUtils.ReflectUtil.getSetterMethods(paraTypes[i]), httpParam.value());
                         paramMetaInfos[i] = paramMetaInfo;
                         paramType[i] = BasicParamMetaInfo.HTTP_BEAN;
                     }
                 }
                 else if (anno.annotationType().equals(URIParam.class)) {
-                    if (MvcConvertUtils.canConvert(paraTypes[i]) != null) {
+                    if (MvcUtils.ConvertUtil.canConvert(paraTypes[i]) != null) {
                         URIParam pv = (URIParam) anno;
                         bParamMetas[i] = new BasicParamMetaInfo(paraTypes[i], pv.value(), false);
                         paramType[i] = BasicParamMetaInfo.URI_PARAM;

@@ -23,7 +23,6 @@ import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.support.BasicParamMetaInfo;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
 import org.zollty.framework.mvc.support.ParamMetaInfo;
-import org.zollty.framework.util.MvcConvertUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.util.BasicRuntimeException;
 
@@ -175,7 +174,7 @@ public class ControllerViewHandler implements ViewHandler, InvokeParamsAdapter {
             case BasicParamMetaInfo.URI_PARAM:
                 BasicParamMetaInfo pb = bParamMetas[i];
                 String sval = paramsMap.get(pb.getAttribute());
-                p[i] = MvcConvertUtils.convert(sval, pb.getParamClass());
+                p[i] = MvcUtils.ConvertUtil.convert(sval, pb.getParamClass());
                 if (pb.isSetAttr()) {
                     request.setAttribute(pb.getAttribute(), p[i]); // 默认行为：注入到request中
                 }

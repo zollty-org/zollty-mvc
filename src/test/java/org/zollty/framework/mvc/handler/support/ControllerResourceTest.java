@@ -39,7 +39,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Test;
 import org.zollty.framework.mvc.handler.ControllerViewHandler;
 import org.zollty.framework.mvc.support.ControllerMetaInfo;
-import org.zollty.framework.util.MvcReflectUtils;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -61,7 +61,7 @@ public class ControllerResourceTest {
     }
 
     private static void runURIMapping(String uriPattern, String servletURI, HashMap<String, String> params) {
-        Method me = MvcReflectUtils.findMethod(Pattern.class, "compile");
+        Method me = MvcUtils.ReflectUtil.findMethod(Pattern.class, "compile");
         ControllerMetaInfo cm = new ControllerMetaInfo(null, me, new String[] { "GET" }, uriPattern, null);
         ControllerResource cr = new ControllerResource();
         cr.addController(cm);

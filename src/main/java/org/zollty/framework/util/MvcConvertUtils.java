@@ -21,7 +21,7 @@ import java.util.Map;
  * @author zollty
  * @since 2013-9-11
  */
-public class MvcConvertUtils {
+class MvcConvertUtils {
 
     /**
      * check if the class can be convert by this utils
@@ -45,16 +45,16 @@ public class MvcConvertUtils {
         if (p != null)
             ret = p.parse(value);
         else {
-            if (MvcVerifyUtils.isInteger(value)) {
+            if (MvcUtils.VerifyUtil.isInteger(value)) {
                 ret = Integer.parseInt(value);
             }
-            else if (MvcVerifyUtils.isLong(value)) {
+            else if (MvcUtils.VerifyUtil.isLong(value)) {
                 ret = Long.parseLong(value);
             }
-            else if (MvcVerifyUtils.isDouble(value)) {
+            else if (MvcUtils.VerifyUtil.isDouble(value)) {
                 ret = Double.parseDouble(value);
             }
-            else if (MvcVerifyUtils.isFloat(value)) {
+            else if (MvcUtils.VerifyUtil.isFloat(value)) {
                 ret = Float.parseFloat(value);
             }
             else
@@ -76,16 +76,16 @@ public class MvcConvertUtils {
         if (p != null)
             ret = p.parse(value);
         else {
-            if (MvcVerifyUtils.isInteger(value)) {
+            if (MvcUtils.VerifyUtil.isInteger(value)) {
                 ret = Integer.parseInt(value);
             }
-            else if (MvcVerifyUtils.isLong(value)) {
+            else if (MvcUtils.VerifyUtil.isLong(value)) {
                 ret = Long.parseLong(value);
             }
-            else if (MvcVerifyUtils.isDouble(value)) {
+            else if (MvcUtils.VerifyUtil.isDouble(value)) {
                 ret = Double.parseDouble(value);
             }
-            else if (MvcVerifyUtils.isFloat(value)) {
+            else if (MvcUtils.VerifyUtil.isFloat(value)) {
                 ret = Float.parseFloat(value);
             }
             else

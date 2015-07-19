@@ -26,7 +26,6 @@ import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.mvc.aop.MvcBefore;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.support.ControllerBeanDefinition;
-import org.zollty.framework.util.MvcReflectUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -101,7 +100,7 @@ public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         String id = getId(c);
         beanDefinition.setId(id);
 
-        String[] names = MvcReflectUtils.getInterfaceNames(c);
+        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c);
         beanDefinition.setInterfaceNames(names);
 
         List<Field> fields = getInjectField(c);

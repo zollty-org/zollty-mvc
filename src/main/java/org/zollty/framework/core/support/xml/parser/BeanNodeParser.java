@@ -31,7 +31,6 @@ import org.zollty.framework.core.support.xml.GenericXmlBeanDefinition;
 import org.zollty.framework.core.support.xml.ManagedRef;
 import org.zollty.framework.core.support.xml.ManagedValue;
 import org.zollty.framework.core.support.xml.XmlBeanDefinition;
-import org.zollty.framework.util.MvcReflectUtils;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.dom.Dom;
 import org.zollty.log.LogFactory;
@@ -132,7 +131,7 @@ public class BeanNodeParser {
             xmlBeanDefinition.setObject(obj);
 
             // 取得接口名称
-            String[] names = MvcReflectUtils.getInterfaceNames(clazz);
+            String[] names = MvcUtils.ReflectUtil.getInterfaceNames(clazz);
             xmlBeanDefinition.setInterfaceNames(names);
             log.info("class [" + className + "] names size [" + names.length + "]");
 
@@ -168,7 +167,7 @@ public class BeanNodeParser {
                 //
                 xmlBeanDefinition.setClassName(clazz.getName());
                 // 取得接口名称
-                String[] names = MvcReflectUtils.getInterfaceNames(clazz); // new String[]{};
+                String[] names = MvcUtils.ReflectUtil.getInterfaceNames(clazz); // new String[]{};
                 xmlBeanDefinition.setInterfaceNames(names);
                 log.debug("class [" + className + "] names size [" + names.length + "]");
 

@@ -26,7 +26,7 @@ import org.zollty.util.Assert;
  * @author zollty
  * @since 2013-9-11
  */
-public class MvcReflectUtils {
+class MvcReflectUtils {
 
     /**
      * 获取所有接口名称

@@ -64,6 +64,16 @@ public class MvcUtils {
     }
     
     
+    public static class ConvertUtil extends MvcConvertUtils {
+    }
+    
+    public static class ReflectUtil extends MvcReflectUtils {
+    }
+    
+    public static class VerifyUtil extends MvcVerifyUtils {
+    }
+    
+    
     public static class StringSplitUtil extends StringSplitUtils {
     }
 

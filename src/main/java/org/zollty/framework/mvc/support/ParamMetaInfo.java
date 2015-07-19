@@ -14,7 +14,8 @@ package org.zollty.framework.mvc.support;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-import org.zollty.framework.util.MvcConvertUtils;
+
+import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -55,7 +56,7 @@ public class ParamMetaInfo {
             Method m = beanSetMethod.get(key);
             if (m != null) {
                 Class<?> p = m.getParameterTypes()[0];
-                m.invoke(o, MvcConvertUtils.convert(value, p));
+                m.invoke(o, MvcUtils.ConvertUtil.convert(value, p));
             }
         }
         catch (Throwable t) {

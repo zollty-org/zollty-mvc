@@ -37,9 +37,6 @@ import org.zollty.framework.core.support.xml.ManagedMap;
 import org.zollty.framework.core.support.xml.ManagedRef;
 import org.zollty.framework.core.support.xml.ManagedValue;
 import org.zollty.framework.core.support.xml.XmlBeanDefinition;
-import org.zollty.framework.util.MvcConvertUtils;
-import org.zollty.framework.util.MvcReflectUtils;
-import org.zollty.framework.util.MvcReflectUtils.BeanMethodFilter;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -278,7 +275,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
         // 遍历所有注册的set方法注入，比如 setAge() 方法，获取到该method，找到该属性的properties value，
         // 然后调用 getInjectArg(value, setterParamType) 获取参数的实例，根据method获取method参数的类型，
         // 比如age，是 int类型，那么 getInjectArg(value, method) 取得的就是 int类型。
-        MvcReflectUtils.getSetterMethods(clazz, new BeanMethodFilter() {
+        MvcUtils.ReflectUtil.getSetterMethods(clazz, new MvcUtils.ReflectUtil.BeanMethodFilter() {
             @Override
             public boolean accept(String propertyName, Method method) {
                 Object value = properties.get(propertyName);
@@ -311,7 +308,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
                 beanDefinition.setObject(result);
                 beanDefinition.setClassName(result.getClass().getName());
                 // 取得接口名称
-                String[] names = MvcReflectUtils.getInterfaceNames(result.getClass());
+                String[] names = MvcUtils.ReflectUtil.getInterfaceNames(result.getClass());
                 beanDefinition.setInterfaceNames(names);
             }
             catch (Throwable t) {
@@ -364,7 +361,7 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
             typeName = setterParamType.getName();
         }
         // log.debug("value type - " + typeName);
-        return MvcConvertUtils.convert(managedValue.getValue(), typeName);
+        return MvcUtils.ConvertUtil.convert(managedValue.getValue(), typeName);
     }
 
     private Object getRefArg(Object value) {

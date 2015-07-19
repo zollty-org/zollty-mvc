@@ -14,7 +14,7 @@ package org.zollty.framework.mvc.support;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.zollty.framework.util.MvcConvertUtils;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -71,7 +71,7 @@ public class BasicParamMetaInfo {
 
     public Object getValue(HttpServletRequest request) {
         this.orgValue = request.getParameter(attribute);
-        return MvcConvertUtils.convert(this.orgValue, this.getParamClass());
+        return MvcUtils.ConvertUtil.convert(this.orgValue, this.getParamClass());
     }
 
 }

@@ -17,7 +17,7 @@ package org.zollty.framework.util;
  * @author zollty
  * @since 2013-6-26
  */
-public abstract class MvcVerifyUtils {
+abstract class MvcVerifyUtils {
 
     public static boolean isNumeric(String str) {
         if (isEmpty(str))
