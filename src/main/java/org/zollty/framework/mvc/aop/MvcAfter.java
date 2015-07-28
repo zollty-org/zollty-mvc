@@ -12,11 +12,16 @@
  */
 package org.zollty.framework.mvc.aop;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 
  * @author zollty
  * @since 2015-2-15
  */
 public interface MvcAfter {
+    
+    void doAfter(HttpServletRequest request, HttpServletResponse response);
 
 }

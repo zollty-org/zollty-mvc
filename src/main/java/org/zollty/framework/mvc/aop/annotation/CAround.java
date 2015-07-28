@@ -18,7 +18,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.zollty.framework.mvc.aop.MvcAfter;
+import org.zollty.framework.mvc.aop.MvcAround;
 
 /**
  * 
@@ -28,8 +28,8 @@ import org.zollty.framework.mvc.aop.MvcAfter;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CAfter {
+public @interface CAround {
 
-    Class<? extends MvcAfter>[] value();
+    Class<? extends MvcAround>[] value();
 
 }

@@ -27,7 +27,6 @@ import org.zollty.framework.util.dom.DefaultDom;
 import org.zollty.framework.util.dom.Dom;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.util.IOUtils;
 import org.zollty.util.NestedRuntimeException;
 
 /**
@@ -85,7 +84,7 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
             in = getResourceInputStream();
         }
         catch (IOException e) {
-            IOUtils.closeIO(in);
+            MvcUtils.IOUtil.closeIO(in);
             throw new NestedRuntimeException(e);
         }
 

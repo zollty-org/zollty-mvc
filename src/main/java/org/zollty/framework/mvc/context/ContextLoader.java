@@ -41,15 +41,15 @@ public class ContextLoader {
      * Name of servlet context parameter (i.e. {@value} ) that can specify the config location for
      * the root context, falling back to the implementation's default otherwise.
      * 
-     * @see org.zollty.framework.core.Const#DEFAULT_CONFIG_LOCATION
+     * @see org.zollty.framework.core.Const#DEFAULT_CONFIG_LOCATION_XML
      */
     public static final String CONFIG_LOCATION_PARAM = "_zollty_mvc_context";
 
     /**
      * Map from (thread context) ClassLoader to corresponding 'current' WebApplicationContext.
      */
-    private static final Map<ClassLoader, WebApplicationContext> currentContextPerThread = new ConcurrentHashMap<ClassLoader, WebApplicationContext>(
-            1);
+    private static final Map<ClassLoader, WebApplicationContext> currentContextPerThread = 
+            new ConcurrentHashMap<ClassLoader, WebApplicationContext>(1);
 
     /**
      * The 'current' WebApplicationContext, if the ContextLoader class is deployed in the web app
@@ -64,8 +64,9 @@ public class ContextLoader {
 
     public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
 
-        if (servletContext
-                .getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
+        if (servletContext.getAttribute(
+                WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
+            
             throw new IllegalStateException(
                     "Cannot initialize context because there is already a root application context present - "
                             + "check whether you have multiple ContextLoader* definitions in your web.xml!");
@@ -74,7 +75,6 @@ public class ContextLoader {
         logger.info("Root WebApplicationContext initialization started ------------------");
 
         long startTime = System.currentTimeMillis();
-
         try {
             // Store context in local instance variable, to guarantee that
             // it is available on ServletContext shutdown.
@@ -108,10 +108,12 @@ public class ContextLoader {
     }
 
     protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+
         String configLocation = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 
-        if (null != configLocation)
+        if (null != configLocation) {
             logger.info("CONFIG_LOCATION at Context initParameter = " + configLocation);
+        }
 
         if (configLocation == null) {
             configLocation = Const.DEFAULT_CONFIG_LOCATION_XML;

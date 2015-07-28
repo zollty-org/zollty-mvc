@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.mvc.HandlerMapping;
+import org.zollty.framework.mvc.view.ErrorView;
 import org.zollty.framework.mvc.view.HtmlView;
 import org.zollty.framework.mvc.view.JsonView;
 import org.zollty.framework.mvc.view.JspView;
@@ -41,7 +42,7 @@ abstract public class AbstractHandlerMapping implements HandlerMapping {
         this.encoding = encoding;
 
         JspView.setViewPath(config.getViewPath());
-        ErrorViewHandler.setErrorPage(config.getErrorPagePath());
+        ErrorView.setErrorPage(config.getErrorPagePath());
 
         this.excludePrefix = config.getExcludePrefixes();
         this.excludeSuffix = config.getExcludeSuffixes();

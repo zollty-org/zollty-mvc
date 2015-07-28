@@ -19,7 +19,6 @@ import javax.servlet.ServletContext;
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.mvc.handler.support.HttpRequestHandlerMapping;
-import org.zollty.framework.mvc.support.annotation.WebAnnotationBeanReader;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -57,13 +56,15 @@ public class WebAnnotationApplicationContext extends AbstractWebApplicationConte
     @Override
     protected void doAfterRefresh() {
 
-        new BeanAopAnnotationParser(beanDefinitions);
+        // 解析Controller中的AOP定义
+        new ControllerAopAnnotationParser(beanDefinitions);
 
         handlerMapping = new HttpRequestHandlerMapping(beanDefinitions, getConfig());
 
-        if( log.isDebugEnabled() )
-        log.debug("{} completed in {} ms.", getClass().getSimpleName(),
-                (System.currentTimeMillis() - beginTimeMs));
+        if (log.isDebugEnabled()) {
+            log.debug("{} completed in {} ms.", getClass().getSimpleName(),
+                    (System.currentTimeMillis() - beginTimeMs));
+        }
     }
 
     @Override

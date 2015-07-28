@@ -17,12 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.zollty.framework.mvc.ViewHandler;
-import org.zollty.framework.mvc.handler.ControllerViewHandler;
-import org.zollty.framework.mvc.support.BasicParamMetaInfo;
-import org.zollty.framework.mvc.support.ControllerMetaInfo;
+import org.zollty.framework.core.Const;
+import org.zollty.framework.core.Const.ControllerMethodParamType;
+import org.zollty.framework.mvc.handler.ControllerMeta;
+import org.zollty.framework.mvc.handler.PrimParamMeta;
+import org.zollty.framework.mvc.handler.RequestViewHandler;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 import org.zollty.util.match.ZolltyPathMatcher;
@@ -31,29 +30,56 @@ import org.zollty.util.match.ZolltyPathMatcher;
  * @author zollty
  * @since 2014-5-29
  */
-public class ControllerHandlerPattern {
+class ControllerHandlerPattern {
 
     private static Logger LOG = LogFactory.getLogger(ControllerHandlerPattern.class);
 
-    private final ControllerMetaInfo controller;
+    private ControllerMeta meta;
     private ZolltyPathMatcher pattern;
-    private final List<String> paramsName;
-    private final String patternStr;
+    private List<String> paramsName;
+    private String patternStr;
 
     /**
-     * @param controller
+     * @param meta
      * @param paramsName
      */
-    public ControllerHandlerPattern(ControllerMetaInfo controller, List<String> paramsName) {
-        this.controller = controller;
+    public ControllerHandlerPattern(ControllerMeta meta, List<String> paramsName) {
+        this.meta = meta;
         this.paramsName = paramsName;
 
+        this.initContext();
+    }
+
+    public RequestViewHandler getHandler(String servletURI, String method) {
+        if (!meta.allowMethod(method)) {
+            return null;
+        }
+        List<String> valueList = pattern.match(servletURI);
+        if (valueList != null) {
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            for (int i = 0; i < paramsName.size(); i++) {
+                paramsMap.put(paramsName.get(i), valueList.get(i));
+            }
+            return new RequestViewHandler(meta, paramsMap);
+        }
+        return null;
+    }
+
+    public ControllerMeta getMeta() {
+        return meta;
+    }
+
+    public String getPatternStr() {
+        return patternStr;
+    }
+
+    private void initContext() {
         // Check Params
-        byte[] paramType = controller.getParamType();
-        BasicParamMetaInfo[] bParamMetas = controller.getbParamMetas();
+        ControllerMethodParamType[] paramType = meta.getParamType();
+        PrimParamMeta[] paramMetaPrims = meta.getParamMetaPrims();
         for (int i = 0; i < paramType.length; i++) {
-            if (paramType[i] == BasicParamMetaInfo.URI_PARAM) {
-                BasicParamMetaInfo pb = bParamMetas[i];
+            if (paramType[i] == Const.ControllerMethodParamType.URIParam) {
+                PrimParamMeta pb = paramMetaPrims[i];
                 int pos = Arrays.binarySearch(paramsName.toArray(new String[paramsName.size()]),
                         pb.getAttribute());
                 // 如果参数的名称是在 URI 参数列表中，则OK，否则报错。
@@ -66,7 +92,7 @@ public class ControllerHandlerPattern {
 
         }
 
-        String pstr = controller.getServletURI();
+        String pstr = meta.getServletURI();
         for (String str : paramsName) {
             pstr = pstr.replace("{" + str + "}", "*");
             pstr = pstr.replace("[" + str + "]", "**");
@@ -75,37 +101,11 @@ public class ControllerHandlerPattern {
             throw new IllegalArgumentException(
                     "URI definition error, any two variables can't be connected. such as /{v1}{v2}/ is BAD. /{v1}-{v2}/ is OK.");
         }
-        pattern = new ZolltyPathMatcher(pstr);
         
         LOG.debug("URI Real Pattern={}", pstr);
-        patternStr = pstr;
-    }
-
-    public ViewHandler getHandler(String servletURI, String method) {
-        if (!controller.allowMethod(method)) {
-            return null;
-        }
-        List<String> valueList = pattern.match(servletURI);
-        if (valueList != null) {
-            Map<String, String> paramsMap = new HashMap<String, String>();
-            for (int i = 0; i < paramsName.size(); i++) {
-                paramsMap.put(paramsName.get(i), valueList.get(i));
-            }
-            return new ControllerViewHandler(controller, paramsMap);
-        }
-        return null;
-    }
-
-    public ViewHandler getHandler(String servletURI, HttpServletRequest request) {
-        return getHandler(servletURI, request.getMethod());
-    }
-
-    public ControllerMetaInfo getController() {
-        return controller;
-    }
-
-    public String getPatternStr() {
-        return patternStr;
+        this.pattern = new ZolltyPathMatcher(pstr);
+        
+        this.patternStr = pstr;
     }
 
 }

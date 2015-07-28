@@ -8,28 +8,22 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
+ * Create by ZollTy on 2015-7-23 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc;
+package org.zollty.framework.mvc.aop;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.zollty.framework.mvc.View;
+
 /**
+ * 
  * @author zollty
- * @since 2013-9-15
+ * @since 2015-7-23
  */
-public interface ViewHandler {
+public interface MvcBeforeRender {
 
-    /**
-     * 取得处理后得到的View
-     */
-    View getView(HttpServletRequest request, HttpServletResponse response);
-
-    /**
-     * 在View渲染完之后执行的 MvcAfter AOP Interceptor
-     * @see org.zollty.framework.mvc.aop.MvcAfter
-     */
-    void doAtfer(HttpServletRequest request, HttpServletResponse response);
+    View doBeforeRender(HttpServletRequest request, HttpServletResponse response);
 
 }

@@ -12,43 +12,15 @@
  */
 package org.zollty.framework.mvc.aop.bean;
 
-import java.lang.reflect.Method;
-
-import org.zollty.framework.core.support.annotation.GenericAnnotationBeanDefinition;
-
 /**
  * @author zollty
  * @since 2015-2-15
  */
-public class MvcBeforeBeanDefinition extends GenericAnnotationBeanDefinition implements AopBeanDefinition {
-
-    private Method disposeMethod;
-
-    private int order;
-
-    @Override
-    public Method getDisposeMethod() {
-        return disposeMethod;
-    }
-
-    @Override
-    public void setDisposeMethod(Method disposeMethod) {
-        this.disposeMethod = disposeMethod;
-    }
-
-    @Override
-    public int getOrder() {
-        return order;
-    }
-
-    @Override
-    public void setOrder(int order) {
-        this.order = order;
-    }
+public class MvcBeforeBeanDefinition extends DefaultMvcAopBeanDefinition {
 
     @Override
     public String toString() {
-        return "MvcBeforeBeanDefinition [id=" + getId() + ", className=" + getClassName() + "]";
+        return "MvcBefore [uriPattern=" + getUriPattern() + ", order=" + getOrder() + ", class="
+                + getClassName() + "]";
     }
-
 }

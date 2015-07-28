@@ -13,20 +13,22 @@
 package org.zollty.framework.mvc.handler.support;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.zollty.framework.core.Const;
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.mvc.aop.annotation.AopMapping;
-import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
+import org.zollty.framework.mvc.aop.bean.AopBeanDefinition;
+import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 import org.zollty.framework.mvc.handler.AbstractHandlerMapping;
-import org.zollty.framework.mvc.support.ControllerBeanDefinition;
-import org.zollty.framework.mvc.support.ControllerMetaInfo;
+import org.zollty.framework.mvc.handler.ControllerMeta;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -41,23 +43,24 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
 
     private Logger log = LogFactory.getLogger(HttpRequestHandlerMapping.class);
 
-    protected final ControllerResource controllerResource;
+    private ViewHandlerFactory viewHandlerFactory = new ViewHandlerFactory();
 
     public HttpRequestHandlerMapping(List<BeanDefinition> beanDefinitions, IApplicationConfig config) {
         super(config);
 
-        controllerResource = new ControllerResource();
-
-        initContext(beanDefinitions);
+        this.initContext(beanDefinitions);
     }
 
     @Override
     public ViewHandler match(String servletURI, HttpServletRequest request) {
-        return controllerResource.getHandler(servletURI, request);
+        return viewHandlerFactory.getHandler(servletURI, request);
     }
 
+    
     private void initContext(List<BeanDefinition> beanDefinitions) {
-        // List<InterceptorMetaInfo> interceptorList = new LinkedList<InterceptorMetaInfo>();
+
+        addAopIntercList(beanDefinitions);
+
         for (BeanDefinition beanDef : beanDefinitions) {
             if (beanDef instanceof ControllerBeanDefinition) {
                 ControllerBeanDefinition beanDefinition = (ControllerBeanDefinition) beanDef;
@@ -95,9 +98,8 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
                         uri = uriPrefix + uri;
                     }
                     try {
-                        controllerResource.addController(new ControllerMetaInfo(beanDefinition
-                                .getObject(), method, allowHttpMethods, uri,
-                                parseBeforeValueMethod(beanDefinition, method, beanDefinitions)));
+                        viewHandlerFactory.addControllerMeta(new ControllerMeta(beanDefinition,
+                                method, allowHttpMethods, uri));
                         log.debug("controller uri: {} {}", uri, Arrays.toString(allowHttpMethods));
                     }
                     catch (BasicRuntimeException e) {
@@ -109,68 +111,52 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
         }
     }
 
-    private MvcBeforeBeanDefinition[] parseBeforeValueMethod(
-            ControllerBeanDefinition beanDefinition, Method method,
-            List<BeanDefinition> beanDefinitions) {
+    public void addAopIntercList(List<BeanDefinition> beanDefinitions) {
 
+        List<AopBeanDefinition> aopIntercList = new ArrayList<AopBeanDefinition>();
         for (BeanDefinition bean : beanDefinitions) {
-            if (!(bean instanceof MvcBeforeBeanDefinition)
+            if (!(bean instanceof AopBeanDefinition)
                     || !bean.getObject().getClass().isAnnotationPresent(AopMapping.class)) {
                 continue;
             }
-            MvcBeforeBeanDefinition bd = (MvcBeforeBeanDefinition) bean;
+            AopBeanDefinition bd = (AopBeanDefinition) bean;
             // 首先第一步，解析class上面的AOP注解
             String[] uriMatch = bean.getObject().getClass().getAnnotation(AopMapping.class).value();
             for (String value : uriMatch) {
-                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value, ":");
-                // TODO
-                String uri = null;
+                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value,
+                        ":");
+                String uriPattern = null;
                 if (array.length == 1) {
-                    uri = value;
-                    bd.setOrder(0);
+                    uriPattern = value;
+                    bd.setOrder(Const.DEFAULT_BEFORE_AOP_MAPPING_ORDER);
+                    bd.setUriPattern(uriPattern);
                 }
                 else { // length==2
-                    uri = array[1].trim();
+                    uriPattern = array[1].trim();
                     bd.setOrder(Integer.valueOf(array[0].trim()));
+                    bd.setUriPattern(uriPattern);
                 }
             }
-
+            aopIntercList.add(bd);
+            log.info(bd);
         }
 
-        List<MvcBeforeBeanDefinition> mb = beanDefinition.getReqMethodsAOP() == null ? null
-                : beanDefinition.getReqMethodsAOP().get(method);
-
-        if (mb == null) {
-            return null;
+        // 排序：从小到大
+        int len = aopIntercList.size();
+        int order;
+        AopBeanDefinition temp;
+        for (int i = 0; i < len; i++) {
+            for (int j = i + 1; j < len; j++) {
+                order = aopIntercList.get(i).getOrder();
+                if (order > aopIntercList.get(j).getOrder()) {
+                    temp = aopIntercList.get(i);
+                    aopIntercList.set(i, aopIntercList.get(j));
+                    aopIntercList.set(j, temp);
+                }
+            }
         }
 
-        int len = mb.size();
-        // // check duplication
-        // for (int i = 0; i < len; i++) {
-        // for (int j = i + 1; j < len; j++) {
-        // if (mb.get(i).equals(mb.get(j))) {
-        // log.warn(mb.get(i).getClassName() + " duplicate at " + beanDefinition.getClassName() +
-        // "#"
-        // + method.getName());
-        // }
-        // }
-        // }
-
-        // // 排序：从小到大
-        // MvcBeforeBeanDefinition temp;
-        // int fpos;
-        // for (int i = 0; i < len; i++) {
-        // for (int j = i + 1; j < len; j++) {
-        // fpos = mb[i].getOrder();
-        // if (fpos > mb[j].getOrder()) {
-        // temp = mb[i];
-        // mb[i] = mb[j];
-        // mb[j] = temp;
-        // }
-        // }
-        // }
-
-        return mb.toArray(new MvcBeforeBeanDefinition[len]);
+        viewHandlerFactory.setAopIntercList(aopIntercList);
     }
 
 }

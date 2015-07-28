@@ -10,26 +10,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc;
+package org.zollty.framework.mvc.context;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.mvc.aop.ControllerAopDefinition;
 
 /**
+ * 
  * @author zollty
  * @since 2013-9-15
  */
-public interface ViewHandler {
+public interface ControllerBeanDefinition extends AnnotationBeanDefinition, ControllerAopDefinition {
 
-    /**
-     * 取得处理后得到的View
-     */
-    View getView(HttpServletRequest request, HttpServletResponse response);
+    String getUriPrefix();
 
-    /**
-     * 在View渲染完之后执行的 MvcAfter AOP Interceptor
-     * @see org.zollty.framework.mvc.aop.MvcAfter
-     */
-    void doAtfer(HttpServletRequest request, HttpServletResponse response);
+    void setUriPrefix(String uriPrefix);
 
+    List<Method> getReqMethods();
+
+    void setReqMethods(List<Method> reqMethods);
 }

@@ -10,26 +10,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-21 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.support.annotation;
+package org.zollty.framework.mvc.context.support;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
 import org.zollty.framework.core.support.annotation.GenericAnnotationBeanDefinition;
-import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
-import org.zollty.framework.mvc.support.ControllerBeanDefinition;
+import org.zollty.framework.mvc.aop.ControllerMethodAopMeta;
+import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 
 /**
  * @author zollty
  * @since 2013-9-21
  */
-public class ControllerAnnotatedBeanDefinition extends GenericAnnotationBeanDefinition implements
+class ControllerAnnotatedBeanDefinition extends GenericAnnotationBeanDefinition implements
         ControllerBeanDefinition {
 
     private List<Method> reqMethods;
 
-    private Map<Method, List<MvcBeforeBeanDefinition>> reqMethodsAOP;
+    private Map<Method, ControllerMethodAopMeta> reqMethodsAopMap;
 
     private String uriPrefix;
 
@@ -44,13 +44,13 @@ public class ControllerAnnotatedBeanDefinition extends GenericAnnotationBeanDefi
     }
 
     @Override
-    public Map<Method, List<MvcBeforeBeanDefinition>> getReqMethodsAOP() {
-        return reqMethodsAOP;
+    public Map<Method, ControllerMethodAopMeta> getReqMethodsAopMap() {
+        return reqMethodsAopMap;
     }
 
     @Override
-    public void setReqMethodsAOP(Map<Method, List<MvcBeforeBeanDefinition>> reqMethodsAOP) {
-        this.reqMethodsAOP = reqMethodsAOP;
+    public void setReqMethodsAopMap(Map<Method, ControllerMethodAopMeta> reqMethodsAopMap) {
+        this.reqMethodsAopMap = reqMethodsAopMap;
     }
 
     @Override

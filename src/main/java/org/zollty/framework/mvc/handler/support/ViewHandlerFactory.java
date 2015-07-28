@@ -17,9 +17,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.zollty.framework.mvc.ViewHandler;
-import org.zollty.framework.mvc.handler.ControllerViewHandler;
-import org.zollty.framework.mvc.support.ControllerMetaInfo;
+import org.zollty.framework.mvc.aop.bean.AopBeanDefinition;
+import org.zollty.framework.mvc.handler.ControllerMeta;
+import org.zollty.framework.mvc.handler.RequestViewHandler;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 import org.zollty.util.BasicRuntimeException;
@@ -29,25 +29,80 @@ import org.zollty.util.match.ZolltyPathMatcher;
  * @author zollty
  * @since 2014-5-29
  */
-public class ControllerResource {
+class ViewHandlerFactory {
 
-    private static final Logger LOG = LogFactory.getLogger(ControllerResource.class);
+    private static final Logger LOG = LogFactory.getLogger(ViewHandlerFactory.class);
 
     protected final List<ControllerHandlerPattern> patternControllerList = new ArrayList<ControllerHandlerPattern>();
-    protected final List<ControllerViewHandler> simpleControllerList = new ArrayList<ControllerViewHandler>();
+    protected final List<RequestViewHandler> simpleControllerList = new ArrayList<RequestViewHandler>();
 
-    public void addController(ControllerMetaInfo controller) {
-        String uri = controller.getServletURI();
-        List<String> list = parseUriPathVariable(uri);
+    protected final List<AopHandlerPattern> aopHandlerPatternList = new ArrayList<AopHandlerPattern>();
+
+    /**
+     * 注意： servletURI里的斜杠也算作一个有效字符
+     */
+    public RequestViewHandler getHandler(String servletURI, HttpServletRequest request) {
+        if (servletURI == null) {
+            return null;
+        }
+
+        List<AopBeanDefinition> tempAopIntercList = new ArrayList<AopBeanDefinition>();
+        for (final AopHandlerPattern ahp : aopHandlerPatternList) {
+            AopBeanDefinition ret = ahp.getHandler(servletURI);
+            if (ret == null) {
+                continue;
+            }
+            tempAopIntercList.add(ret);
+        }
+
+        RequestViewHandler vhandler = getHandlerInner(servletURI, request);
+
+        if (vhandler != null) {
+            vhandler.setAopIntercs(tempAopIntercList);
+        }
+
+        return vhandler;
+    }
+
+    private RequestViewHandler getHandlerInner(String servletURI, HttpServletRequest request) {
+        // step 1 首先从普通URI Controller定义中去寻找
+        for (final RequestViewHandler ch : simpleControllerList) {
+            ControllerMeta meta = ch.getMeta();
+            if (meta.getServletURI().equals(servletURI) && meta.allowMethod(request.getMethod())) {
+                return ch;
+            }
+        }
+        // step 2
+        for (final ControllerHandlerPattern chp : patternControllerList) {
+            RequestViewHandler ret = chp.getHandler(servletURI, request.getMethod());
+            if (ret != null) {
+                return ret;
+            }
+        }
+        return null;
+    }
+
+    public void setAopIntercList(List<? extends AopBeanDefinition> aopIntercList) {
+        if (aopIntercList == null) {
+            return;
+        }
+        for (AopBeanDefinition beanDef : aopIntercList) {
+            aopHandlerPatternList.add(new AopHandlerPattern(beanDef));
+        }
+    }
+
+    public void addControllerMeta(ControllerMeta meta) {
+        String uri = meta.getServletURI();
+        List<String> list = parseUriParams(uri);
         if (list.size() == 0) {
-            if (this.isDuplicate(uri, controller.getAllowHttpMethods())) {
+            if (this.isDuplicate(uri, meta.getAllowHttpMethods())) {
                 throw new BasicRuntimeException("the controller definition is a duplicate!");
             }
 
-            simpleControllerList.add(new ControllerViewHandler(controller));
+            simpleControllerList.add(new RequestViewHandler(meta));
         }
         else {
-            ControllerHandlerPattern chp = new ControllerHandlerPattern(controller, list);
+            ControllerHandlerPattern chp = new ControllerHandlerPattern(meta, list);
             if (this.isDuplicate(chp)) {
                 throw new BasicRuntimeException("the controller definition is a duplicate!");
             }
@@ -62,13 +117,13 @@ public class ControllerResource {
      */
     protected boolean isDuplicate(String uri, String[] allowHttpMethods) {
         // 当已存在相同的普通URI时，则返回true，代表不允许有两个一模一样的普通URI的定义
-        for (ControllerViewHandler ch : simpleControllerList) {
-            ControllerMetaInfo ctrl = ch.getController();
-            if (uri.equals(ctrl.getServletURI())) {
+        for (RequestViewHandler ch : simpleControllerList) {
+            ControllerMeta meta = ch.getMeta();
+            if (uri.equals(meta.getServletURI())) {
                 for (String me : allowHttpMethods) {
-                    for (String mi : ctrl.getAllowHttpMethods()) {
+                    for (String mi : meta.getAllowHttpMethods()) {
                         if (me.equals(mi)) {
-                            LOG.error("'{}' is a duplicate of '{}'", uri, ctrl.getServletURI());
+                            LOG.error("'{}' is a duplicate of '{}'", uri, meta.getServletURI());
                             return true;
                         }
                     }
@@ -79,10 +134,9 @@ public class ControllerResource {
         // 检测 如果有已定义的 ControllerHandlerPattern 包含了当前的普通ControllerHandler定义，则给出WARN级别的提示。
         for (ControllerHandlerPattern chp : patternControllerList) {
             for (String me : allowHttpMethods) {
-                if (chp.getController().allowMethod(me)) {
+                if (chp.getMeta().allowMethod(me)) {
                     if (chp.getHandler(uri, me) != null)
-                        LOG.warn("'{}' is included by '{}'", uri, chp.getController()
-                                .getServletURI());
+                        LOG.warn("'{}' is included by '{}'", uri, chp.getMeta().getServletURI());
                 }
             }
         }
@@ -104,19 +158,19 @@ public class ControllerResource {
             if (isAllowMethod(chp, chpa) // 如果两者有HTTP METHOD 重叠
                     && ZolltyPathMatcher.isTwoPatternSimilar(chp.getPatternStr(),
                             chpa.getPatternStr())) { // 且URL Pattern有重叠
-                LOG.error("'{}' is a duplicate of '{}'", chp.getController(), chpa.getController());
+                LOG.error("'{}' is a duplicate of '{}'", chp.getMeta(), chpa.getMeta());
                 return true;
             }
         }
 
         // 检测 如果有已定义的 普通ControllerHandler 被当前的ControllerHandlerPattern所匹配到，则给出WARN级别的提示。
-        for (ControllerViewHandler ch : simpleControllerList) {
-            ControllerMetaInfo ctrl = ch.getController();
+        for (RequestViewHandler ch : simpleControllerList) {
+            ControllerMeta ctrl = ch.getMeta();
             for (String me : ctrl.getAllowHttpMethods()) {
-                if (chp.getController().allowMethod(me)) {
+                if (chp.getMeta().allowMethod(me)) {
                     if (chp.getHandler(ctrl.getServletURI(), me) != null) {
-                        LOG.warn("'{}' is included by '{}'", ctrl.getServletURI(), chp
-                                .getController().getServletURI());
+                        LOG.warn("'{}' is included by '{}'", ctrl.getServletURI(), chp.getMeta()
+                                .getServletURI());
                     }
                 }
             }
@@ -126,43 +180,18 @@ public class ControllerResource {
     }
 
     protected boolean isAllowMethod(ControllerHandlerPattern chp1, ControllerHandlerPattern chp2) {
-        for (String me : chp1.getController().getAllowHttpMethods()) {
-            if (chp2.getController().allowMethod(me))
+        for (String me : chp1.getMeta().getAllowHttpMethods()) {
+            if (chp2.getMeta().allowMethod(me))
                 return true;
         }
-        for (String me : chp2.getController().getAllowHttpMethods()) {
-            if (chp1.getController().allowMethod(me))
+        for (String me : chp2.getMeta().getAllowHttpMethods()) {
+            if (chp1.getMeta().allowMethod(me))
                 return true;
         }
         return false;
     }
 
-    /**
-     * 注意： servletURI里的斜杠也算作一个有效字符
-     */
-    public ViewHandler getHandler(String servletURI, HttpServletRequest request) {
-        if (servletURI == null) {
-            return null;
-        }
-        // step 1 首先从普通URI Controller定义中去寻找
-        for (final ControllerViewHandler ch : simpleControllerList) {
-            ControllerMetaInfo controller = ch.getController();
-            if (controller.getServletURI().equals(servletURI)
-                    && controller.allowMethod(request.getMethod())) {
-                return ch;
-            }
-        }
-        // step 2
-        for (final ControllerHandlerPattern chp : patternControllerList) {
-            ViewHandler ret = chp.getHandler(servletURI, request);
-            if (ret != null) {
-                return ret;
-            }
-        }
-        return null;
-    }
-
-    protected static List<String> parseUriPathVariable(String uri) {
+    protected static List<String> parseUriParams(String uri) {
         char[] chars = uri.toCharArray();
         int a = -1, b = -1;
         int c = -1, d = -1;

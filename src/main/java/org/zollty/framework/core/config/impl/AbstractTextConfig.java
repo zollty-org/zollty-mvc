@@ -20,7 +20,6 @@ import java.util.Properties;
 import org.zollty.framework.core.Const;
 import org.zollty.framework.core.config.ConfigTools;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.util.IOUtils;
 import org.zollty.util.NestedRuntimeException;
 
 /**
@@ -61,7 +60,7 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
             in = getResourceInputStream();
         }
         catch (IOException e) {
-            IOUtils.closeIO(in);
+            MvcUtils.IOUtil.closeIO(in);
             throw new NestedRuntimeException(e);
         }
 

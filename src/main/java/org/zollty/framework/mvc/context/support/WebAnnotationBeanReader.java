@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.support.annotation;
+package org.zollty.framework.mvc.context.support;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,9 +23,17 @@ import org.zollty.framework.core.support.annotation.AbstractAnnotationBeanReader
 import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
 import org.zollty.framework.mvc.annotation.RequestMapping;
+import org.zollty.framework.mvc.aop.MvcAfter;
+import org.zollty.framework.mvc.aop.MvcAfterThrow;
+import org.zollty.framework.mvc.aop.MvcAround;
 import org.zollty.framework.mvc.aop.MvcBefore;
+import org.zollty.framework.mvc.aop.MvcBeforeRender;
+import org.zollty.framework.mvc.aop.bean.MvcAfterBeanDefinition;
+import org.zollty.framework.mvc.aop.bean.MvcAfterThrowBeanDefinition;
+import org.zollty.framework.mvc.aop.bean.MvcAroundBeanDefinition;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
-import org.zollty.framework.mvc.support.ControllerBeanDefinition;
+import org.zollty.framework.mvc.aop.bean.MvcBeforeRenderBeanDefinition;
+import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -35,7 +43,7 @@ import org.zollty.util.resource.support.ResourcePatternResolver;
  * @author zollty
  * @since 2013-9-15
  */
-public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
+class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
 
     private Logger log = LogFactory.getLogger(WebAnnotationBeanReader.class);
 
@@ -55,11 +63,20 @@ public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         else if (c.isAnnotationPresent(Controller.class)) {
             ret = controllerParser(c);
         }
-        // else if (c.isAnnotationPresent(Interceptor.class)) {
-        // ret = interceptorParser(c);
-        // }
         else if (MvcBefore.class.isAssignableFrom(c)) {
-            ret = aopParser(c);
+            ret = aopBeforeParser(c);
+        }
+        else if (MvcAround.class.isAssignableFrom(c)) {
+            ret = aopAroundParser(c);
+        }
+        else if (MvcBeforeRender.class.isAssignableFrom(c)) {
+            ret = aopBeforeRenderParser(c);
+        }
+        else if (MvcAfterThrow.class.isAssignableFrom(c)) {
+            ret = aopAfterThrowingParser(c);
+        }
+        else if (MvcAfter.class.isAssignableFrom(c)) {
+            ret = aopAfterParser(c);
         }
         if (ret != null) {
             log.info("classes - " + c.getName());
@@ -70,6 +87,10 @@ public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
     protected BeanDefinition controllerParser(Class<?> c) {
         ControllerBeanDefinition beanDefinition = new ControllerAnnotatedBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
+        
+        // modified by zollty 12/15/2014 contoller bean don't need exact id
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        beanDefinition.setId(id);
 
         List<Method> reqMethods = getReqMethods(c);
         beanDefinition.setReqMethods(reqMethods);
@@ -79,13 +100,86 @@ public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
 
         return beanDefinition;
     }
-
-    private BeanDefinition aopParser(Class<?> c) {
+    
+    
+    private BeanDefinition aopBeforeParser(Class<?> c) {
         MvcBeforeBeanDefinition beanDefinition = new MvcBeforeBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
+        
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {
-            if (m.getName().equals("aspect")) {
+            if (m.getName().equals("doBefore")) {
+                beanDefinition.setDisposeMethod(m);
+                break;
+            }
+        }
+
+        return beanDefinition;
+    }
+    
+    private BeanDefinition aopAroundParser(Class<?> c) {
+        MvcAroundBeanDefinition beanDefinition = new MvcAroundBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
+        
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        beanDefinition.setId(id);
+
+        for (Method m : c.getMethods()) {
+            if (m.getName().equals("doAround")) {
+                beanDefinition.setDisposeMethod(m);
+                break;
+            }
+        }
+
+        return beanDefinition;
+    }
+    
+    
+    private BeanDefinition aopBeforeRenderParser(Class<?> c) {
+        MvcBeforeRenderBeanDefinition beanDefinition = new MvcBeforeRenderBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
+        
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        beanDefinition.setId(id);
+
+        for (Method m : c.getMethods()) {
+            if (m.getName().equals("doBeforeRender")) {
+                beanDefinition.setDisposeMethod(m);
+                break;
+            }
+        }
+
+        return beanDefinition;
+    }
+    
+    private BeanDefinition aopAfterThrowingParser(Class<?> c) {
+        MvcAfterThrowBeanDefinition beanDefinition = new MvcAfterThrowBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
+        
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        beanDefinition.setId(id);
+
+        for (Method m : c.getMethods()) {
+            if (m.getName().equals("doAfterThrowing")) {
+                beanDefinition.setDisposeMethod(m);
+                break;
+            }
+        }
+
+        return beanDefinition;
+    }
+    
+    private BeanDefinition aopAfterParser(Class<?> c) {
+        MvcAfterBeanDefinition beanDefinition = new MvcAfterBeanDefinition();
+        setWebBeanDefinition(beanDefinition, c);
+        
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        beanDefinition.setId(id);
+
+        for (Method m : c.getMethods()) {
+            if (m.getName().equals("doAfter")) {
                 beanDefinition.setDisposeMethod(m);
                 break;
             }
@@ -96,9 +190,6 @@ public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
 
     private void setWebBeanDefinition(AnnotationBeanDefinition beanDefinition, Class<?> c) {
         beanDefinition.setClassName(c.getName());
-
-        String id = getId(c);
-        beanDefinition.setId(id);
 
         String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c);
         beanDefinition.setInterfaceNames(names);
@@ -116,21 +207,6 @@ public class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         catch (Throwable t) {
             log.error(t, "set web bean error");
         }
-    }
-
-    private String getId(Class<?> c) {
-        if (c.isAnnotationPresent(Controller.class))
-            // return c.getAnnotation(Controller.class).value();
-            // modified by zollty 12/15/2014 contoller bean don't need exact id
-            return MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
-        // else if (c.isAnnotationPresent(Interceptor.class))
-        // return c.getAnnotation(Interceptor.class).value();
-        else if (c.isAnnotationPresent(Component.class))
-            return c.getAnnotation(Component.class).value();
-        else if (MvcBefore.class.isAssignableFrom(c))
-            return MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
-        else
-            return "";
     }
 
     private List<Method> getReqMethods(Class<?> c) {

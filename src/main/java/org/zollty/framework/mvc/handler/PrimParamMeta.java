@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-21 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.support;
+package org.zollty.framework.mvc.handler;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,22 +20,14 @@ import org.zollty.framework.util.MvcUtils;
  * @author zollty
  * @since 2013-9-21
  */
-public class BasicParamMetaInfo {
-
-    public static final byte REQUEST = 0x00;
-    public static final byte RESPONSE = 0x01;
-    public static final byte HTTP_BEAN = 0x02;
-    public static final byte URI_PARAM = 0x03;
-    public static final byte HANDLER_CHAIN = 0x04;
-    public static final byte HTTP_SIMPLE_VALUE = 0x05; // 基础数据类型参数
-    public static final byte INTERCEPTOR_INFO = 0x06;
+public class PrimParamMeta {
 
     private final Class<?> paramClass;
     private final String attribute;
     private final boolean setAttr;
     private String orgValue;
 
-    public BasicParamMetaInfo(Class<?> paramClass, String attribute, boolean setAttr) {
+    public PrimParamMeta(Class<?> paramClass, String attribute, boolean setAttr) {
         this.paramClass = paramClass;
         this.attribute = attribute;
         this.setAttr = setAttr;

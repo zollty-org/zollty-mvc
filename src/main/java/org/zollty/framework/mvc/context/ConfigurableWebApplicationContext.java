@@ -21,4 +21,5 @@ import javax.servlet.ServletContext;
 public interface ConfigurableWebApplicationContext extends WebApplicationContext {
 
     public void setServletContext(ServletContext servletContext);
+    
 }

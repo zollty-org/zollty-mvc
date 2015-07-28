@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * Create by ZollTy on 2013-9-21 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.support;
+package org.zollty.framework.mvc.handler;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -23,15 +23,15 @@ import org.zollty.log.Logger;
  * @author zollty
  * @since 2013-9-21
  */
-public class ParamMetaInfo {
+public class BeanParamMeta {
     
-    private Logger log = LogFactory.getLogger(ParamMetaInfo.class);
+    private static final Logger LOG = LogFactory.getLogger(BeanParamMeta.class);
 
     private final Class<?> paramClass; // 要注入的类型
     private final Map<String, Method> beanSetMethod; // 要注入的bean的set方法
     private final String attribute; // 要setAttribute的属性
 
-    public ParamMetaInfo(Class<?> paramClass, Map<String, Method> beanSetMethod, String attribute) {
+    public BeanParamMeta(Class<?> paramClass, Map<String, Method> beanSetMethod, String attribute) {
         this.paramClass = paramClass;
         this.beanSetMethod = beanSetMethod;
         this.attribute = attribute;
@@ -60,7 +60,7 @@ public class ParamMetaInfo {
             }
         }
         catch (Throwable t) {
-            log.error(t, "set param error");
+            LOG.error(t, "set param error");
         }
     }
 
@@ -73,7 +73,7 @@ public class ParamMetaInfo {
             o = paramClass.newInstance();
         }
         catch (Throwable t) {
-            log.error(t, "new param error");
+            LOG.error(t, "new param error");
         }
         return o;
     }

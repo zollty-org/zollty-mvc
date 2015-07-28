@@ -27,6 +27,10 @@ public interface AopBeanDefinition extends AnnotationBeanDefinition {
 
     void setDisposeMethod(Method method);
 
+    String getUriPattern();
+
+    void setUriPattern(String uriPattern);
+
     int getOrder();
 
     void setOrder(int order);

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.ViewHandler;
-import org.zollty.framework.mvc.handler.ErrorViewHandler;
+import org.zollty.framework.mvc.view.ErrorView;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 
@@ -48,45 +48,41 @@ abstract public class HttpRequestHandler extends HttpServletBean {
         catch (Throwable t) {
             log.error(t, "dispatcher error");
         }
+        
         response.setCharacterEncoding(encoding);
 
-        // HandlerChainImpl chain = handlerMapping.match(servletURI, request);
-        //
-        // if (chain.getHandlerSize() == 0) { // 没有找到处理器 404
-        // new ErrorHandler(null, request.getRequestURI() + " not found",
-        // HttpServletResponse.SC_NOT_FOUND).render(
-        // request, response);
-        // return;
-        // }
         ViewHandler handler = handlerMapping.match(servletURI, request);
 
         if (handler == null) { // 没有找到处理器 404
-            new ErrorViewHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
+            new ErrorView(HttpServletResponse.SC_NOT_FOUND, null, request.getRequestURI()
+                    + " not found.").render(request, response);;
             return;
         }
 
         // 执行对应的方法，返回方法指定的View
-        // View v = chain.doNext(request, response, chain);
-        View v = handler.invoke(request, response);
+        View v = handler.getView(request, response);
         // 返回View为null，此时一般是在该方法内，直接采用了response返回，故需要判断response是否提交，若没提交，则认为是出错了
         if (v == null) {
             if (!response.isCommitted()) {
-                new ErrorViewHandler(null, "Server internal error",
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR).renderView(request, response);
+                new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null,
+                        ErrorView.HTTP_ERR_500_RESPONSE_NOT_COMMIT).render(request, response);
             }
+            handler.doAtfer(request, response);
             return;
         }
-
+        
         try {
             v.render(request, response);
         }
         catch (Throwable t) {
-            new ErrorViewHandler(t, "dispatcher error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                    .renderView(request, response);
-            return;
+            new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, t,
+                    ErrorView.HTTP_ERR_500_RENDER_ERR).render(request, response);
         }
+        
+        handler.doAtfer(request, response);
+        
     }
+    
 
     // ------------Override the HttpServlet's methods ---------------------
 

@@ -8,28 +8,21 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-9-15 (http://blog.zollty.com, zollty@163.com)
+ * Create by ZollTy on 2015-7-23 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.support;
+package org.zollty.framework.mvc.handler;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
-import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
-import org.zollty.framework.mvc.aop.ControllerAopDefinition;
+import org.zollty.framework.mvc.aop.bean.AopBeanDefinition;
 
 /**
  * 
  * @author zollty
- * @since 2013-9-15
+ * @since 2015-7-23
  */
-public interface ControllerBeanDefinition extends AnnotationBeanDefinition, ControllerAopDefinition {
+public interface ViewHandlerAopSupport {
 
-    String getUriPrefix();
-
-    void setUriPrefix(String uriPrefix);
-
-    List<Method> getReqMethods();
-
-    void setReqMethods(List<Method> reqMethods);
+    void setAopIntercs(List<AopBeanDefinition> aopIntercList);
+    
 }

@@ -8,24 +8,22 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2015-2-15 (http://blog.zollty.com, zollty@163.com)
+ * Create by ZollTy on 2015-7-15 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.aop;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.zollty.framework.mvc.View;
+
 /**
+ * 
  * @author zollty
- * @since 2015-2-15
+ * @since 2015-7-15
  */
-public class AopUtils {
+public interface MvcAround {
 
-    public static boolean judgeIsInstance(Class<?> c, Class<?> o) {
-        return c.isAssignableFrom(o);
-    }
-
-    public static void main(String[] args) {
-
-        // System.out.println( judgeIsInstance(MvcBefore.class, AxxxxBefore.class) );
-
-    }
-
+    View doAround(HttpServletRequest request, HttpServletResponse response, MvcJoinPoint mjp) throws Throwable;
+    
 }

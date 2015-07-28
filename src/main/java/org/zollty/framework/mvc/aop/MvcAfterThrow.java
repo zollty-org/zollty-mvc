@@ -8,36 +8,22 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2015-2-15 (http://blog.zollty.com, zollty@163.com)
+ * Create by ZollTy on 2015-7-23 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.mvc.aop;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.zollty.framework.mvc.View;
 
 /**
  * 
  * @author zollty
- * @since 2015-2-15
- * @deprecated
+ * @since 2015-7-23
  */
-public class MvcContext {
+public interface MvcAfterThrow {
 
-    private HttpServletRequest request;
-
-    public MvcContext(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    public String hello() {
-        return "Hello World";
-    }
-
+    View doAfterThrow(HttpServletRequest request, HttpServletResponse response, Throwable t);
+    
 }

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.ext.Constants;
 import org.zollty.framework.mvc.View;
-import org.zollty.framework.mvc.handler.ErrorViewHandler;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
@@ -131,18 +130,18 @@ public class StaticFileView implements View {
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if(!checkPath(inputPath) || inputPath.startsWith(TEMPLATE_PATH)) {
-		    new ErrorViewHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
-			return;
-		}
+        if (!checkPath(inputPath) || inputPath.startsWith(TEMPLATE_PATH)) {
+            new ErrorView(HttpServletResponse.SC_NOT_FOUND, null, request.getRequestURI()
+                    + " not found.").render(request, response);
+            return;
+        }
 		
-		if(!ALLOW_METHODS.contains(request.getMethod())) {
-			response.setHeader("Allow", "GET,POST,HEAD");
-			new ErrorViewHandler(null, "Only support GET, POST or HEAD method",
-                    HttpServletResponse.SC_METHOD_NOT_ALLOWED).renderView(request, response);
-			return;
-		}
+        if (!ALLOW_METHODS.contains(request.getMethod())) {
+            response.setHeader("Allow", "GET,POST,HEAD");
+            new ErrorView(HttpServletResponse.SC_METHOD_NOT_ALLOWED, null,
+                    "Only support GET, POST or HEAD method.").render(request, response);
+            return;
+        }
 		
 		String path = inputPath;//CONFIG.getFileAccessFilter().doFilter(request, response, inputPath); 静态文件访问过滤器
 		if (MvcUtils.StringUtil.isNullOrEmpty(path)){
@@ -150,12 +149,12 @@ public class StaticFileView implements View {
 		}
 		
 		
-		File file = new File(request.getSession().getServletContext().getRealPath(inputPath), path);
-		if (!file.exists() || file.isDirectory()) {
-		    new ErrorViewHandler(null, request.getRequestURI() + " not found",
-                    HttpServletResponse.SC_NOT_FOUND).renderView(request, response);
+        File file = new File(request.getSession().getServletContext().getRealPath(inputPath), path);
+        if (!file.exists() || file.isDirectory()) {
+            new ErrorView(HttpServletResponse.SC_NOT_FOUND, null, request.getRequestURI()
+                    + " not found.").render(request, response);
             return;
-		}
+        }
 
 		String fileName = file.getName();
 		String fileSuffix = getFileSuffix(fileName).toLowerCase();

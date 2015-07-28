@@ -33,7 +33,6 @@ import org.zollty.framework.util.dom.DefaultDom;
 import org.zollty.framework.util.dom.Dom;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
-import org.zollty.util.IOUtils;
 import org.zollty.util.NestedRuntimeException;
 
 /**
@@ -103,7 +102,7 @@ public class XmlBeanReader extends AbstractBeanReader {
                     beanXmlResourceContext.getServletContext());
         }
         catch (IOException e) {
-            IOUtils.closeIO(in);
+            MvcUtils.IOUtil.closeIO(in);
             throw new NestedRuntimeException(e);
         }
 

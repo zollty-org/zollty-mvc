@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.mvc.View;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -49,7 +50,7 @@ public class JsonView implements View {
             try {
                 writer.print(jsonStr);
             } finally {
-                writer.close();
+                MvcUtils.IOUtil.closeIO(writer);
             }
         }
     }

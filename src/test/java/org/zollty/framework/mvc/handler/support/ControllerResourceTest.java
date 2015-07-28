@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
-import org.zollty.framework.mvc.handler.ControllerViewHandler;
-import org.zollty.framework.mvc.support.ControllerMetaInfo;
+import org.zollty.framework.mvc.handler.ControllerMeta;
+import org.zollty.framework.mvc.handler.RequestViewHandler;
 import org.zollty.framework.util.MvcUtils;
 
 /**
@@ -62,10 +62,10 @@ public class ControllerResourceTest {
 
     private static void runURIMapping(String uriPattern, String servletURI, HashMap<String, String> params) {
         Method me = MvcUtils.ReflectUtil.findMethod(Pattern.class, "compile");
-        ControllerMetaInfo cm = new ControllerMetaInfo(null, me, new String[] { "GET" }, uriPattern, null);
-        ControllerResource cr = new ControllerResource();
-        cr.addController(cm);
-        ControllerViewHandler ha = (ControllerViewHandler) cr.getHandler(servletURI, new FakeHttpServletRequest("GET"));
+        ControllerMeta cm = new ControllerMeta(null, me, new String[] { "GET" }, uriPattern);
+        ViewHandlerFactory cr = new ViewHandlerFactory();
+        cr.addControllerMeta(cm);
+        RequestViewHandler ha = (RequestViewHandler) cr.getHandler(servletURI, new FakeHttpServletRequest("GET"));
         assertNotNull(ha);
         assertEquals(ha.getParamsMap(), params);
     }
@@ -75,7 +75,7 @@ public class ControllerResourceTest {
         String uri = "as{ak}sa/v{1}/[c8]-[mk]/{v2}";
         String[] keys = new String[]{"ak", "1", "c8", "mk", "v2"};
 
-        List<String> list = ControllerResource.parseUriPathVariable(uri);
+        List<String> list = ViewHandlerFactory.parseUriParams(uri);
         assertArrayEquals(list.toArray(new String[0]), keys);
     }
     

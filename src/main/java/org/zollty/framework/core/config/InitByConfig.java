@@ -12,7 +12,7 @@
  */
 package org.zollty.framework.core.config;
 
-import org.zollty.log.LogFactory.LogManager;
+import org.zollty.log.LogFactory;
 
 /**
  * 
@@ -22,6 +22,6 @@ import org.zollty.log.LogFactory.LogManager;
 public class InitByConfig {
 
     public static void initLogFactory(String logName, String level) {
-        LogManager.init(logName, level);
+        LogFactory.LogManager.refreshZolltyLogConfig(logName, level);
     }
 }
