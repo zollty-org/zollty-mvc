@@ -28,11 +28,12 @@ import org.zollty.dbk.temp.core.SpringUtils;
  * @since 1.1
  * @see SQLErrorCodeSQLExceptionTranslator
  */
+@SuppressWarnings("rawtypes")
 public class CustomSQLErrorCodesTranslation {
 
 	private String[] errorCodes = new String[0];
 
-	private Class exceptionClass;
+    private Class exceptionClass;
 
 
 	/**

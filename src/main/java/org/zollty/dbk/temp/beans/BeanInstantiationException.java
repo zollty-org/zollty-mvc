@@ -22,10 +22,10 @@ package org.zollty.dbk.temp.beans;
  * @author Juergen Hoeller
  * @since 1.2.8
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","rawtypes"})
 public class BeanInstantiationException extends FatalBeanException {
 
-	private Class beanClass;
+    private Class beanClass;
 
 	/**
 	 * Create a new BeanInstantiationException.

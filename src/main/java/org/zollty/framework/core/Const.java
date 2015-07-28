@@ -28,7 +28,10 @@ public class Const {
      */
     public static final String DEFAULT_CONFIG_LOCATION_PROP = "classpath:zollty-mvc.properties";
     
-    public static final int DEFAULT_BEFORE_AOP_MAPPING_ORDER = 100;
+    /**
+     * Default MVC AOP Mapping order value.
+     */
+    public static final int DEFAULT_MVC_AOP_MAPPING_ORDER = 100;
     
     /**
      * Controller Method 的参数类型
@@ -45,21 +48,5 @@ public class Const {
         /** URIParam注解的 URI参数 */
         URIParam;
     }
-    
-//    /**
-//     * Controller Method 的参数类型
-//     */
-//    public static interface CtrollerMethodParamType {
-//        /** HttpParam注解的 基础数据类型（int、boolean等） */
-//        char HttpParamBasic = 0;
-//        /** HttpParam标注 Bean数据类型（标准POJO对象） */
-//        char HttpParamBean = 1;
-//        /** HttpServletRequest */
-//        char HttpServletRequest = 2;
-//        /** HttpServletResponse */
-//        char HttpServletResponse = 3;
-//        /** URIParam注解的 URI参数 */
-//        char URIParam = 4;
-//    }
     
 }

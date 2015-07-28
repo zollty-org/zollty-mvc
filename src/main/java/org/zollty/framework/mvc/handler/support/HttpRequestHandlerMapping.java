@@ -123,12 +123,11 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
             // 首先第一步，解析class上面的AOP注解
             String[] uriMatch = bean.getObject().getClass().getAnnotation(AopMapping.class).value();
             for (String value : uriMatch) {
-                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value,
-                        ":");
+                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value, ":");
                 String uriPattern = null;
                 if (array.length == 1) {
                     uriPattern = value;
-                    bd.setOrder(Const.DEFAULT_BEFORE_AOP_MAPPING_ORDER);
+                    bd.setOrder(Const.DEFAULT_MVC_AOP_MAPPING_ORDER);
                     bd.setUriPattern(uriPattern);
                 }
                 else { // length==2

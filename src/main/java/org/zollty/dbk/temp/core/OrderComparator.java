@@ -106,7 +106,8 @@ public class OrderComparator implements Comparator<Object> {
 	 * @param value the array or List to sort
 	 * @see java.util.Arrays#sort(Object[], java.util.Comparator)
 	 */
-	public static void sortIfNecessary(Object value) {
+	@SuppressWarnings("rawtypes")
+    public static void sortIfNecessary(Object value) {
 		if (value instanceof Object[]) {
 			sort((Object[]) value);
 		}

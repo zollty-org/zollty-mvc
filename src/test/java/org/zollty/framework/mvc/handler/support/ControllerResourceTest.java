@@ -79,7 +79,7 @@ public class ControllerResourceTest {
         assertArrayEquals(list.toArray(new String[0]), keys);
     }
     
-    
+    @SuppressWarnings("rawtypes")
     private static class FakeHttpServletRequest implements HttpServletRequest {
         
         private String method;

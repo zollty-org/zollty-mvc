@@ -33,7 +33,6 @@ import javax.sql.DataSource;
 
 import org.zollty.log.Logger;
 import org.zollty.log.LogFactory;
-
 import org.zollty.dbk.CannotGetJdbcConnectionException;
 import org.zollty.dbk.datasource.DataSourceUtils;
 
@@ -129,7 +128,8 @@ public abstract class JdbcUtils {
 	 * @return the value object
 	 * @throws SQLException if thrown by the JDBC API
 	 */
-	public static Object getResultSetValue(ResultSet rs, int index, Class requiredType) throws SQLException {
+	@SuppressWarnings("rawtypes")
+    public static Object getResultSetValue(ResultSet rs, int index, Class requiredType) throws SQLException {
 		if (requiredType == null) {
 			return getResultSetValue(rs, index);
 		}

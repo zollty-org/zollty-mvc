@@ -39,7 +39,7 @@ import org.zollty.log.Logger;
  */
 public class DefaultDom implements Dom {
 
-    private Logger log = LogFactory.getLogger(DefaultDom.class);
+    private static final Logger LOG = LogFactory.getLogger(DefaultDom.class);
 
     private DocumentBuilderFactory dbf;
     private DocumentBuilder db; // dom解析器
@@ -50,7 +50,7 @@ public class DefaultDom implements Dom {
             db = dbf.newDocumentBuilder();
         }
         catch (ParserConfigurationException e) {
-            log.error(e);
+            LOG.error(e);
         }
     }
 
@@ -61,10 +61,10 @@ public class DefaultDom implements Dom {
             doc = db.parse(is);
         }
         catch (SAXException e) {
-            log.error(e);
+            LOG.error(e);
         }
         catch (IOException e) {
-            log.error(e);
+            LOG.error(e);
         } finally {
             if (is != null)
                 try {
