@@ -160,7 +160,7 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
 
         }
         // catch (ClassCastException e) {
-        // View v = doAfterThrowing(request, response, mvcContext);
+        // View v = doAfterThrow(request, response, mvcContext);
         // if (v != null) {
         // return v;
         // }
@@ -169,10 +169,11 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
         // ErrorViewHandler.HTTP_ERR_500_CTRLLER_ERR).getErrorView(request, response);
         // }
         catch (InvocationTargetException e) {
-            View v = doAfterThrow(request, response, e.getTargetException());
+            Throwable t = getTargetException(e);
+            View v = doAfterThrow(request, response, t);
 
             return v != null ? v : new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    e.getTargetException(), ErrorView.HTTP_ERR_500_CTRLLER_ERR);
+                    t, ErrorView.HTTP_ERR_500_CTRLLER_ERR);
         }
         catch (Throwable e) {
             View v = doAfterThrow(request, response, e);
@@ -184,7 +185,8 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
 
         return v != null ? v : view;
     }
-
+    
+    
     private View doBefore(HttpServletRequest request, HttpServletResponse response) {
 
         List<MvcBeforeBeanDefinition> tempIntercs = null;
@@ -297,7 +299,7 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
 
             View ret = null;
             for (MvcAfterThrowBeanDefinition mbd : tempIntercs) {
-                LOG.trace("[Execute AOP AfterThrowing Method] - {}", mbd.getClassName());
+                LOG.trace("[Execute AOP AfterThrow Method] - {}", mbd.getClassName());
                 Method mt = mbd.getDisposeMethod();
                 try {
                     ret = (View) mt.invoke(mbd.getObject(), new Object[] { request, response, t });
@@ -455,5 +457,15 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
             }
         }
         return p;
+    }
+    
+    /**
+     * 递归获取反射invoke的真实异常（TargetException）
+     */
+    private static Throwable getTargetException(Throwable e) {
+        if (e instanceof InvocationTargetException) {
+            return getTargetException(((InvocationTargetException) e).getTargetException());
+        }
+        return e;
     }
 }

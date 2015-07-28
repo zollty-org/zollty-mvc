@@ -73,7 +73,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
             ret = aopBeforeRenderParser(c);
         }
         else if (MvcAfterThrow.class.isAssignableFrom(c)) {
-            ret = aopAfterThrowingParser(c);
+            ret = aopAfterThrowParser(c);
         }
         else if (MvcAfter.class.isAssignableFrom(c)) {
             ret = aopAfterParser(c);
@@ -154,7 +154,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         return beanDefinition;
     }
     
-    private BeanDefinition aopAfterThrowingParser(Class<?> c) {
+    private BeanDefinition aopAfterThrowParser(Class<?> c) {
         MvcAfterThrowBeanDefinition beanDefinition = new MvcAfterThrowBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -162,7 +162,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {
-            if (m.getName().equals("doAfterThrowing")) {
+            if (m.getName().equals("doAfterThrow")) {
                 beanDefinition.setDisposeMethod(m);
                 break;
             }
