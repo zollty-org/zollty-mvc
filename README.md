@@ -1,30 +1,58 @@
-ZolltyMVC
-==========
-    
+Attention, v1.2.1.RELEASE is not compatible with v1.3.x or later version yet. If you want to upgrade to new version, you may modify some codes (a few modify at resource load and some util methods).
+
 What is ZolltyMVC 
 ----------------------------
 
 The ZolltyMVC is a lightweight Java MVC Framework.  
 It can help development teams build simple, portable, fast and flexible Java applications.
  
-##### 1.It's an IoC container 
-Its DI function is very powerful, support method injection, support to create bean using method's return value...  
+##### 1. Dependency Injection and Inversion of Control
+
+ZolltyMVC Framework support Java Beans management, through xml config or code annotation your can define bean instances, and inject bean instances into other bean instances.
+
+Its DI function is very powerful, include common usage like Spring, and also support advanced usages, like create bean using method's return value, inject beans for method parameter, and so on...
+  
 Its BeanFactory is highly extensible, support ClassPathXmlApplicationContext, ClassPathAnnotationApplicationContext, WebXmlApplicationContext, and so on. 
  
-##### 2.It's a lightweight MVC Framework 
-Support REST-ful, nice url customization, chained interceptor, ...and so on.  
-It's reliable and efficient, much more easy than SpringMVC, and it's faster.  
-Only one jar, no dependence, which includes it's most functions!  
-It's flexible, you can overwrite its API to extend its functionality.   
+##### 2. Lightweight MVC Framework support RESTful web service
+
+Only one jar, much more lightweight than Spring and Struts Framework! 
+
+Support REST-ful, nice url customization. Its URI matching algorithm is very efficient, tens times faster than AntPathMather (which Spring used).
+
+The URI matching also support approximate string matching, and extracting parameters from URI. There are many nice functions.
+
+It's ease to use. Through long term practice and research, after many improvements, we have taken that flexibility to extremes! Its usage is much easier than Spring or Struts Framework, you will like it!
+
+#### 3. Interceptor and Aspect-Oriented Programming
+
+ZolltyMVC Framework does not dependency on AspectJ and CGLIB, so we don't use proxy which may cause many problems. But we still support Aspect-Oriented Programming at controller layer. You can define interceptors base on Java annotation at any controller method. Interceptors can be defined at any stage of the execution of the controller method (before, after, after throwing exception, and so on).
+
+The Framework also support to define common interceptors matched the special URIs. And support asynchronous call.
+
+
+#### 4. Model Driven and multiple Views
+
+ZolltyMVC Framework can automatic packaging request parameters into 'POJO' beans. So you can package form parameters into a Java bean. It also support primitive type automatic injection.
+
+ZolltyMVC Framework provide many views to use. Like JspView, JsonView, HtmlView, ForwardView and so on, and you can customize and extend View. Its usage is more flexible than Spring's ModelAndView.
 
 
 How to use it 
 ---------------------------------------
 
 ###### a hello word sample  
+
 ```java
- @Controller
- public class HelloWorldController {
+@Controller
+public class HelloWorldController {
+ 
+     // 属性注入，支持按类型注入
+    @Inject
+    private DiService diService;
+    
+    @Inject("diService")
+    private DiService anOtherDiService;
     
     @RequestMapping("/lesson1/hello-jsp")
     public View helloJsp() {
@@ -32,6 +60,7 @@ How to use it
         // Return a JSP View
         return new JspView("/lesson1/hello.jsp");
     }
+    
 
     @RequestMapping("/lesson1/hello-json")
     public View helloJosn() {
@@ -48,11 +77,11 @@ How to use it
         return new TextView("Hello "+ userName);
     }
     
-	// Only allow POST method 
+    // Only allow POST method 
     @RequestMapping("POST: /admin/login")
     public View login(@HttpParam("userName") String userName, 
-            @HttpParam("password") String password) { 
-            // Automatic packaging of HTTP parameters
+             @HttpParam("password") String password) { 
+             // Automatic packaging of HTTP parameters
 
         // TODO login service...
 
@@ -68,6 +97,6 @@ How to use it
         return new RedirectView("/admin?info=bye");
     }
     
- }
+}
 ```
 ###### See the docs for more details  
