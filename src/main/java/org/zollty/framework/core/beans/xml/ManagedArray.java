@@ -8,24 +8,27 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-10-11 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.beans;
+package org.zollty.framework.core.beans.xml;
 
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
- * 
- * @author zollty
- * @since 2015-10-11
+ * array元素
  */
-public interface ListableBeanFactory extends BeanFactory {
+@SuppressWarnings("serial")
+public class ManagedArray<T> extends ArrayList<T> {
 
-    List<BeanDefinition> getBeanDefinitions();
+    /**
+     * 类型名称
+     */
+    private String typeName;
 
-    Map<String, Object> getBeanMap();
+    public String getTypeName() {
+        return typeName;
+    }
 
-    <T> Map<String, T> getBeansOfType(Class<T> type);
-
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 }

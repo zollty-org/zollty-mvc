@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zollty.framework.core.annotation.Component;
-import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.core.support.annotation.AbstractAnnotationBeanReader;
-import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.core.beans.BeanDefinition;
+import org.zollty.framework.core.beans.annotation.AbstractAnnotationBeanReader;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
 import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.mvc.aop.MvcAfter;

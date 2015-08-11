@@ -8,24 +8,28 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-10-11 (http://blog.zollty.com, zollty@163.com)
+ * Create by ZollTy on 2013-9-21 (http://blog.zollty.com, zollty@163.com)
  */
 package org.zollty.framework.core.beans;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 
  * @author zollty
- * @since 2015-10-11
+ * @since 2013-9-21
  */
-public interface ListableBeanFactory extends BeanFactory {
+abstract public class AbstractBeanReader implements BeanReader {
 
-    List<BeanDefinition> getBeanDefinitions();
+    protected List<BeanDefinition> beanDefinitions;
 
-    Map<String, Object> getBeanMap();
-
-    <T> Map<String, T> getBeansOfType(Class<T> type);
+    /**
+     * 处理异常
+     * 
+     * @param msg
+     *            异常信息
+     */
+    protected void error(String msg) {
+        throw new BeanDefinitionParsingException(msg);
+    }
 
 }

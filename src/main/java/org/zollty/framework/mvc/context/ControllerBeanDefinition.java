@@ -15,7 +15,7 @@ package org.zollty.framework.mvc.context;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.zollty.framework.core.support.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.aop.ControllerAopDefinition;
 
 /**

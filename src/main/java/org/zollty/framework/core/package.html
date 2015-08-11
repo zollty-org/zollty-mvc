@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Package description</title>
+</head>
+<body>
+  <p>zollty-framework core functions, include the bean function (DI) which support xml config and annotation.</p>
+  <div>
+    其中，package的调用关系如下：
+    
+    annotation---------|------------------|
+                       |------beans-------|---context
+    config-------------|------------------|
+    
+    即context位于最上层，可以调用其他package。beans可以调用config和annotation
+  
+  </div>
+  
+</body>
+</html>

@@ -14,8 +14,8 @@ package org.zollty.framework.core.beans.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.core.support.BeanReader;
+import org.zollty.framework.core.beans.BeanDefinition;
+import org.zollty.framework.core.beans.BeanReader;
 import org.zollty.log.LogFactory;
 import org.zollty.log.Logger;
 

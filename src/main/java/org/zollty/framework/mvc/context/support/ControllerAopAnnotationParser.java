@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.zollty.framework.core.support.BeanDefinition;
+import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
 import org.zollty.framework.mvc.aop.ControllerMethodAopMeta;
 import org.zollty.framework.mvc.aop.annotation.CAfter;

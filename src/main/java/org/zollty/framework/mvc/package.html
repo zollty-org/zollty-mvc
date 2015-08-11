@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Package description</title>
+</head>
+<body>
+  <p>zollty-framework mvc functions, include RESTful URI route, MVC AOP (Interceptors), View render, Model Driven.</p>
+  <div>
+    其中，package的调用关系如下：
+    
+    annotation----aop-----|------------------|
+                          |------handler-----|---context---servlet
+    view------------------|------------------|
+    
+    即servlet、context位于最上层，可以调用其他package。handler可以调用view、aop和annotation
+  
+  </div>
+  
+</body>
+</html>

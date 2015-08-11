@@ -20,8 +20,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.zollty.framework.core.Const;
+import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.core.config.IApplicationConfig;
-import org.zollty.framework.core.support.BeanDefinition;
 import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.annotation.RequestMapping;
 import org.zollty.framework.mvc.aop.annotation.AopMapping;

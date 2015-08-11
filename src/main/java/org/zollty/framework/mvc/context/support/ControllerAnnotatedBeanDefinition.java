@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import org.zollty.framework.core.support.annotation.GenericAnnotationBeanDefinition;
+import org.zollty.framework.core.beans.annotation.GenericAnnotationBeanDefinition;
 import org.zollty.framework.mvc.aop.ControllerMethodAopMeta;
 import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 

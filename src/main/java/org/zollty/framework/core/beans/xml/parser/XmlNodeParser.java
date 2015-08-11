@@ -8,24 +8,15 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-10-11 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.beans;
+package org.zollty.framework.core.beans.xml.parser;
 
-import java.util.List;
-import java.util.Map;
+import org.w3c.dom.Element;
 
-/**
- * 
- * @author zollty
- * @since 2015-10-11
- */
-public interface ListableBeanFactory extends BeanFactory {
+import org.zollty.framework.util.dom.Dom;
 
-    List<BeanDefinition> getBeanDefinitions();
-
-    Map<String, Object> getBeanMap();
-
-    <T> Map<String, T> getBeansOfType(Class<T> type);
-
+public interface XmlNodeParser {
+    
+    Object parse(Element ele, Dom dom);
+    
 }

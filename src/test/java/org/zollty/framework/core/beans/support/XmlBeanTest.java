@@ -18,7 +18,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.zollty.framework.core.support.xml.XmlBeanReader;
+import org.zollty.framework.core.beans.xml.XmlBeanReader;
 import org.zollty.framework.util.ResourceContext;
 
 /**

@@ -8,24 +8,27 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-10-11 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.beans;
+package org.zollty.framework.core.beans.xml;
 
-import java.util.List;
-import java.util.Map;
+import java.util.LinkedHashMap;
+
+import org.zollty.framework.core.beans.BeanDefinition;
 
 /**
- * 
- * @author zollty
- * @since 2015-10-11
+ * Xml方式Bean定义
  */
-public interface ListableBeanFactory extends BeanFactory {
+public interface XmlBeanDefinition extends BeanDefinition {
 
-    List<BeanDefinition> getBeanDefinitions();
+    /**
+     * 取得属性集合
+     */
+    public abstract LinkedHashMap<String, Object> getProperties();
 
-    Map<String, Object> getBeanMap();
-
-    <T> Map<String, T> getBeansOfType(Class<T> type);
-
+    /**
+     * 设置属性集合
+     * 
+     * @param properties
+     */
+    public abstract void setProperties(LinkedHashMap<String, Object> properties);
 }

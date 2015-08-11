@@ -16,9 +16,9 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.zollty.framework.core.beans.BeanDefinition;
+import org.zollty.framework.core.beans.xml.XmlBeanReader;
 import org.zollty.framework.core.config.IServletContextFileConfig;
-import org.zollty.framework.core.support.BeanDefinition;
-import org.zollty.framework.core.support.xml.XmlBeanReader;
 import org.zollty.framework.mvc.handler.support.HttpRequestHandlerMapping;
 import org.zollty.framework.util.ResourceContext;
 import org.zollty.log.LogFactory;
