@@ -45,6 +45,7 @@ How to use it
 
 ```java
 @Controller
+@CBefore({PermissionCheck.class}) // before controller method execution
 public class HelloWorldController {
  
      // 属性注入，支持按类型注入
