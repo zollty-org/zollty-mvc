@@ -23,8 +23,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
 import org.zollty.dbk.core.SqlInOutParameter;
 import org.zollty.dbk.core.SqlOutParameter;

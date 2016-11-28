@@ -16,8 +16,8 @@
 
 package org.zollty.dbk.dao.support;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 import org.zollty.dbk.temp.beans.factory.BeanInitializationException;
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
 

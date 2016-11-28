@@ -33,9 +33,9 @@ import org.zollty.dbk.core.metadata.CallMetaDataContext;
 import org.zollty.dbk.core.namedparam.SqlParameterSource;
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
 import org.zollty.dbk.temp.core.SpringUtils;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.Assert;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.Assert;
 
 /**
  * Abstract class to provide base functionality for easy stored procedure calls

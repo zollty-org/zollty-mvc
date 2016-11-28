@@ -22,9 +22,9 @@ import java.sql.Types;
 import java.util.Collection;
 
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.ObjectUtils;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.ObjectUtils;
 
 /**
  * Simple adapter for {@link PreparedStatementSetter} that applies

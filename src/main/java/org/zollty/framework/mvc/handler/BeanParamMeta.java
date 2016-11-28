@@ -16,8 +16,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
 
 /**
  * @author zollty

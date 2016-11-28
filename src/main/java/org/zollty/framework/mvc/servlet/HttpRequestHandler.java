@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.view.ErrorView;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
 
 /**
  * @author zollty

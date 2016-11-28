@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.zollty.dbk.core.RowMapper;
 import org.zollty.dbk.dao.InvalidDataAccessResourceUsageException;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 public class GenericSqlQuery extends SqlQuery {
 

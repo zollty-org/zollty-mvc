@@ -21,8 +21,8 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 import org.zollty.dbk.temp.core.Constants;
 import org.zollty.dbk.trans.IllegalTransactionStateException;

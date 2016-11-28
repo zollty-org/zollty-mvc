@@ -28,7 +28,7 @@ import java.util.Set;
 import org.zollty.dbk.core.SqlParameter;
 import org.zollty.dbk.core.SqlParameterValue;
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Helper methods for named parameter parsing.

@@ -20,9 +20,9 @@ import java.sql.SQLException;
 
 import org.zollty.dbk.UncategorizedSQLException;
 import org.zollty.dbk.dao.DataAccessException;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.Assert;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.Assert;
 
 /**
  * Base class for {@link SQLExceptionTranslator} implementations that allow for

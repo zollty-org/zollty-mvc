@@ -32,7 +32,7 @@ import java.util.Set;
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
 import org.zollty.dbk.dao.InvalidDataAccessResourceUsageException;
 import org.zollty.dbk.support.nativejdbc.NativeJdbcExtractor;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Helper class that efficiently creates multiple {@link PreparedStatementCreator}

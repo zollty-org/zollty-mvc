@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 import org.zollty.dbk.support.SqlValue;
 

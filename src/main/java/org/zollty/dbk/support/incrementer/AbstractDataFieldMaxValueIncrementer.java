@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Base implementation of {@link DataFieldMaxValueIncrementer} that delegates

@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.zollty.dbk.temp.core.SpringUtils;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Simple implementation of the standard JDBC {@link javax.sql.DataSource} interface,

@@ -34,7 +34,7 @@ import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeRenderBeanDefinition;
 import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.util.BasicRuntimeException;
+import org.jretty.util.BasicRuntimeException;
 
 /**
  * 

@@ -26,9 +26,9 @@ import org.zollty.dbk.CannotGetJdbcConnectionException;
 import org.zollty.dbk.trans.TransactionDefinition;
 import org.zollty.dbk.trans.support.TransactionSynchronizationAdapter;
 import org.zollty.dbk.trans.support.TransactionSynchronizationManager;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.Assert;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.Assert;
 
 /**
  * Helper class that provides static methods for obtaining JDBC Connections from

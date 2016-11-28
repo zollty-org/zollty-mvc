@@ -15,8 +15,8 @@ package org.zollty.framework.ext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
 import org.zollty.framework.ext.jdbc.JndiTemplate;
 
 /**

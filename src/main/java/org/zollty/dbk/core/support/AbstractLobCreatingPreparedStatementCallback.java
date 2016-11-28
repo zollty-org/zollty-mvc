@@ -23,7 +23,7 @@ import org.zollty.dbk.core.PreparedStatementCallback;
 import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.support.lob.LobCreator;
 import org.zollty.dbk.support.lob.LobHandler;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Abstract {@link PreparedStatementCallback} implementation that manages a {@link LobCreator}.

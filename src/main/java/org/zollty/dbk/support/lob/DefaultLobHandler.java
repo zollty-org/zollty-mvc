@@ -28,8 +28,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 /**
  * Default implementation of the {@link LobHandler} interface.

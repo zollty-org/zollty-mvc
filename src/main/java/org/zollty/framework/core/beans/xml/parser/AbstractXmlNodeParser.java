@@ -12,8 +12,8 @@
 package org.zollty.framework.core.beans.xml.parser;
 
 import org.zollty.framework.core.beans.BeanDefinitionParsingException;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
 
 abstract public class AbstractXmlNodeParser implements XmlNodeParser {
 

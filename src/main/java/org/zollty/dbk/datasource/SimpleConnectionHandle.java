@@ -18,7 +18,7 @@ package org.zollty.dbk.datasource;
 
 import java.sql.Connection;
 
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Simple implementation of the {@link ConnectionHandle} interface,

@@ -1,6 +1,6 @@
 package org.zollty.framework.core.beans;
 
-import org.zollty.util.BasicRuntimeException;
+import org.jretty.util.BasicRuntimeException;
 
 public class BeansException extends BasicRuntimeException {
 

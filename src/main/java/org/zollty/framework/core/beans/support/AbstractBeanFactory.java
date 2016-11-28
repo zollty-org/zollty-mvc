@@ -38,9 +38,9 @@ import org.zollty.framework.core.beans.xml.ManagedRef;
 import org.zollty.framework.core.beans.xml.ManagedValue;
 import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.NestedRuntimeException;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.NestedRuntimeException;
 
 /**
  * 

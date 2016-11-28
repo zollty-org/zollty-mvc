@@ -19,7 +19,7 @@ package org.zollty.dbk.core.namedparam;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Abstract base class for {@link SqlParameterSource} implementations.

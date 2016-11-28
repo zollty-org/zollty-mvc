@@ -24,7 +24,7 @@ import org.zollty.dbk.dao.IncorrectResultSizeDataAccessException;
 import org.zollty.dbk.dao.TypeMismatchDataAccessException;
 import org.zollty.dbk.temp.core.SpringUtils;
 import org.zollty.dbk.util.NumberUtils;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Miscellaneous utility methods for DAO implementations.

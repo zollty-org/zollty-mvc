@@ -19,8 +19,8 @@ package org.zollty.dbk.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 /**
  * Registry for custom {@link org.zollty.dbk.support.SQLExceptionTranslator} instances associated with

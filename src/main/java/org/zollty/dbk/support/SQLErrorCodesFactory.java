@@ -23,9 +23,9 @@ import java.util.WeakHashMap;
 import javax.sql.DataSource;
 
 import org.zollty.dbk.util.PatternMatchUtils;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.Assert;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.Assert;
 /**
  * Factory for creating {@link SQLErrorCodes} based on the
  * "databaseProductName" taken from the {@link java.sql.DatabaseMetaData}.

@@ -23,13 +23,12 @@ import org.zollty.framework.core.annotation.Inject;
 import org.zollty.framework.core.beans.AbstractBeanReader;
 import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.Assert;
-import org.zollty.util.ResourceUtils;
-import org.zollty.util.resource.Resource;
-import org.zollty.util.resource.support.PathMatchingResourcePatternResolver;
-import org.zollty.util.resource.support.ResourcePatternResolver;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.Assert;
+import org.jretty.util.resource.Resource;
+import org.jretty.util.resource.support.PathMatchingResourcePatternResolver;
+import org.jretty.util.resource.support.ResourcePatternResolver;
 
 /**
  * @author zollty
@@ -72,7 +71,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
 
     protected void scan(String packageName) {
         String packageDirName = packageName.replace('.', '/');
-        String packageSearchPath = ResourceUtils.CLASSPATH_ALL_URL_PREFIX + packageDirName
+        String packageSearchPath = MvcUtils.ResourceUtil.CLASSPATH_ALL_URL_PREFIX + packageDirName
                 + "/**/*.class";
         try {
             Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);

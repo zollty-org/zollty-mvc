@@ -25,8 +25,8 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 import org.zollty.dbk.dao.InvalidDataAccessApiUsageException;
 import org.zollty.dbk.core.SqlTypeValue;

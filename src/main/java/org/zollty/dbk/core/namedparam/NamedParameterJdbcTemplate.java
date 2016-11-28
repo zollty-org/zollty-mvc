@@ -38,7 +38,7 @@ import org.zollty.dbk.dao.DataAccessException;
 import org.zollty.dbk.dao.support.DataAccessUtils;
 import org.zollty.dbk.support.KeyHolder;
 import org.zollty.dbk.support.rowset.SqlRowSet;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Template class with a basic set of JDBC operations, allowing the use

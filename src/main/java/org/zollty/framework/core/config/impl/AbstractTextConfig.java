@@ -20,7 +20,7 @@ import java.util.Properties;
 import org.zollty.framework.core.Const;
 import org.zollty.framework.core.config.ConfigTools;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.util.NestedRuntimeException;
+import org.jretty.util.NestedRuntimeException;
 
 /**
  * TextConfig设计的初衷，就是想免去xml的繁琐配置，故TextConfig只支持注解形式的bean，不支持xml形式的bean定义
@@ -65,7 +65,7 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
         }
 
         Properties props = MvcUtils.ResourceUtil.getProperties(in);
-        Map<String, String> propsMap = MvcUtils.ResourceUtil.covertProperties2Map(props);
+        Map<String, String> propsMap = MvcUtils.CollectionUtil.covertPropertiesToMap(props);
 
         String scanPackage = propsMap.get("scan-package");
         if (scanPackage != null) {

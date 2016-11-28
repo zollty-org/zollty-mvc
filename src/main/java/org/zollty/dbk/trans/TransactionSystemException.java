@@ -16,7 +16,7 @@
 
 package org.zollty.dbk.trans;
 
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Exception thrown when a general transaction system error is encountered,

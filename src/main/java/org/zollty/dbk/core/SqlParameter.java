@@ -19,7 +19,7 @@ package org.zollty.dbk.core;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Object to represent a SQL parameter definition.

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * JDBC {@link javax.sql.DataSource} implementation that delegates all calls

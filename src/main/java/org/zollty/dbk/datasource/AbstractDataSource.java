@@ -21,8 +21,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 //import java.util.logging.Logger;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
 /**
  * Abstract base class for Spring's {@link javax.sql.DataSource}
  * implementations, taking care of the padding.

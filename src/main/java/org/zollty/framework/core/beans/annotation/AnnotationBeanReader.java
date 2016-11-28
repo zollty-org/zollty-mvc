@@ -14,9 +14,9 @@ package org.zollty.framework.core.beans.annotation;
 
 import org.zollty.framework.core.annotation.Component;
 import org.zollty.framework.core.beans.BeanDefinition;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.resource.support.ResourcePatternResolver;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.resource.support.ResourcePatternResolver;
 
 /**
  * 读取Bean信息

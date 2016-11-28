@@ -18,8 +18,8 @@ package org.zollty.dbk.datasource;
 
 import java.sql.Savepoint;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 import org.zollty.dbk.trans.CannotCreateTransactionException;
 import org.zollty.dbk.trans.NestedTransactionNotSupportedException;

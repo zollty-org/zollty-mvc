@@ -22,8 +22,8 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 import org.zollty.dbk.CannotGetJdbcConnectionException;
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
 

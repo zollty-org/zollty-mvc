@@ -51,7 +51,7 @@ import org.zollty.dbk.support.nativejdbc.NativeJdbcExtractor;
 import org.zollty.dbk.support.rowset.SqlRowSet;
 import org.zollty.dbk.temp.core.SpringUtils;
 import org.zollty.dbk.util.LinkedCaseInsensitiveMap;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * <b>This is the central class in the JDBC core package.</b>

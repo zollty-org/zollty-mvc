@@ -19,9 +19,9 @@ package org.zollty.dbk.core;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.ObjectUtils;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.ObjectUtils;
 
 /**
  * Simple adapter for {@link PreparedStatementSetter} that applies a given array of arguments.

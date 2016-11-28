@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Adapter implementation of the ResultSetExtractor interface that delegates

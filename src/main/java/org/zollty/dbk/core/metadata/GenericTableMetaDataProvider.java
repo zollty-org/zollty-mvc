@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 
 import org.zollty.dbk.dao.DataAccessResourceFailureException;
 import org.zollty.dbk.support.nativejdbc.NativeJdbcExtractor;

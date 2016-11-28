@@ -46,9 +46,9 @@ import org.zollty.dbk.support.GeneratedKeyHolder;
 import org.zollty.dbk.support.JdbcUtils;
 import org.zollty.dbk.support.KeyHolder;
 import org.zollty.dbk.support.nativejdbc.NativeJdbcExtractor;
-import org.zollty.log.LogFactory;
-import org.zollty.log.Logger;
-import org.zollty.util.Assert;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.Assert;
 
 /**
  * Abstract class to provide base functionality for easy inserts

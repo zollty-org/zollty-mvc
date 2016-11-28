@@ -18,7 +18,7 @@ package org.zollty.dbk.support.incrementer;
 
 import javax.sql.DataSource;
 
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Abstract base class for {@link DataFieldMaxValueIncrementer} implementations that use

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.zollty.dbk.temp.core.SpringUtils;
-import org.zollty.util.Assert;
+import org.jretty.util.Assert;
 
 /**
  * Simple utility class for working with the reflection API and handling

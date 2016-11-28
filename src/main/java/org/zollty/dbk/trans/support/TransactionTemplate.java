@@ -18,8 +18,8 @@ package org.zollty.dbk.trans.support;
 
 import java.lang.reflect.UndeclaredThrowableException;
 
-import org.zollty.log.Logger;
-import org.zollty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.log.LogFactory;
 import org.zollty.dbk.temp.beans.factory.InitializingBean;
 import org.zollty.dbk.trans.PlatformTransactionManager;
 import org.zollty.dbk.trans.TransactionDefinition;
