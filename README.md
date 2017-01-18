@@ -55,7 +55,6 @@ public class HelloWorldController {
     
     @RequestMapping("/lesson1/hello-jsp")
     public View helloJsp() {
-
         // Return a JSP View
         return new JspView("/lesson1/hello.jsp");
     }
@@ -63,7 +62,6 @@ public class HelloWorldController {
 
     @RequestMapping("/lesson1/hello-json")
     public View helloJosn() {
-
         // Return a JSON View
         return new JsonView("{\"title\": \"hello\", \"name\": \"ZolltyMVC\"}");
     }
@@ -71,7 +69,6 @@ public class HelloWorldController {
     
     @RequestMapping("GET:/user/{userName}") // Only allow GET method 
     public View helloSomeOne(@URIParam("userName") String userName) {
-        
         // Get userName from URI
         return new TextView("Hello "+ userName);
     }
@@ -83,7 +80,6 @@ public class HelloWorldController {
              // Automatic packaging of HTTP parameters
 
         // TODO login service...
-
         return new JspView("/admin/home.jsp");
     }
 
@@ -92,7 +88,6 @@ public class HelloWorldController {
     	// HttpServletRequest can be used directly
 
         // TODO logout service...
-        
         return new RedirectView("/admin?info=bye");
     }
     
