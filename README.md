@@ -99,3 +99,5 @@ public class HelloWorldController {
 }
 ```
 ###### See the docs for more details  
+
+Quik start, see [zollty-mvc-demo](https://github.com/zollty/zollty-mvc-demo)
