@@ -62,7 +62,7 @@ public class HelloWorldController {
     @RequestMapping("/lesson1/hello-json")
     public View helloJosn() {
         // Return a JSON View
-        return new JsonView("{\"title\": \"hello\", \"name\": \"ZolltyMVC\"}");
+        return new JsonView(jsonString);
     }
     
     @RequestMapping("GET:/user/{userName}") // Only allow GET method 
