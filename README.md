@@ -90,7 +90,7 @@ Quik start, see [zollty-mvc-demo](https://github.com/zollty/zollty-mvc-demo)
 License
 --------------------------
 
-ZolltyMVC is Open Source software released under the GNU GENERAL PUBLIC LICENSE Version 2.0 (GPL 2.0) (see the 'LICENSE' file).
+ZolltyMVC is Open Source software released under the GNU GENERAL PUBLIC LICENSE Version 2.0 ([GPL 2.0](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)).
 
 
 Contribution
