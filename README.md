@@ -41,7 +41,7 @@ ZolltyMVC Framework provide many views to use. Like JspView, JsonView, HtmlView,
 How to use it 
 ---------------------------------------
 
-###### a controller demo 
+##### a controller demo 
 
 ```java
 @Controller
@@ -79,8 +79,25 @@ public class HelloWorldController {
     
 }
 ```
-###### See the docs for more details  
+
+#### See the docs for more details  
 
 Quik learn, see [wiki pages](https://github.com/zollty-org/zollty-mvc/wiki)
 
 Quik start, see [zollty-mvc-demo](https://github.com/zollty/zollty-mvc-demo)
+
+
+License
+--------------------------
+
+ZolltyMVC is Open Source software released under the GNU GENERAL PUBLIC LICENSE Version 2.0 (GPL 2.0) (see the 'LICENSE' file).
+
+
+Contribution
+--------------------------
+
+We are actively looking for contributors, so if you have any ideas, bug reports, or patches you would like to contribute please do not hesitate to do that.
+
+Author(s):
+
+* zollty (Zollty Tsou) <zolltytsou@gmail.com>
