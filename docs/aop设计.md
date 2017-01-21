@@ -4,35 +4,35 @@ AOP设计概述
 AOP类型简介
 ----------------------------
 在Controller的方法
+
   执行之前：MvcBefore
+
   执行之后、渲染之前：MvcBeforeRender、MvcAfterThrow
+
   执行之后：MvcAfter
+
   执行前后：MvcAround
-
-提示 1：推荐能使用servlet规范中的过滤器Filter实现的功能就用Filter实现，
-因为HandlerInteceptor只有在Zollty Web MVC环境下才能使用，因此Filter是最通用的、最先应该使用的。
-如登录这种拦截器最好使用Filter来实现。当然，MvcBefore可以 针对某些 特定方法 拦截，更灵活。也是一个必备的功能。
-
-提示 2：AOP类的实例由框架托管，如同普通Controller一样，属于单实例，可以注入其他Service Bean。
 
 
 ##### 0. 拦截器用法概述
 如下示例：
 
+```java
 // 通用AOP拦截器
- * @AopMapping({"/admin/*"})
- * public class KxxxBefore implements MvcBefore {
- * }
+@AopMapping({"/admin/*"})
+public class KxxxBefore implements MvcBefore {
+}
 
 // 带AOP的Controller
- * @CBefore({HxxxBefore.class})
- * @Controller
- * public class OneController {
- *      
- *    @CBefore({AxxxBefore.class, BxxxBefore.class})
- *    @RequestMapping("/admin/[vv]")
- *    public void doService() {}
- * }
+@CBefore({HxxxBefore.class})
+@Controller
+public class OneController {
+     
+   @CBefore({AxxxBefore.class, BxxxBefore.class})
+   @RequestMapping("/admin/[vv]")
+   public void doService() {}
+}
+```
  
 拦截器按功能分为两类：
 1）通用拦截器
@@ -126,30 +126,48 @@ MvcAround 在 执行Controller Method的前后 执行（把Controller Method包�
 ----------------------------
 如下Controller的doService方法引入了 4个MvcBefore AOP
 
+```java
 // 通用AOP拦截器
- * @AOPMapping(uri={"/admin/*"})
- * public class KxxxBefore implements MvcBefore {
- * }
+@AOPMapping(uri={"/admin/*"})
+public class KxxxBefore implements MvcBefore {
+}
 
 // 带AOP的Controller
- * @CBefore(cls={HxxxBefore.class})
- * @Controller
- * public class OneController {
- *      
- *    @CBefore(cls={AxxxBefore.class, BxxxBefore.class})
- *    @RequestMapping("/admin/[vv]")
- *    public void doService() {}
- * }
+@CBefore(cls={HxxxBefore.class})
+@Controller
+public class OneController {
+     
+   @CBefore(cls={AxxxBefore.class, BxxxBefore.class})
+   @RequestMapping("/admin/[vv]")
+   public void doService() {}
+}
+```
 
 按我的设计，默认情况下：
 	KxxxBefore最先执行，然后是HxxxBefore，最后是AxxxBefore、BxxxBefore（当有定义了多个拦截器时，按注解上的顺序，依次执行）。
 	也就是说BxxxBefore是最后执行的。
 
 另外，还有“通用拦截器”：
-     * @AOPMapping({"0:/admin/*", "2:/lesson1/hello"})
-     * public class KxxxBefore implements MvcBefore {
+
+```java
+@AOPMapping({"0:/admin/*", "2:/lesson1/hello"})
+public class KxxxBefore implements MvcBefore {
+
+```
 
 通用拦截器，理应最先执行，然后才执行业务拦截器。
 
 如果要调整，也不是没办法，“通用拦截器”可以自定义order，形如 "12:/admin/*"，那么order值等于12。Order默认值为 100。
 
+
+
+其他
+----------------------------
+
+MvcBefore拦截器使用建议：
+
+能使用Servlet规范中的过滤器Filter实现的功能建议就用Filter实现，
+因为HandlerInteceptor只有在Zollty Web MVC环境下才能使用，因此Filter是最通用的、最先应该使用的。
+如登录这种拦截器最好使用Filter来实现。
+
+当然，MvcBefore可以 针对某些 特定方法 拦截，更灵活。也是一个必备的功能。而且AOP类的实例 由框架托管，如同普通Controller一样，属于单实例，可以注入其他Service Bean。
