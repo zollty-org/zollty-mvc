@@ -45,7 +45,6 @@ How to use it
 
 ```java
 @Controller
-@CBefore({PermissionCheck.class}) // before controller method execution
 public class HelloWorldController {
  
      // 属性注入，支持按类型注入
@@ -55,44 +54,31 @@ public class HelloWorldController {
     @Inject("diService")
     private DiService anOtherDiService;
     
-    @RequestMapping("/lesson1/hello-jsp")
-    public View helloJsp() {
-        // Return a JSP View
-        return new JspView("/lesson1/hello.jsp");
-    }
-
-    @RequestMapping("/lesson1/hello-json")
+    @RequestMapping("/hello-json")
     public View helloJosn() {
+    
         // Return a JSON View
         return new JsonView(jsonString);
     }
     
-    @RequestMapping("GET:/user/{userName}") // Only allow GET method 
-    public View helloSomeOne(@URIParam("userName") String userName) {
-        // Get userName from URI
-        return new TextView("Hello "+ userName);
+    @RequestMapping("/hello-jsp")
+    public View helloJsp() {
+    
+        // Return a JSP View
+        return new JspView("/lesson1/hello.jsp");
     }
     
-    // Only allow POST method 
-    @RequestMapping("POST: /admin/login")
-    // Automatic packaging of HTTP parameters
-    public View login(@HttpParam("userName") String userName, 
-             @HttpParam("password") String password) { 
-
-        // TODO login service...
-        return new JspView("/admin/home.jsp");
-    }
-
-    @RequestMapping("/admin/logout")
-    // HttpServletRequest can be used directly
-    public View logout(HttpServletRequest request) { 
-
-        // TODO logout service...
-        return new RedirectView("/admin?info=bye");
+    @RequestMapping("GET:/user/{name}")
+    public View helloSomeOne(@URIParam("name") String name) {
+    
+        // Get userName from URI
+        return new TextView("Hello "+ name);
     }
     
 }
 ```
 ###### See the docs for more details  
+
+Quik learn, see [wiki pages](https://github.com/zollty-org/zollty-mvc/wiki)
 
 Quik start, see [zollty-mvc-demo](https://github.com/zollty/zollty-mvc-demo)
