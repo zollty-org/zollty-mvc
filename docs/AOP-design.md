@@ -44,7 +44,7 @@ public class OneController {
 1. 通用拦截器
 2. 业务拦截器
 
-`拦截器按作用范围大小分为三类（在三个不同地方定义的拦截器） ：`
+<b>拦截器按作用范围大小分为三类（在三个不同地方定义的拦截器）</b>
 
 1. 通用拦截器：在AOP类上用 @AOPMapping({"/admin/*"}) 定义的拦截器，作用范围为所有匹配的uri对应的controller method。
 2. Controller拦截器：基于特定Controller来定义Controller层面的拦截器。在Controller类上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
@@ -54,7 +54,7 @@ public class OneController {
 
 MvcBefore 在执行 Controller Method 之前执行。
 
-业务`场景 ：`
+业务<b>场景</b>
 
 1. 权限检查：检查session是否过期。过期则直接返回错误视图。
 2. 权限检查：检查是否有跨站点脚本攻击的非法参数，如果有则返回错误视图。
@@ -65,7 +65,7 @@ MvcBefore 在执行 Controller Method 之前执行。
 
 可以有多个MvcBefore 与Controller的方法相关联。按照先后顺序执行这些MvcBefore拦截器。（Controller层面的拦截器，其执行顺序要先于Method层面的拦截器。通用拦截器，理应最先执行，然后才执行业务拦截器。）
 
-执行`顺序 ：`通用拦截器、Controller拦截器、ControllerMethod拦截器。在每一级别上都是按从小到大先后顺序执行。
+执行<b>顺序</b>通用拦截器、Controller拦截器、ControllerMethod拦截器。在每一级别上都是按从小到大先后顺序执行。
 
 错误处理：
 
@@ -76,7 +76,7 @@ MvcBefore 在执行 Controller Method 之前执行。
 
 MvcBeforeRender 在 执行Controller Method、还未渲染视图时 执行。
 
-业务`场景 ：`
+业务<b>场景</b>
 
 1. 附加回传参数：在返回视图之前，往Repsonse里面加参数。
 2. 收尾工作，打印返回的数据，删除生成的临时文件等。可以做成异步处理。
@@ -94,7 +94,7 @@ MvcBeforeRender 在 执行Controller Method、还未渲染视图时 执行。
 
 MvcAfterThrow 在 执行Controller Method、还未渲染视图时 遇到未知异常时执行（包括MvcAround的异常，不包括MvcBefore等出现的异常）。
 
-业务`场景 ：`
+业务<b>场景</b>
 
 1. 统一的错误处理：在执行Controller Method时如果出现未捕获的异常，则执行MvcAfterThrow来处理。
 
@@ -111,7 +111,7 @@ MvcAfterThrow 在 执行Controller Method、还未渲染视图时 遇到未知�
 
 MvcAfter 在 执行完Controller、视图渲染完之后 执行。
 
-业务`场景 ：`
+业务<b>场景</b>
 
 1. 收尾工作，打印返回的数据，删除生成的临时文件等。可以做成异步处理。
 
@@ -128,7 +128,7 @@ MvcAfter 在 执行完Controller、视图渲染完之后 执行。
 
 MvcAround 在 执行Controller Method的前后 执行（把Controller Method包裹在MvcAround之中执行）。
 
-业务`场景 ：`
+业务<b>场景</b>
 
 1. 性能监控：记录处理时间，如果超时则打印log或者发送邮件。
 2. 开关：如OpenSessionInView，在进入处理器打开Session，在完成后关闭Session。
