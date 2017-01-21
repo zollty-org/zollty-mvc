@@ -50,7 +50,7 @@ public class OneController {
 2. Controller拦截器：基于特定Controller来定义Controller层面的拦截器。在Controller类上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
 3. ControllerMethod拦截器：基于某个Controller的特定Method来定义方法层面的拦截器。在Controller类的@RequestMapping方法上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
 
-##### 1. MvcBefore
+#### 1. MvcBefore
 
 MvcBefore 在执行 Controller Method 之前执行。
 
@@ -72,7 +72,7 @@ MvcBefore 在执行 Controller Method 之前执行。
 * 如果MvcBefore执行出错，可以返回一个View，MVC框架会提交这个View，终止后续执行（后面的MvcBefore等都不会执行了）。
 * 如果MvcBefore抛出了未知异常，框架会catch异常并打印日志，并返回错误视图，终止后续执行。
 
-##### 2. MvcBeforeRender
+#### 2. MvcBeforeRender
 
 MvcBeforeRender 在 执行Controller Method、还未渲染视图时 执行。
 
@@ -90,7 +90,7 @@ MvcBeforeRender 在 执行Controller Method、还未渲染视图时 执行。
 
 同MvcBefore，返回View或者遇到未知异常则终止程序执行，否则继续后续流程。
 
-##### 3. MvcAfterThrow
+#### 3. MvcAfterThrow
 
 MvcAfterThrow 在 执行Controller Method、还未渲染视图时 遇到未知异常时执行（包括MvcAround的异常，不包括MvcBefore等出现的异常）。
 
@@ -107,7 +107,7 @@ MvcAfterThrow 在 执行Controller Method、还未渲染视图时 遇到未知�
 
 同MvcBefore，返回View或者遇到未知异常则终止程序执行，否则继续后续流程。
 
-##### 4. MvcAfter
+#### 4. MvcAfter
 
 MvcAfter 在 执行完Controller、视图渲染完之后 执行。
 
@@ -124,7 +124,7 @@ MvcAfter 在 执行完Controller、视图渲染完之后 执行。
 
 如果MvcAfter抛出了未知异常，框架会catch异常并打印日志，仅此而已。
 
-##### 5. MvcAround
+#### 5. MvcAround
 
 MvcAround 在 执行Controller Method的前后 执行（把Controller Method包裹在MvcAround之中执行）。
 
