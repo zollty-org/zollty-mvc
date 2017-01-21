@@ -57,38 +57,32 @@ __拦截器按作用范围大小分为三类（在三个不同地方定义的拦
 
 MvcBefore 在执行 Controller Method 之前执行。
 
-__业务场景：__
+业务__场景：__
 
-》Step 1. 权限检查：检查session是否过期。过期则直接返回错误视图。
-
-》Step 2. 权限检查：检查是否有跨站点脚本攻击的非法参数，如果有则返回错误视图。
-
-》Step 3. 预处理：读取请求信息、Cookie等，并做一些解析后存入请求对象中，方便后续流程使用。
-
-》Step 4. 日志记录：记录请求信息。
+1. 权限检查：检查session是否过期。过期则直接返回错误视图。
+2. 权限检查：检查是否有跨站点脚本攻击的非法参数，如果有则返回错误视图。
+3. 预处理：读取请求信息、Cookie等，并做一些解析后存入请求对象中，方便后续流程使用。
+4. 日志记录：记录请求信息。
 
 可以做成异步处理。
 
 可以有多个MvcBefore 与Controller的方法相关联。按照先后顺序执行这些MvcBefore拦截器。（Controller层面的拦截器，其执行顺序要先于Method层面的拦截器。通用拦截器，理应最先执行，然后才执行业务拦截器。）
 
-__执行顺序：__通用拦截器、Controller拦截器、ControllerMethod拦截器。在每一级别上都是按从小到大先后顺序执行。
+执行__顺序：__通用拦截器、Controller拦截器、ControllerMethod拦截器。在每一级别上都是按从小到大先后顺序执行。
 
-__错误处理：__
+错误处理：
 
-如果MvcBefore执行出错，可以返回一个View，MVC框架会提交这个View，终止后续执行（后面的MvcBefore等都不会执行了）。
-
-如果MvcBefore抛出了未知异常，框架会catch异常并打印日志，并返回错误视图，终止后续执行。
+* 如果MvcBefore执行出错，可以返回一个View，MVC框架会提交这个View，终止后续执行（后面的MvcBefore等都不会执行了）。
+* 如果MvcBefore抛出了未知异常，框架会catch异常并打印日志，并返回错误视图，终止后续执行。
 
 ##### 2. MvcBeforeRender
 
 MvcBeforeRender 在 执行Controller Method、还未渲染视图时 执行。
 
-__业务场景：__
+业务__场景：__
 
-》Step 1. 附加回传参数：在返回视图之前，往Repsonse里面加参数。
-
-》Step 2. 收尾工作，打印返回的数据，删除生成的临时文件等。可以做成异步处理。
-
+1. 附加回传参数：在返回视图之前，往Repsonse里面加参数。
+2. 收尾工作，打印返回的数据，删除生成的临时文件等。可以做成异步处理。
 
 在执行完Controller的method之后，返回一个View，在这个View还没有调用render方法commit时，可以执行MvcBeforeRender拦截器。
 同样，MvcBeforeRender可以有多个，按顺序先后执行。
@@ -103,9 +97,9 @@ __业务场景：__
 
 MvcAfterThrow 在 执行Controller Method、还未渲染视图时 遇到未知异常时执行（包括MvcAround的异常，不包括MvcBefore等出现的异常）。
 
-__业务场景：__
+业务__场景：__
 
-》Step 1. 统一的错误处理：在执行Controller Method时如果出现未捕获的异常，则执行MvcAfterThrow来处理。
+1. 统一的错误处理：在执行Controller Method时如果出现未捕获的异常，则执行MvcAfterThrow来处理。
 
 在执行完Controller的method时，如果报未知异常，框架捕捉到之后，则执行MvcAfterThrow拦截器。
 同样，MvcAfterThrow可以有多个，
@@ -120,9 +114,9 @@ __业务场景：__
 
 MvcAfter 在 执行完Controller、视图渲染完之后 执行。
 
-业务场景：
+业务__场景：__
 
-》Step 1. 收尾工作，打印返回的数据，删除生成的临时文件等。可以做成异步处理。
+1. 收尾工作，打印返回的数据，删除生成的临时文件等。可以做成异步处理。
 
 在执行完Controller的method时，且Render完之后，则可以执行MvcAfter拦截器。
 同样，MvcAfter可以有多个，
@@ -137,11 +131,10 @@ MvcAfter 在 执行完Controller、视图渲染完之后 执行。
 
 MvcAround 在 执行Controller Method的前后 执行（把Controller Method包裹在MvcAround之中执行）。
 
-__业务场景：__
+业务__场景：__
 
-》Step 1. 性能监控：记录处理时间，如果超时则打印log或者发送邮件。
-
-》Step 2. 开关：如OpenSessionInView，在进入处理器打开Session，在完成后关闭Session。
+1. 性能监控：记录处理时间，如果超时则打印log或者发送邮件。
+2. 开关：如OpenSessionInView，在进入处理器打开Session，在完成后关闭Session。
 
 定义了MvcAround的Controller的method，不会直接执行Controller的method，而是会调用MvcAround的方法，
 在MvcAround的方法中再去调用Controller的method。
