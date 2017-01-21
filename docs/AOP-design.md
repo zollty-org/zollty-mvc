@@ -5,13 +5,13 @@ AOP类型简介
 ----------------------------
 在Controller的方法
 
-  执行之前：MvcBefore
+* 执行之前：MvcBefore
 
-  执行之后、渲染之前：MvcBeforeRender、MvcAfterThrow
+* 执行之后、渲染之前：MvcBeforeRender、MvcAfterThrow
 
-  执行之后：MvcAfter
+* 执行之后：MvcAfter
 
-  执行前后：MvcAround
+* 执行前后：MvcAround
 
 
 ##### 0. 拦截器用法概述
@@ -44,17 +44,14 @@ public class OneController {
 
 拦截器按功能分为两类：
 
-1）通用拦截器
-
-2）业务拦截器
+1. 通用拦截器
+2. 业务拦截器
 
 __拦截器按作用范围大小分为三类（在三个不同地方定义的拦截器）：__
 
-1）通用拦截器：在AOP类上用 @AOPMapping({"/admin/*"}) 定义的拦截器，作用范围为所有匹配的uri对应的controller method。
-
-2）Controller拦截器：基于特定Controller来定义Controller层面的拦截器。在Controller类上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
-
-3）ControllerMethod拦截器：基于某个Controller的特定Method来定义方法层面的拦截器。在Controller类的@RequestMapping方法上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
+1. 通用拦截器：在AOP类上用 @AOPMapping({"/admin/*"}) 定义的拦截器，作用范围为所有匹配的uri对应的controller method。
+2. Controller拦截器：基于特定Controller来定义Controller层面的拦截器。在Controller类上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
+3. ControllerMethod拦截器：基于某个Controller的特定Method来定义方法层面的拦截器。在Controller类的@RequestMapping方法上用 如@CBefore({HxxxBefore.class})标注 的拦截器。
 
 ##### 1. MvcBefore
 
