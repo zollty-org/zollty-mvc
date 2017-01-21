@@ -4,7 +4,7 @@ ZolltyMVC
 A lightweight Java MVC Framework. 
 It can help development teams build simple, portable, fast and flexible Java applications.
  
-#### 1. Dependency Injection and Inversion of Control
+#### 1. Dependency Injection and Inversion of Control （Concise and Powerful）
 
 ZolltyMVC Framework support Java Beans management, through xml config or code annotation you can define bean instances, and inject bean instances into other bean instances.
 
@@ -12,24 +12,26 @@ Its DI function is very powerful, include common usages like Spring, and also su
   
 Its BeanFactory is highly extensible, support ClassPathXmlApplicationContext, ClassPathAnnotationApplicationContext, WebXmlApplicationContext, and so on. 
  
-#### 2. Lightweight MVC Framework support RESTful web service
+#### 2. Lightweight MVC Framework support RESTful web service （Easy and very efficient）
 
 Only **one jar**, much more lightweight than Spring and Struts Framework! 
 
 Support REST-ful, nice url customization. Its URI matching algorithm is very efficient, tens times faster than AntPathMather (which Spring used).
 
-The URI matching also support approximate string matching（模糊匹配）, and extracting parameters from URI. There are many nice functions.
+The URI matching also support approximate matching（模糊匹配）, and extracting parameters from URI. There are many nice functions.
 
 It's ease to use. Through long term practice and research, after many improvements, we have taken that flexibility to extremes! Its usage is much easier than Spring or Struts Framework, you will like it!
 
-#### 3. Interceptor and Aspect-Oriented Programming
+#### 3. Interceptor and Aspect-Oriented Programming （Practical）
 
 ZolltyMVC Framework does not dependency on AspectJ and CGLIB, so we don't use proxy which may cause many problems. But we still support Aspect-Oriented Programming at controller layer. You can define interceptors base on Java annotation at any controller method. Interceptors can be defined at any stage of the execution of the controller method (before, after, after throwing exception, and so on).
 
 The Framework also support to define common interceptors matched the special URIs. And support asynchronous call.
 
+See [ZolltyMVC AOP Design](https://github.com/zollty-org/zollty-mvc/blob/master/docs/AOP-design.md)
 
-#### 4. Model Driven and multiple Views
+
+#### 4. Model Driven and multiple Views （Powerful and flexible）
 
 ZolltyMVC Framework can automatic packaging request parameters into 'POJO' beans. So you can package form parameters into a Java bean. It also support primitive type automatic injection.
 
