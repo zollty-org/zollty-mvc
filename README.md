@@ -61,17 +61,19 @@ public class HelloWorldController {
         return new JsonView(jsonString);
     }
     
-    @RequestMapping("/hello-jsp")
+    // Only allow GET method 
+    @RequestMapping("GET:/hello-jsp")
     public View helloJsp() {
     
         // Return a JSP View
         return new JspView("/lesson1/hello.jsp");
     }
     
-    @RequestMapping("GET:/user/{name}")
+    // Get param from URI
+    @RequestMapping("/user/{name}")
     public View helloSomeOne(@URIParam("name") String name) {
-    
-        // Get userName from URI
+        
+        // Return a Plain Text View
         return new TextView("Hello "+ name);
     }
     
