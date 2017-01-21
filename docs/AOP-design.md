@@ -17,23 +17,31 @@ AOP类型简介
 ##### 0. 拦截器用法概述
 如下示例：
 
+通用AOP拦截器（拦截所有批评URI）
+
 ```java
-// 通用AOP拦截器
 @AopMapping({"/admin/*"})
 public class KxxxBefore implements MvcBefore {
-}
 
-// 带AOP的Controller
+}
+```
+
+带AOP的Controller和Method
+
+```java
 @CBefore({HxxxBefore.class})
 @Controller
 public class OneController {
      
    @CBefore({AxxxBefore.class, BxxxBefore.class})
    @RequestMapping("/admin/[vv]")
-   public void doService() {}
+   public void doService() {
+   
+   }
+   
 }
 ```
- 
+
 拦截器按功能分为两类：
 1）通用拦截器
 2）业务拦截器
@@ -139,7 +147,10 @@ public class OneController {
      
    @CBefore(cls={AxxxBefore.class, BxxxBefore.class})
    @RequestMapping("/admin/[vv]")
-   public void doService() {}
+   public void doService() {
+   
+   }
+   
 }
 ```
 
@@ -153,6 +164,7 @@ public class OneController {
 @AOPMapping({"0:/admin/*", "2:/lesson1/hello"})
 public class KxxxBefore implements MvcBefore {
 
+}
 ```
 
 通用拦截器，理应最先执行，然后才执行业务拦截器。
