@@ -28,7 +28,7 @@ ZolltyMVC Framework does not dependency on AspectJ and CGLIB, so we don't use pr
 
 The Framework also support to define common interceptors matched the special URIs. And support asynchronous call.
 
-See [ZolltyMVC AOP Design](https://github.com/zollty-org/zollty-mvc/blob/master/docs/AOP-design.md)
+See [ZolltyMVC AOP Design](https://github.com/zollty-org/zollty-mvc/blob/master/docs/AOP-design.md) for more details.
 
 
 #### 4. Model Driven and multiple Views （Powerful and flexible）
