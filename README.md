@@ -189,9 +189,11 @@ public class HelloWorldController {
 <import resource="classpath:unittest-beans-2.xml" />
 ```
 
-* 还有其他许多功能，此处不再一一介绍，具体参见[zolltymvc-beans.xsd](http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd) and Demo。
+* 还有其他许多功能，此处不再一一介绍，具体参见 [zolltymvc-beans.xsd](http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd) 和 Demo。
 
-See: http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd
+See the XML Schema and use it to validate your XML configuration: 
+
+ http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd
 
 
 ### See the docs for more details  
