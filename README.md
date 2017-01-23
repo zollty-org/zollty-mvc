@@ -14,7 +14,7 @@ Its BeanFactory is highly extensible, support ClassPathXmlApplicationContext, Cl
  
 #### 2. Lightweight MVC Framework support RESTful web service （Easy and very efficient）
 
-Only **one jar**, much more lightweight than Spring and Struts Framework! 
+Only **one jar**, much more lightweight than Spring and Struts Framework! 强调一下：速度飞快！
 
 Support REST-ful, nice url customization. Its URI matching algorithm is very efficient, tens times faster than AntPathMather (which Spring used).
 
@@ -36,6 +36,18 @@ See [ZolltyMVC AOP Design](https://github.com/zollty-org/zollty-mvc/blob/master/
 ZolltyMVC Framework can automatic packaging request parameters into 'POJO' beans. So you can package form parameters into a Java bean. It also support primitive type automatic injection.
 
 ZolltyMVC Framework provide many views to use. Like JspView, JsonView, HtmlView, ForwardView and so on. You can also customize and extend Views. Its usage is more flexible than Spring's ModelAndView because in SpringMVC, the returned View cannot be of many types.
+
+
+#### 5. 易于扩展、定制、迁移和集成
+
+ZolltyMVC是在"Servlet集中控制转发器"基础上演变而来的，设计时特别考虑了它和Servlet的互相转换，以及和Struts、Spring等框架的同时存在和兼容。
+
+1. 兼容Servlet，Servelt可以直接转换成ZolltyMVC的Controller，反之也不难。
+2. 可以和Spring，Struts框架并存。（SpringMVC+Struts兼容并不是很好，比如存在WAS下的".do"的问题，而ZolltyMVC+Struts则兼容很好）
+3. 支持 Webjar，使用ZolltyMVC可以将web项目（包括class、html、picture、css、js）打包成一个jar，例如阿里的druid-monitor，如果使用ZolltyMVC的话，则完全不用再自己去写控制Servlet、HTML、CSS、JS的代码。
+4. ZolltyMVC框架预留了很多扩展和自定义的空间，许多组件框架只是提供了默认实现而已，如果需要个性化，则继承、实现、重载、重写都很方便。
+
+另外，ZolltyMVC刻意保留了部分比较好的Spring的使用习惯，有Spring使用经验的人，掌握ZolltyMVC只是分分钟的事。
 
 
 How to use it 
