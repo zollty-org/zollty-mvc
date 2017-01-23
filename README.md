@@ -192,7 +192,8 @@ public class HelloWorldController {
 * 还有其他许多功能，此处不再一一介绍，具体参见demo和文档。
 
 
-#### See the docs for more details  
+
+### See the docs for more details  
 
 Quik learn, see [wiki pages](https://github.com/zollty-org/zollty-mvc/wiki)
 
