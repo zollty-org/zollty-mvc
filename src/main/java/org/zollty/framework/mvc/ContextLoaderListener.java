@@ -37,8 +37,9 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext ctx = event.getServletContext();
-        ctx.log(" ================================================================= ");
-        ctx.log("================= zolltyMVC contextDestroyed ======================");
-        ctx.log(" ================================================================= ");
+        if (contextLoader != null) {
+            ctx.log("================= zolltyMVC contextDestroyed ======================");
+            contextLoader.close();
+        }
     }
 }

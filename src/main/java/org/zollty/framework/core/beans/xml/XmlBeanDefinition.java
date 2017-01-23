@@ -12,6 +12,7 @@
 package org.zollty.framework.core.beans.xml;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import org.zollty.framework.core.beans.BeanDefinition;
 
@@ -23,12 +24,22 @@ public interface XmlBeanDefinition extends BeanDefinition {
     /**
      * 取得属性集合
      */
-    public abstract LinkedHashMap<String, Object> getProperties();
-
+    public LinkedHashMap<String, Object> getProperties();
+    
     /**
      * 设置属性集合
      * 
      * @param properties
      */
-    public abstract void setProperties(LinkedHashMap<String, Object> properties);
+    public void setProperties(LinkedHashMap<String, Object> properties);
+    
+    /**
+     * 取得参数集合
+     */
+    public LinkedList<Object> getConstructorArgs();
+    
+    /**
+     * 设置参数集合
+     */
+    public void setConstructorArgs(LinkedList<Object> constructorArgs);
 }

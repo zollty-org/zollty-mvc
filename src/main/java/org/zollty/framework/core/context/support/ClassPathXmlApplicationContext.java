@@ -14,12 +14,13 @@ package org.zollty.framework.core.context.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.beans.BeanDefinition;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
 import org.zollty.framework.core.beans.xml.XmlBeanReader;
 import org.zollty.framework.core.config.IFileConfig;
 import org.zollty.framework.util.ResourceContext;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
 
 /**
  * @author zollty
@@ -47,7 +48,20 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
             log.debug("load {} ...", getClass().getSimpleName());
         }
     }
-
+    
+    @Override
+    protected List<XmlBeanDefinition> loadXmlBeanDefinitions() {
+        IFileConfig config = (IFileConfig) getConfig();
+        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(),
+                config.getConfigLocation());
+        List<XmlBeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- xml bean --size = {}", list.size());
+            return list;
+        }
+        return null;
+    }
+    
     @Override
     protected void doAfterRefresh() {
         if (log.isDebugEnabled()) {
@@ -57,20 +71,12 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     }
 
     @Override
-    protected List<BeanDefinition> loadBeanDefinitions() {
-        IFileConfig config = (IFileConfig) getConfig();
-        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(),
-                config.getConfigLocation());
-        List<BeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
-        if (list != null) {
-            log.debug("-- xml bean --size = {}", list.size());
-            return list;
-        }
-        return null;
-    }
-
-    @Override
     protected void doAfterClose() {
+    }
+    
+    @Override
+    protected List<AnnotationBeanDefinition> loadAnnoBeanDefinitions() {
+        return null;
     }
 
 }

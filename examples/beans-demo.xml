@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.zollty.org/mvc/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans 
+  http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd">
+
+  <bean id="car" class="com.zollty.mvcdemo.CarFactory#build">
+    <property name="color" value="black" />
+    <property name="speed" value="260.01" />
+  </bean>
+
+  <bean id="car" class="com.zollty.mvcdemo.CarFactory#build">
+    <constructor>
+      <value>black</value>
+      <value>260.01</value>
+    </constructor>
+  </bean>
+
+  <bean id="car" class="com.zollty.mvcdemo.CarFactory#build">
+    <constructor>
+      <value>black</value>
+      <value>260.01</value>
+      <ref bean="driver" />
+    </constructor>
+  </bean>
+
+  <bean id="fooBuilder" class="com.zollty.mvcdemo.FooBuilder">
+  </bean>
+
+  <bean id="foo" class="fooBuilder#build">
+    <constructor>
+      <value>black</value>
+      <value>260.01</value>
+    </constructor>
+  </bean>
+
+  <bean id="foo" class="com.zollty.mvcdemo.StaticBuilder#buildFoo">
+    <constructor>
+      <value>180</value>
+      <value>docker</value>
+    </constructor>
+  </bean>
+  
+  <bean id="jack" class="com.zollty.mvcdemo.beans.Student">
+    <property name="name" value="jack" />
+    <property name="clasz" ref="clasz0732" />
+  </bean>
+  
+  <bean id="clasz0732" class="com.zollty.mvcdemo.beans.Class">
+    <property name="id" value="10045348540" />
+    <property name="name" value="07-3-1" />
+  </bean>
+  
+  <bean id="shelf" class="com.zollty.mvcdemo.beans.BookShelf">
+    <property name="id" value="0732" />
+    <property name="books">
+      <list>
+        <value>spring</value>
+        <value>docker</value>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="foo" class="com.zollty.mvcdemo.beans.Foo">
+    <constructor>
+      <value>180</value>
+      <value>jdbc/zollty</value>
+    </constructor>
+    <property name="name" value="docker"></property>
+  </bean>
+  
+  <import resource="classpath:unittest-beans-2.xml" />
+
+</beans>

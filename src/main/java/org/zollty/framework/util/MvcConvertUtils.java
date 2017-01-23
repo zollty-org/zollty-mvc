@@ -31,6 +31,19 @@ class MvcConvertUtils {
     public static ParseValue canConvert(Class<?> clazz) {
         return clazz == null ? null : commonTypeClassMap.get(clazz);
     }
+    
+    /**
+     * change String name to Array Class
+     * 
+     * @param name
+     *            the name of the String.
+     * @See {@value #commonArrayTypeMap}
+     * 
+     * @return
+     */
+    public static Class<?> resolveArrayClass(String name) {
+        return commonArrayTypeMap.get(name);
+    }
 
     /**
      * Convert string to class instance.
@@ -231,6 +244,29 @@ class MvcConvertUtils {
 
     private interface ParseValue {
         Object parse(String value);
+    }
+    
+    
+    private static final Map<String, Class<?>> commonArrayTypeMap = new HashMap<String, Class<?>>();
+    static {
+        commonArrayTypeMap.put("int[]", int[].class);
+        commonArrayTypeMap.put("char[]", char[].class);
+        commonArrayTypeMap.put("long[]", long[].class);
+        commonArrayTypeMap.put("byte[]", byte[].class);
+        commonArrayTypeMap.put("float[]", float[].class);
+        commonArrayTypeMap.put("double[]", double[].class);
+        commonArrayTypeMap.put("short[]", short[].class);
+        commonArrayTypeMap.put("boolean[]", boolean[].class);
+        
+        commonArrayTypeMap.put("String[]", String[].class);
+        commonArrayTypeMap.put("Integer[]", Integer[].class);
+        commonArrayTypeMap.put("Character[]", Character[].class);
+        commonArrayTypeMap.put("Long[]", Long[].class);
+        commonArrayTypeMap.put("Byte[]", Byte[].class);
+        commonArrayTypeMap.put("Float[]", Float[].class);
+        commonArrayTypeMap.put("Double[]", Double[].class);
+        commonArrayTypeMap.put("Short[]", Short[].class);
+        commonArrayTypeMap.put("Boolean[]", Boolean[].class);
     }
 
 }

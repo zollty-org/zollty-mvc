@@ -11,6 +11,8 @@
  */
 package org.zollty.framework.core.beans.xml.parser;
 
+import static org.zollty.framework.core.beans.xml.XmlNodeConstants.TYPE_ATTRIBUTE;
+
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -21,7 +23,9 @@ public class ArrayNodeParser extends AbstractXmlNodeParser {
 
     @Override
     public Object parse(Element ele, Dom dom) {
+        String typeName = ele.getAttribute(TYPE_ATTRIBUTE);
         ManagedArray<Object> target = new ManagedArray<Object>();
+        target.setTypeName(typeName);
         List<Element> elements = dom.elements(ele);
         for (Element e : elements) {
             target.add(XmlNodeParserFactory.getXmlBeanDefinition(e, dom, null));

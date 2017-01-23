@@ -14,11 +14,12 @@ package org.zollty.framework.core.context.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.beans.BeanDefinition;
-import org.zollty.framework.core.beans.annotation.AnnotationBeanReader;
-import org.zollty.framework.core.config.IFileConfig;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanReader;
+import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
+import org.zollty.framework.core.config.IFileConfig;
 
 /**
  * @author zollty
@@ -56,9 +57,9 @@ public class ClassPathAnnotationApplicationContext extends AbstractApplicationCo
     }
 
     @Override
-    protected List<BeanDefinition> loadBeanDefinitions() {
+    protected List<AnnotationBeanDefinition> loadAnnoBeanDefinitions() {
         IFileConfig config = (IFileConfig) getConfig();
-        List<BeanDefinition> list = new AnnotationBeanReader(config.getScanningPackages(),
+        List<AnnotationBeanDefinition> list = new AnnotationBeanReader(config.getScanningPackages(),
                 getBeanClassLoader(), null).loadBeanDefinitions();
         if (list != null) {
             log.debug("-- Annotation bean -- size = {}", list.size());
@@ -69,6 +70,11 @@ public class ClassPathAnnotationApplicationContext extends AbstractApplicationCo
 
     @Override
     protected void doAfterClose() {
+    }
+
+    @Override
+    protected List<XmlBeanDefinition> loadXmlBeanDefinitions() {
+        return null;
     }
 
 }

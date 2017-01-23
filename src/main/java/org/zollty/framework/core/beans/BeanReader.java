@@ -19,8 +19,8 @@ import java.util.List;
  * @author zollty
  * @since 2013-9-15
  */
-public interface BeanReader {
+public interface BeanReader<T extends BeanDefinition> {
     
-    List<BeanDefinition> loadBeanDefinitions();
+    List<T> loadBeanDefinitions();
     
 }

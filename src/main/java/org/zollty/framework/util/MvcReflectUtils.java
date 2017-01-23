@@ -12,6 +12,8 @@
  */
 package org.zollty.framework.util;
 
+import java.io.Closeable;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jretty.util.Assert;
 
@@ -29,15 +32,20 @@ import org.jretty.util.Assert;
 class MvcReflectUtils {
 
     /**
-     * 获取所有接口名称
+     * @see {@link MvcUtils.ClassUtil#findAllAssignableClass(Class, ClassLoader)}
      */
-    public static String[] getInterfaceNames(Class<?> c) {
-        Class<?>[] interfaces = c.getInterfaces();
+    @SuppressWarnings("rawtypes")
+    public static String[] getInterfaceNames(Class<?> c, ClassLoader classLoader) {
+        Set<Class> interfaces = MvcUtils.ClassUtil.findAllAssignableClass(c, classLoader);
+        interfaces.remove(c);
+        // 去掉常用的一些接口，以便减少AbstractBeanFactory.errorConflict的size
+        interfaces.remove(Serializable.class);
+        interfaces.remove(Closeable.class);
         List<String> names = new ArrayList<String>();
         for (Class<?> i : interfaces) {
             names.add(i.getName());
         }
-        return names.toArray(new String[interfaces.length]);
+        return names.toArray(new String[interfaces.size()]);
     }
 
     public static interface BeanMethodFilter {

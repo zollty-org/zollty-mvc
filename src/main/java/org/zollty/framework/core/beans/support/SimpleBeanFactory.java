@@ -14,10 +14,13 @@ package org.zollty.framework.core.beans.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.beans.BeanDefinition;
-import org.zollty.framework.core.beans.BeanReader;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
+import org.zollty.framework.core.beans.BeanReader;
+import org.zollty.framework.core.beans.annotation.AbstractAnnotationBeanReader;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
+import org.zollty.framework.core.beans.xml.XmlBeanReader;
 
 /**
  * @author zollty
@@ -29,16 +32,16 @@ public class SimpleBeanFactory extends AbstractBeanFactory {
 
     private long beginTimeMs;
 
-    private BeanReader beanReader;
+    private BeanReader<?> beanReader;
 
-    public SimpleBeanFactory(BeanReader beanReader) {
+    public SimpleBeanFactory(BeanReader<?> beanReader) {
         super();
         this.beanReader = beanReader;
 
         refresh();
     }
 
-    public SimpleBeanFactory(BeanReader beanReader, ClassLoader beanClassLoader) {
+    public SimpleBeanFactory(BeanReader<?> beanReader, ClassLoader beanClassLoader) {
         super(beanClassLoader);
         this.beanReader = beanReader;
 
@@ -53,6 +56,30 @@ public class SimpleBeanFactory extends AbstractBeanFactory {
             log.debug("load {} start...", getClass().getSimpleName());
         }
     }
+    
+    @Override
+    protected List<XmlBeanDefinition> loadXmlBeanDefinitions() {
+        if (beanReader instanceof XmlBeanReader) {
+            List<XmlBeanDefinition> list = ((XmlBeanReader) beanReader).loadBeanDefinitions();
+            if (list != null) {
+                log.trace("beans type = [{}] size = {}", beanReader.getClass().getName(), list.size());
+                return list;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected List<AnnotationBeanDefinition> loadAnnoBeanDefinitions() {
+        if (beanReader instanceof AbstractAnnotationBeanReader) {
+            List<AnnotationBeanDefinition> list = ((AbstractAnnotationBeanReader) beanReader).loadBeanDefinitions();
+            if (list != null) {
+                log.trace("beans type = [{}] size = {}", beanReader.getClass().getName(), list.size());
+                return list;
+            }
+        }
+        return null;
+    }
 
     @Override
     protected void doAfterRefresh() {
@@ -63,25 +90,15 @@ public class SimpleBeanFactory extends AbstractBeanFactory {
     }
 
     @Override
-    protected List<BeanDefinition> loadBeanDefinitions() {
-        List<BeanDefinition> list = beanReader.loadBeanDefinitions();
-        if (list != null) {
-            log.trace("beans type = [{}] size = {}", beanReader.getClass().getName(), list.size());
-            return list;
-        }
-        return null;
-    }
-
-    @Override
     protected void doAfterClose() {
     }
 
-    public BeanReader getBeanReader() {
+    public BeanReader<?> getBeanReader() {
         return beanReader;
     }
 
-    public void setBeanReader(BeanReader beanReader) {
+    public void setBeanReader(BeanReader<?> beanReader) {
         this.beanReader = beanReader;
     }
-
+    
 }

@@ -12,6 +12,7 @@
 package org.zollty.framework.core.beans.xml;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 /**
  * Xml方式Bean实现
@@ -30,6 +31,8 @@ public class GenericXmlBeanDefinition implements XmlBeanDefinition {
 
     // 属性集合
     private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>();
+    // 参数集合
+    private LinkedList<Object> constructorArgs;
     private String[] names;
     private Object object;
 
@@ -57,6 +60,14 @@ public class GenericXmlBeanDefinition implements XmlBeanDefinition {
 
     public void setProperties(LinkedHashMap<String, Object> properties) {
         this.properties = properties;
+    }
+    
+    public LinkedList<Object> getConstructorArgs() {
+        return constructorArgs;
+    }
+
+    public void setConstructorArgs(LinkedList<Object> constructorArgs) {
+        this.constructorArgs = constructorArgs;
     }
 
     @Override

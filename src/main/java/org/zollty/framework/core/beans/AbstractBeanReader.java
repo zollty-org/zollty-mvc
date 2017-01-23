@@ -12,15 +12,11 @@
  */
 package org.zollty.framework.core.beans;
 
-import java.util.List;
-
 /**
  * @author zollty
  * @since 2013-9-21
  */
-abstract public class AbstractBeanReader implements BeanReader {
-
-    protected List<BeanDefinition> beanDefinitions;
+abstract public class AbstractBeanReader<T extends BeanDefinition> implements BeanReader<T> {
 
     /**
      * 处理异常

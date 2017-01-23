@@ -18,23 +18,22 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.zollty.framework.core.annotation.Component;
-import org.zollty.framework.core.annotation.Inject;
-import org.zollty.framework.core.beans.AbstractBeanReader;
-import org.zollty.framework.core.beans.BeanDefinition;
-import org.zollty.framework.util.MvcUtils;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.Assert;
 import org.jretty.util.resource.Resource;
 import org.jretty.util.resource.support.PathMatchingResourcePatternResolver;
 import org.jretty.util.resource.support.ResourcePatternResolver;
+import org.zollty.framework.core.annotation.Component;
+import org.zollty.framework.core.annotation.Inject;
+import org.zollty.framework.core.beans.AbstractBeanReader;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
  * @since 2013-9-21
  */
-abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
+abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader<AnnotationBeanDefinition> {
 
     private Logger log = LogFactory.getLogger(AbstractAnnotationBeanReader.class);
 
@@ -44,6 +43,8 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
     private ResourcePatternResolver resourcePatternResolver;
 
     private String[] scanningPackages;
+    
+    protected List<AnnotationBeanDefinition> beanDefinitions;
 
     public AbstractAnnotationBeanReader(String[] scanningPackages, ClassLoader beanClassLoader,
             ResourcePatternResolver resourcePatternResolver) {
@@ -56,13 +57,13 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
     }
 
     @Override
-    public List<BeanDefinition> loadBeanDefinitions() {
+    public List<AnnotationBeanDefinition> loadBeanDefinitions() {
         init();
         return beanDefinitions;
     }
 
     private void init() {
-        beanDefinitions = new ArrayList<BeanDefinition>();
+        beanDefinitions = new ArrayList<AnnotationBeanDefinition>();
         for (String pack : scanningPackages) {
             log.info("------------------------------componentPath = [{}]", pack);
             scan(pack.trim());
@@ -102,7 +103,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
             return;
         }
 
-        BeanDefinition beanDefinition = null;
+        AnnotationBeanDefinition beanDefinition = null;
         try {
             beanDefinition = getBeanDefinition(c);
         }
@@ -116,9 +117,9 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
     }
 
     // let subclass override it
-    abstract protected BeanDefinition getBeanDefinition(Class<?> c);
+    abstract protected AnnotationBeanDefinition getBeanDefinition(Class<?> c);
 
-    protected BeanDefinition componentParser(Class<?> c) {
+    protected AnnotationBeanDefinition componentParser(Class<?> c) {
         AnnotationBeanDefinition annotationBeanDefinition = new GenericAnnotationBeanDefinition();
         annotationBeanDefinition.setClassName(c.getName());
 
@@ -127,7 +128,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader {
         id = id.length() != 0 ? id : MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
         annotationBeanDefinition.setId(id);
 
-        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c);
+        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c, getBeanClassLoader());
         annotationBeanDefinition.setInterfaceNames(names);
 
         List<Field> fields = getInjectField(c);

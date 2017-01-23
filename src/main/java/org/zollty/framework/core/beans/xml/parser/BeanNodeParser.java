@@ -19,9 +19,11 @@ import static org.zollty.framework.core.beans.xml.XmlNodeConstants.PROPERTY_ELEM
 import static org.zollty.framework.core.beans.xml.XmlNodeConstants.REF_ATTRIBUTE;
 import static org.zollty.framework.core.beans.xml.XmlNodeConstants.VALUE_ATTRIBUTE;
 
-import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -33,9 +35,6 @@ import org.zollty.framework.core.beans.xml.ManagedValue;
 import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.dom.Dom;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
-import org.jretty.util.NestedRuntimeException;
 
 /**
  * 
@@ -44,7 +43,7 @@ import org.jretty.util.NestedRuntimeException;
  */
 public class BeanNodeParser {
 
-    private static Logger log = LogFactory.getLogger(BeanNodeParser.class);
+    private static final Logger LOG = LogFactory.getLogger(BeanNodeParser.class);
 
     public static XmlBeanDefinition parse(Element ele, Dom dom, ClassLoader beanClassLoader) {
         XmlBeanDefinition xmlBeanDefinition = new GenericXmlBeanDefinition();
@@ -53,7 +52,7 @@ public class BeanNodeParser {
         List<Element> properties = dom.elements(ele, PROPERTY_ELEMENT);
 
         // 迭代property列表
-        if (properties != null) {
+        if (properties != null && !properties.isEmpty()) {
             for (Element property : properties) {
                 String name = property.getAttribute(NAME_ATTRIBUTE);
 
@@ -68,8 +67,7 @@ public class BeanNodeParser {
                     if (node instanceof Element) {
                         if (subElement != null) {
                             error(name + " must not contain more than one sub-element");
-                        }
-                        else {
+                        } else {
                             subElement = (Element) node;
                         }
                     }
@@ -109,6 +107,26 @@ public class BeanNodeParser {
                 }
             }
         }
+        
+        // 获取constructor
+        List<Element> constructorArs = dom.elements(ele, "constructor");
+        LinkedList<Object> constructorArgs = new LinkedList<Object>();
+        if (constructorArs != null && !constructorArs.isEmpty()) {
+            Element property = constructorArs.get(0);
+
+            NodeList nl = property.getChildNodes();
+            for (int i = 0; i < nl.getLength(); ++i) {
+                Node node = nl.item(i);
+                if (node instanceof Element) {
+                    Element subElement = (Element) node;
+                    // 处理子元素
+                    Object subEle = XmlNodeParserFactory.getXmlBeanDefinition(subElement, dom,
+                            beanClassLoader);
+                    constructorArgs.add(subEle);
+                }
+            }
+            xmlBeanDefinition.setConstructorArgs(constructorArgs);
+        }
 
         // 获取基本属性
         String id = ele.getAttribute(ID_ATTRIBUTE);
@@ -118,69 +136,23 @@ public class BeanNodeParser {
         if (className.indexOf("#") == -1) {
             xmlBeanDefinition.setBeanType(BeanDefinition.CLASS_BEAN_TYPE);
             xmlBeanDefinition.setClassName(className);
-            // 实例化对象
-            Class<?> clazz = null;
-            Object obj = null;
-            try {
-                clazz = beanClassLoader.loadClass(className);
-                obj = clazz.newInstance();
-            }
-            catch (Exception e) {
-                throw new NestedRuntimeException(e, "beanClassLoader.loadClass error!");
-            }
-            xmlBeanDefinition.setObject(obj);
-
-            // 取得接口名称
-            String[] names = MvcUtils.ReflectUtil.getInterfaceNames(clazz);
-            xmlBeanDefinition.setInterfaceNames(names);
-            log.info("class [" + className + "] names size [" + names.length + "]");
-
-        }
-
-        else {
+            
+        } else { // method bean
             xmlBeanDefinition.setBeanType(BeanDefinition.METHOD_BEAN_TYPE);
-
             String[] tempArray = className.split("#");
             if (tempArray.length != 2) {
                 error(id + " class attribute define error: " + className);
             }
             className = tempArray[0];
             String methodName = tempArray[1];
-            //
+            xmlBeanDefinition.setClassName(className);
             xmlBeanDefinition.setMethodName(methodName);
-
-            try {
-
-                Class<?> hostClazz = beanClassLoader.loadClass(className);
-                Object hostobj = hostClazz.newInstance();
-                //
-                xmlBeanDefinition.setObject(hostobj);
-
-                Method method = null;
-                Method[] methods = hostClazz.getDeclaredMethods();
-                for (Method m : methods) {
-                    if (m.getName().equals(methodName)) {
-                        method = m;
-                    }
-                }
-                Class<?> clazz = method.getReturnType();
-                //
-                xmlBeanDefinition.setClassName(clazz.getName());
-                // 取得接口名称
-                String[] names = MvcUtils.ReflectUtil.getInterfaceNames(clazz); // new String[]{};
-                xmlBeanDefinition.setInterfaceNames(names);
-                log.debug("class [" + className + "] names size [" + names.length + "]");
-
-            }
-            catch (Exception e) {
-                log.error(e);
-            }
         }
         return xmlBeanDefinition;
     }
 
     private static void error(String msg) {
-        log.error(msg);
+        LOG.error(msg);
         throw new BeanDefinitionParsingException(msg);
     }
 }

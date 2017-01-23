@@ -22,24 +22,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.NestedRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.zollty.framework.core.beans.AbstractBeanReader;
-import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.core.beans.xml.parser.XmlNodeParserFactory;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.ResourceContext;
 import org.zollty.framework.util.dom.DefaultDom;
 import org.zollty.framework.util.dom.Dom;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
-import org.jretty.util.NestedRuntimeException;
 
 /**
  * @author zollty
  * @since 2013-9-15
  */
-public class XmlBeanReader extends AbstractBeanReader {
+public class XmlBeanReader extends AbstractBeanReader<XmlBeanDefinition> {
 
     private static final Logger LOG = LogFactory.getLogger(XmlBeanReader.class);
 
@@ -50,6 +49,8 @@ public class XmlBeanReader extends AbstractBeanReader {
     private ClassLoader beanClassLoader;
 
     private Set<String> existed = new HashSet<String>();
+    
+    protected List<XmlBeanDefinition> beanDefinitions;
 
     public XmlBeanReader(ResourceContext beanXmlResourceContext) {
         this.beanXmlResourceContext = beanXmlResourceContext;
@@ -63,10 +64,10 @@ public class XmlBeanReader extends AbstractBeanReader {
     }
 
     private void init() {
-        beanDefinitions = new ArrayList<BeanDefinition>();
+        beanDefinitions = new ArrayList<XmlBeanDefinition>();
         String beanXmlFileLocation = beanXmlResourceContext.getLocation();
         if (beanXmlFileLocation == null || !beanXmlFileLocation.endsWith(".xml")) {
-            LOG.warn("the beanXmlFileLocation [{}] is invalidate! XmlBeanReader just ignore it.",
+            LOG.info("the beanXmlFileLocation [{}] is invalidate! XmlBeanReader just ignore it.",
                     beanXmlFileLocation);
             return;
         }
@@ -77,14 +78,14 @@ public class XmlBeanReader extends AbstractBeanReader {
         // 迭代beans列表
         if (beansList != null && !beansList.isEmpty()) {
             for (Element ele : beansList) {
-                beanDefinitions.add((BeanDefinition) XmlNodeParserFactory.getXmlBeanDefinition(ele,
+                beanDefinitions.add((XmlBeanDefinition) XmlNodeParserFactory.getXmlBeanDefinition(ele,
                         dom, beanClassLoader));
             }
         }
     }
 
     @Override
-    public List<BeanDefinition> loadBeanDefinitions() {
+    public List<XmlBeanDefinition> loadBeanDefinitions() {
         init();
         return beanDefinitions;
     }

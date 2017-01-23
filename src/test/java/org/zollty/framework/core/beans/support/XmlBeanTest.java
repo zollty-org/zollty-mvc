@@ -15,9 +15,11 @@
 package org.zollty.framework.core.beans.support;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.zollty.framework.core.beans.FakeDataSource;
 import org.zollty.framework.core.beans.xml.XmlBeanReader;
 import org.zollty.framework.util.ResourceContext;
 
@@ -39,6 +41,12 @@ public class XmlBeanTest {
 
         assertNotNull(aBean);
         assertArrayEquals(aBean.getCodes(), new int[] { 128, 16 });
+        
+        FakeDataSource bBean = sbf.getBean("dataSource");
+        System.out.println(sbf.getBeanMap());
+
+        assertNotNull(bBean);
+        assertEquals("jdbc/zollty", bBean.getName());
     }
 
 }

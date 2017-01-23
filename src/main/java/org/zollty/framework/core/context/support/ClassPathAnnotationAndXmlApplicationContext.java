@@ -14,13 +14,14 @@ package org.zollty.framework.core.context.support;
 
 import java.util.List;
 
-import org.zollty.framework.core.beans.BeanDefinition;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.core.beans.annotation.AnnotationBeanReader;
+import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
 import org.zollty.framework.core.beans.xml.XmlBeanReader;
 import org.zollty.framework.core.config.IFileConfig;
 import org.zollty.framework.util.ResourceContext;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
 
 /**
  * @author zollty
@@ -49,6 +50,29 @@ public class ClassPathAnnotationAndXmlApplicationContext extends AbstractApplica
             log.debug("load {} ...", getClass().getSimpleName());
         }
     }
+    
+    @Override
+    protected List<XmlBeanDefinition> loadXmlBeanDefinitions() {
+        IFileConfig config = (IFileConfig) getConfig();
+
+        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(),
+                config.getConfigLocation());
+        List<XmlBeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- Xml beans -- size = {}", list.size());
+        }
+        return list;
+    }
+
+    @Override
+    protected List<AnnotationBeanDefinition> loadAnnoBeanDefinitions() {
+        List<AnnotationBeanDefinition> list = new AnnotationBeanReader(getConfig().getScanningPackages(),
+                getBeanClassLoader(), null).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- Annotation beans -- size = {}", list.size());
+        }
+        return list;
+    }
 
     @Override
     protected void doAfterRefresh() {
@@ -59,32 +83,7 @@ public class ClassPathAnnotationAndXmlApplicationContext extends AbstractApplica
     }
 
     @Override
-    protected List<BeanDefinition> loadBeanDefinitions() {
-        IFileConfig config = (IFileConfig) getConfig();
-        List<BeanDefinition> list1 = new AnnotationBeanReader(config.getScanningPackages(),
-                getBeanClassLoader(), null).loadBeanDefinitions();
-
-        ResourceContext resourcContext = new ResourceContext(config.getClassLoader(),
-                config.getConfigLocation());
-        List<BeanDefinition> list2 = new XmlBeanReader(resourcContext).loadBeanDefinitions();
-        if (list1 != null && list2 != null) {
-            list1.addAll(list2);
-            log.debug(" [-- AnnotationBean & XmlBean --] size = {}", list1.size());
-            return list1;
-        }
-        else if (list1 != null) {
-            log.debug(" [-- Annotation beans --] size = {}", list1.size());
-            return list1;
-        }
-        else if (list2 != null) {
-            log.debug(" [-- Xml beans --] size = {}", list2.size());
-            return list2;
-        }
-        return null;
-    }
-
-    @Override
     protected void doAfterClose() {
     }
-
+    
 }

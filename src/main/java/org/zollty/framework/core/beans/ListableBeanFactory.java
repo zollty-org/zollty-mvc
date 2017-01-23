@@ -12,7 +12,6 @@
  */
 package org.zollty.framework.core.beans;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +20,6 @@ import java.util.Map;
  * @since 2015-10-11
  */
 public interface ListableBeanFactory extends BeanFactory {
-
-    List<BeanDefinition> getBeanDefinitions();
 
     Map<String, Object> getBeanMap();
 

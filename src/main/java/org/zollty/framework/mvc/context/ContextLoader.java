@@ -17,16 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.NestedRuntimeException;
 import org.zollty.framework.core.Const;
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.config.impl.DefaultTextFileConfig;
 import org.zollty.framework.core.config.impl.DefaultXmlConfig;
-import org.zollty.framework.mvc.context.support.WebAnnotationAndXmlApplicationContext;
-import org.zollty.framework.mvc.context.support.WebAnnotationApplicationContext;
+import org.zollty.framework.mvc.context.support.DefaultWebApplicationContext;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
-import org.jretty.util.NestedRuntimeException;
 
 /**
  * @author zollty
@@ -100,9 +99,11 @@ public class ContextLoader {
             return this.context;
         }
         catch (Throwable err) {
-            logger.error(err, "Context initialization failed");
-            servletContext.setAttribute(
-                    WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, err);
+            logger.error(err, "Context initialization failed ------------------");
+            logger.error(" ------------------ ------------------ ------------------ ------------------");
+            logger.error("Context [{}: {}] startup failed due to previous errors! Please check it and restart the server!", servletContext.getServerInfo(), servletContext.getContextPath());
+            logger.error(" ------------------ ------------------ ------------------ ------------------");
+            servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, err);
             throw new NestedRuntimeException(err);
         }
     }
@@ -123,19 +124,29 @@ public class ContextLoader {
         }
 
         if (configLocation != null && configLocation.endsWith("xml")) {
-            return new WebAnnotationAndXmlApplicationContext(new DefaultXmlConfig(configLocation,
+            return new DefaultWebApplicationContext(new DefaultXmlConfig(configLocation,
                     sc), null, sc);
         }
 
         if (configLocation != null && configLocation.endsWith("properties")) {
-            return new WebAnnotationApplicationContext(new DefaultTextFileConfig(configLocation,
+            return new DefaultWebApplicationContext(new DefaultTextFileConfig(configLocation,
                     null, sc), null, sc);
         }
 
-        return new WebAnnotationAndXmlApplicationContext(
+        return new DefaultWebApplicationContext(
                 (IServletContextFileConfig) MvcUtils.ClassUtil.newInstance(configLocation, null),
                 null, sc);
     }
+    
+    /**
+     * Close the context.
+     */
+    public void close() {
+        if (context != null) {
+            context.close();
+        }
+    }
+    
 
     /**
      * Obtain the Spring root web application context for the current thread (i.e. for the current

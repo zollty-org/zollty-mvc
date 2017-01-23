@@ -12,6 +12,7 @@
  */
 package org.zollty.framework.mvc.servlet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
@@ -38,6 +39,8 @@ public abstract class HttpServletBean extends HttpServlet {
     protected String encoding;
 
     protected HandlerMapping handlerMapping;
+    
+    private ContextLoader contextLoader;
 
     @Override
     public final void init() throws ServletException {
@@ -48,7 +51,8 @@ public abstract class HttpServletBean extends HttpServlet {
             webApplicationContext = WebApplicationContextUtils
                     .getWebApplicationContext(getServletContext());
             if (webApplicationContext == null) {
-                new ContextLoader().initWebApplicationContext(getServletContext());
+                contextLoader = new ContextLoader();
+                contextLoader.initWebApplicationContext(getServletContext());
                 webApplicationContext = WebApplicationContextUtils
                         .getWebApplicationContext(getServletContext());
             }
@@ -75,5 +79,14 @@ public abstract class HttpServletBean extends HttpServlet {
      * at the last of initialization operation, do something.
      */
     abstract public void finalInit();
+    
+    @Override
+    public void destroy() {
+        ServletContext ctx = getServletContext();
+        if (contextLoader != null) {
+            ctx.log("================= zolltyMVC contextDestroyed ======================");
+            contextLoader.close();
+        }
+    }
 
 }

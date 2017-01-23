@@ -12,11 +12,10 @@
  */
 package org.zollty.framework.core.beans.annotation;
 
-import org.zollty.framework.core.annotation.Component;
-import org.zollty.framework.core.beans.BeanDefinition;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.resource.support.ResourcePatternResolver;
+import org.zollty.framework.core.annotation.Component;
 
 /**
  * 读取Bean信息
@@ -35,7 +34,7 @@ public class AnnotationBeanReader extends AbstractAnnotationBeanReader {
     }
 
     @Override
-    protected BeanDefinition getBeanDefinition(Class<?> c) {
+    protected AnnotationBeanDefinition getBeanDefinition(Class<?> c) {
         if (c.isAnnotationPresent(Component.class)) {
             log.info("classes - " + c.getName());
             return componentParser(c);

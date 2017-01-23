@@ -16,34 +16,37 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.zollty.framework.core.beans.BeanDefinition;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
+import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
 import org.zollty.framework.core.beans.xml.XmlBeanReader;
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.mvc.handler.support.HttpRequestHandlerMapping;
 import org.zollty.framework.util.ResourceContext;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
 
 /**
  * @author zollty
  * @since 2013-10-11
  */
-public class WebAnnotationAndXmlApplicationContext extends AbstractWebApplicationContext {
+public class DefaultWebApplicationContext extends AbstractWebApplicationContext {
 
     private Logger log;
 
     private long beginTimeMs;
+    
+    private List<AnnotationBeanDefinition> beanDefListTmp;
 
-    public WebAnnotationAndXmlApplicationContext(IServletContextFileConfig config) {
+    public DefaultWebApplicationContext(IServletContextFileConfig config) {
         super(config);
     }
 
-    public WebAnnotationAndXmlApplicationContext(IServletContextFileConfig config,
+    public DefaultWebApplicationContext(IServletContextFileConfig config,
             ClassLoader beanClassLoader) {
         super(config, beanClassLoader);
     }
 
-    public WebAnnotationAndXmlApplicationContext(IServletContextFileConfig config,
+    public DefaultWebApplicationContext(IServletContextFileConfig config,
             ClassLoader beanClassLoader, ServletContext servletContext) {
         super(config, beanClassLoader, servletContext);
     }
@@ -56,47 +59,52 @@ public class WebAnnotationAndXmlApplicationContext extends AbstractWebApplicatio
     }
 
     @Override
-    protected void doAfterRefresh() {
-
-        // 解析Controller中的AOP定义
-        new ControllerAopAnnotationParser(beanDefinitions);
-
-        handlerMapping = new HttpRequestHandlerMapping(beanDefinitions, getConfig());
-
-        if (log.isDebugEnabled())
-            log.debug("{} completed in {} ms.", getClass().getSimpleName(),
-                    (System.currentTimeMillis() - beginTimeMs));
-    }
-
-    @Override
-    protected List<BeanDefinition> loadBeanDefinitions() {
+    protected List<XmlBeanDefinition> loadXmlBeanDefinitions() {
         IServletContextFileConfig config = (IServletContextFileConfig) getConfig();
-
-        List<BeanDefinition> list1 = new WebAnnotationBeanReader(config.getScanningPackages(),
-                getBeanClassLoader(), null).loadBeanDefinitions();
 
         ResourceContext resourcContext = new ResourceContext(config.getClassLoader(),
                 config.getServletContext(), config.getConfigLocation());
-        List<BeanDefinition> list2 = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        List<XmlBeanDefinition> list = new XmlBeanReader(resourcContext).loadBeanDefinitions();
+        if (list != null) {
+            log.debug("-- Xml beans -- size = {}", list.size());
+        }
+        return list;
+    }
 
-        if (list1 != null && list2 != null) {
-            list1.addAll(list2);
-            log.debug("mixed bean -- WebAnnotationBean & XmlBean -- size = {}", list1.size());
-            return list1;
+    @Override
+    protected List<AnnotationBeanDefinition> loadAnnoBeanDefinitions() {
+        beanDefListTmp = new WebAnnotationBeanReader(getConfig().getScanningPackages(),
+                getBeanClassLoader(), null).loadBeanDefinitions();
+        if (beanDefListTmp != null) {
+            log.debug("-- WebAnnotation beans -- size = {}", beanDefListTmp.size());
         }
-        else if (list1 != null) {
-            log.debug("-- WebAnnotation bean -- size = {}", list1.size());
-            return list1;
+        return beanDefListTmp;
+    }
+    
+    @Override
+    protected void doAfterRefresh() {
+        
+        initController();
+        
+        if (log.isDebugEnabled()) {
+            log.debug("{} completed in {} ms.", getClass().getSimpleName(),
+                    (System.currentTimeMillis() - beginTimeMs));
         }
-        else if (list2 != null) {
-            log.debug("-- xml bean -- size = {}", list2.size());
-            return list2;
-        }
-        return null;
+    }
+    
+    protected void initController() {
+        // 解析Controller中的AOP定义
+        new ControllerAopAnnotationParser(beanDefListTmp);
+        // 解析Controller，绑定URL
+        handlerMapping = new HttpRequestHandlerMapping(beanDefListTmp, getConfig());
+        // 没有用了，释放内存
+        beanDefListTmp = null;
     }
 
     @Override
     protected void doAfterClose() {
         handlerMapping = null;
+        log = null;
     }
+    
 }

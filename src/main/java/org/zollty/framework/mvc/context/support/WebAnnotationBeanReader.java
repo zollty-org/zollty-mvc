@@ -17,8 +17,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.resource.support.ResourcePatternResolver;
 import org.zollty.framework.core.annotation.Component;
-import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.core.beans.annotation.AbstractAnnotationBeanReader;
 import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
@@ -35,9 +37,6 @@ import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeRenderBeanDefinition;
 import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
-import org.jretty.util.resource.support.ResourcePatternResolver;
 
 /**
  * @author zollty
@@ -55,8 +54,8 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
     }
 
     @Override
-    protected BeanDefinition getBeanDefinition(Class<?> c) {
-        BeanDefinition ret = null;
+    protected AnnotationBeanDefinition getBeanDefinition(Class<?> c) {
+        AnnotationBeanDefinition ret = null;
         if (c.isAnnotationPresent(Component.class)) {
             ret = componentParser(c);
         }
@@ -84,7 +83,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         return ret;
     }
 
-    protected BeanDefinition controllerParser(Class<?> c) {
+    protected AnnotationBeanDefinition controllerParser(Class<?> c) {
         ControllerBeanDefinition beanDefinition = new ControllerAnnotatedBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -102,7 +101,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
     }
     
     
-    private BeanDefinition aopBeforeParser(Class<?> c) {
+    private AnnotationBeanDefinition aopBeforeParser(Class<?> c) {
         MvcBeforeBeanDefinition beanDefinition = new MvcBeforeBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -119,7 +118,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         return beanDefinition;
     }
     
-    private BeanDefinition aopAroundParser(Class<?> c) {
+    private AnnotationBeanDefinition aopAroundParser(Class<?> c) {
         MvcAroundBeanDefinition beanDefinition = new MvcAroundBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -137,7 +136,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
     }
     
     
-    private BeanDefinition aopBeforeRenderParser(Class<?> c) {
+    private AnnotationBeanDefinition aopBeforeRenderParser(Class<?> c) {
         MvcBeforeRenderBeanDefinition beanDefinition = new MvcBeforeRenderBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -154,7 +153,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         return beanDefinition;
     }
     
-    private BeanDefinition aopAfterThrowParser(Class<?> c) {
+    private AnnotationBeanDefinition aopAfterThrowParser(Class<?> c) {
         MvcAfterThrowBeanDefinition beanDefinition = new MvcAfterThrowBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -171,7 +170,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         return beanDefinition;
     }
     
-    private BeanDefinition aopAfterParser(Class<?> c) {
+    private AnnotationBeanDefinition aopAfterParser(Class<?> c) {
         MvcAfterBeanDefinition beanDefinition = new MvcAfterBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
@@ -191,8 +190,8 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
     private void setWebBeanDefinition(AnnotationBeanDefinition beanDefinition, Class<?> c) {
         beanDefinition.setClassName(c.getName());
 
-        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c);
-        beanDefinition.setInterfaceNames(names);
+        // String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c, getBeanClassLoader());
+        beanDefinition.setInterfaceNames(new String[0]); // web beans don't need interface
 
         List<Field> fields = getInjectField(c);
         beanDefinition.setInjectFields(fields);

@@ -17,6 +17,7 @@ import static org.zollty.framework.core.beans.xml.XmlNodeConstants.MAP_ELEMENT;
 import static org.zollty.framework.core.beans.xml.XmlNodeConstants.REF_ELEMENT;
 import static org.zollty.framework.core.beans.xml.XmlNodeConstants.SET_ELEMENT;
 import static org.zollty.framework.core.beans.xml.XmlNodeConstants.VALUE_ELEMENT;
+import static org.zollty.framework.core.beans.xml.XmlNodeConstants.NULL_ELEMENT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class XmlNodeParserFactory {
         map.put(SET_ELEMENT, new ListNodeParser());
         map.put(ARRAY_ELEMENT, new ArrayNodeParser());
         map.put(MAP_ELEMENT, new MapNodeParser());
+        map.put(NULL_ELEMENT, new NullNodeParser());
     }
 
     public static XmlNodeParser getParser(String elementName) {

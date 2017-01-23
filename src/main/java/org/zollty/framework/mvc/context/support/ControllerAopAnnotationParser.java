@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jretty.util.BasicRuntimeException;
 import org.zollty.framework.core.beans.BeanDefinition;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.mvc.annotation.Controller;
 import org.zollty.framework.mvc.aop.ControllerMethodAopMeta;
 import org.zollty.framework.mvc.aop.annotation.CAfter;
@@ -34,7 +36,6 @@ import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeRenderBeanDefinition;
 import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.util.BasicRuntimeException;
 
 /**
  * 
@@ -45,9 +46,9 @@ import org.jretty.util.BasicRuntimeException;
  */
 class ControllerAopAnnotationParser {
 
-    private List<BeanDefinition> beanDefinitions;
+    private List<AnnotationBeanDefinition> beanDefinitions;
 
-    public ControllerAopAnnotationParser(List<BeanDefinition> beanDefinitions) {
+    public ControllerAopAnnotationParser(List<AnnotationBeanDefinition> beanDefinitions) {
         this.beanDefinitions = beanDefinitions;
 
         // 执行解析
@@ -58,7 +59,7 @@ class ControllerAopAnnotationParser {
 
     private void doParse() {
 
-        for (BeanDefinition bean : beanDefinitions) {
+        for (AnnotationBeanDefinition bean : beanDefinitions) {
 
             if (!bean.getObject().getClass().isAnnotationPresent(Controller.class)) {
                 continue;

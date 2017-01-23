@@ -14,15 +14,13 @@
  */
 package org.zollty.framework.core.beans.annotation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import org.junit.Test;
-import org.zollty.framework.core.beans.BeanDefinition;
-import org.zollty.framework.core.beans.annotation.AbstractAnnotationBeanReader;
 
 /**
  * @author zollty
@@ -35,7 +33,7 @@ public class AnnotationBeanReaderTest {
 
         AbstractAnnotationBeanReader beanReader = new AbstractAnnotationBeanReader(new String[0], null, null) {
             @Override
-            protected BeanDefinition getBeanDefinition(Class<?> c) {
+            protected AnnotationBeanDefinition getBeanDefinition(Class<?> c) {
                 return null;
             }
         };
@@ -59,5 +57,6 @@ public class AnnotationBeanReaderTest {
         }
 
     }
+
 
 }

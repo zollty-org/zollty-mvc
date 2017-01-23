@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.zollty.org/mvc/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans http://blog.zollty.com/res/zolltymvc-beans-1.0.xsd">
+<beans xmlns="http://www.zollty.org/mvc/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans 
+  http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd">
 
 	<bean id="arrayBean" class="org.zollty.framework.core.beans.support.ArrayBean" >
 		<property name="codes" >
@@ -10,5 +12,10 @@
 			</array>
 		</property>
 	</bean>
+  
+    <!-- methodBean -->
+    <bean id="dataSource" class="org.zollty.framework.core.beans.DataSourceCreator#getDataSource">
+      <property name="name" value="jdbc/zollty"></property>
+    </bean>
 
 </beans>

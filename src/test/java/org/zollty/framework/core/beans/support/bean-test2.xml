@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.zollty.org/mvc/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans 
+  http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd">
+
+
+  <bean id="fooBuilder" class="org.zollty.framework.core.beans.FooBuilder">
+    <property name="name"><null /></property>
+  </bean>
+
+  <bean id="foo" class="org.zollty.framework.core.beans.FooBuilder#build">
+    <property name="name"><null /></property>
+    <constructor>
+      <value>180</value>
+      <value>jdbc/zollty</value>
+    </constructor>
+  </bean>
+  
+  <bean id="foo2" class="org.zollty.framework.core.beans.FooBuilder#build2">
+    <constructor>
+      <value>180</value>
+      <array type="String[]">
+		<value>jdbc/zollty</value>
+		<value>abcd</value>
+	  </array>
+    </constructor>
+  </bean>
+
+  <bean id="foo3" class="org.zollty.framework.core.beans.FooBuilder#build3">
+    <constructor>
+      <value>180</value>
+      <list>
+        <value>spring</value>
+        <value>docker</value>
+      </list>
+    </constructor>
+  </bean>
+  
+  <bean id="foo4" class="org.zollty.framework.core.beans.FooBuilder#staticBuild">
+    <constructor>
+      <value>180</value>
+      <value>jdbc/zollty</value>
+    </constructor>
+  </bean>
+  
+  <bean id="foo5" class="org.zollty.framework.core.beans.Foo">
+    <property name="name" value="spring"></property>
+    <constructor>
+      <value>180</value>
+      <value>jdbc/zollty</value>
+    </constructor>
+  </bean>
+  
+  <bean id="foo6" class="fooBuilder#build">
+    <constructor>
+      <value>180</value>
+      <value>jdbc/zollty</value>
+    </constructor>
+  </bean>
+
+</beans>

@@ -36,5 +36,6 @@ public interface XmlNodeConstants {
     public static final String MAP_ENTRY_ELEMENT = "entry";
     public static final String MAP_KEY_ELEMENT = "key";
     public static final String MAP_VALUE_ELEMENT = "value";
+    public static final String NULL_ELEMENT = "null";
     
 }

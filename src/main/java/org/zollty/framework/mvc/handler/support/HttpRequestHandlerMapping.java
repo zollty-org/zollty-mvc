@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.zollty.framework.core.Const;
 import org.zollty.framework.core.beans.BeanDefinition;
+import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
 
     private ViewHandlerFactory viewHandlerFactory = new ViewHandlerFactory();
 
-    public HttpRequestHandlerMapping(List<BeanDefinition> beanDefinitions, IApplicationConfig config) {
+    public HttpRequestHandlerMapping(List<AnnotationBeanDefinition> beanDefinitions, IApplicationConfig config) {
         super(config);
 
         this.initContext(beanDefinitions);
@@ -57,7 +58,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
     }
 
     
-    private void initContext(List<BeanDefinition> beanDefinitions) {
+    private void initContext(List<AnnotationBeanDefinition> beanDefinitions) {
 
         addAopIntercList(beanDefinitions);
 
@@ -111,7 +112,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
         }
     }
 
-    public void addAopIntercList(List<BeanDefinition> beanDefinitions) {
+    public void addAopIntercList(List<AnnotationBeanDefinition> beanDefinitions) {
 
         List<AopBeanDefinition> aopIntercList = new ArrayList<AopBeanDefinition>();
         for (BeanDefinition bean : beanDefinitions) {
