@@ -94,7 +94,7 @@ public class HelloWorldController {
 
 #### 支持Xml方式配置各种bean
 
-1. 支持类型自动识别，支持 ref 属性 或者 ref标签 引入其他bean
+* 支持类型自动识别，支持 ref 属性 或者 ref标签 引入其他bean
 
 ```xml
   <bean id="jack" class="com.zollty.mvcdemo.beans.Student">
@@ -108,7 +108,7 @@ public class HelloWorldController {
   </bean>
 ```
 
-2. 支持数组（List）、Map、Array、Set等
+* 支持数组（List）、Map、Array、Set等
 
 ```xml
   <bean id="shelf" class="com.zollty.mvcdemo.beans.BookShelf">
@@ -122,7 +122,7 @@ public class HelloWorldController {
   </bean>
 ```
 
-3. 支持构造函数（Constructor）生成bean实例
+* 支持构造函数（Constructor）生成bean实例
 
 ```xml
   <bean id="foo" class="com.zollty.mvcdemo.beans.Foo">
@@ -134,7 +134,7 @@ public class HelloWorldController {
   </bean>
 ```
 
-4. 支持通过静态方法（Static Method）生成bean实例
+* 支持通过静态方法（Static Method）生成bean实例
 
 ```xml
   <bean id="foo" class="com.zollty.mvcdemo.StaticBuilder#buildFoo">
@@ -145,7 +145,7 @@ public class HelloWorldController {
   </bean>
 ```
 
-5. 支持通过非静态方法（Method）生成bean实例 （使用已实例化的宿主bean对象）
+* 支持通过非静态方法（Method）生成bean实例 （使用已实例化的宿主bean对象）
 
 ```xml
   <bean id="fooBuilder" class="com.zollty.mvcdemo.FooBuilder">
@@ -159,7 +159,7 @@ public class HelloWorldController {
   </bean>
 ```
 
-6. 支持通过非静态方法（Method）生成bean实例 （自动实例化宿主bean对象）
+* 支持通过非静态方法（Method）生成bean实例 （自动实例化宿主bean对象）
 
 ```xml
   <bean id="car" class="com.zollty.mvcdemo.CarFactory#build">
@@ -183,13 +183,13 @@ public class HelloWorldController {
   </bean>
 ```
 
-7. 支持引入其他xml文件
+* 支持引入其他xml文件
 
 ```xml
 <import resource="classpath:unittest-beans-2.xml" />
 ```
 
-8. 还有其他许多功能，此处不再一一介绍，具体参见demo和文档。
+* 还有其他许多功能，此处不再一一介绍，具体参见demo和文档。
 
 
 #### See the docs for more details  
