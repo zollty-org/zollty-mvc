@@ -12,11 +12,18 @@
  */
 package org.zollty.framework.util;
 
+import java.io.Closeable;
+import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.jretty.util.ArrayUtils;
 import org.jretty.util.ClassUtils;
@@ -67,7 +74,40 @@ public class MvcUtils {
     public static class ConvertUtil extends MvcConvertUtils {
     }
     
-    public static class ReflectUtil extends MvcReflectUtils {
+    public static class ReflectUtil extends ReflectionUtils {
+        public static interface BeanMethodFilter {
+            boolean accept(String propertyName, Method method);
+        }
+
+        public static Map<String, Method> getSetterMethods(Class<?> clazz) {
+            return getSetterMethods(clazz, null);
+        }
+
+        public static Map<String, Method> getSetterMethods(Class<?> clazz, BeanMethodFilter filter) {
+            Map<String, Method> beanSetMethod = new HashMap<String, Method>();
+            Method[] methods = clazz.getMethods();
+
+            for (Method method : methods) {
+                if (!method.getName().startsWith("set") 
+                        || Modifier.isStatic(method.getModifiers()) 
+                        || !method.getReturnType().equals(Void.TYPE)
+                        || method.getParameterTypes().length != 1) {
+                    continue;
+                }
+                String propertyName = getPropertyNameBySetterMethod(method);
+                makeAccessible(method);
+
+                if (filter == null || filter.accept(propertyName, method))
+                    beanSetMethod.put(propertyName, method);
+            }
+            return beanSetMethod;
+        }
+
+        public static String getPropertyNameBySetterMethod(Method method) {
+            String methodName = method.getName();
+            String propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+            return propertyName;
+        }
     }
     
     public static class VerifyUtil extends MvcVerifyUtils {
@@ -144,6 +184,22 @@ public class MvcUtils {
     }
     
     public static class ClassUtil extends ClassUtils {
+        /**
+         * @see {@link ClassUtils#findAllAssignableClass(Class, ClassLoader)}
+         */
+        @SuppressWarnings("rawtypes")
+        public static String[] getInterfaceNames(Class<?> c, ClassLoader classLoader) {
+            Set<Class> interfaces = MvcUtils.ClassUtil.findAllAssignableClass(c, classLoader);
+            interfaces.remove(c);
+            // 去掉常用的一些接口，以便减少AbstractBeanFactory.errorConflict的size
+            interfaces.remove(Serializable.class);
+            interfaces.remove(Closeable.class);
+            List<String> names = new ArrayList<String>();
+            for (Class<?> i : interfaces) {
+                names.add(i.getName());
+            }
+            return names.toArray(new String[interfaces.size()]);
+        }
     }
     
     public static class ReflectionUtil extends ReflectionUtils {

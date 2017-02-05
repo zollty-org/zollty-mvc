@@ -30,19 +30,6 @@ class ClassTools {
                     "Error loading class [" + className + "]: problem with class file or dependent class.");
         }
     }
-    
-    /**
-     * a slient way to invoke the class.newInstance() method.
-     */
-    static <T> T newInstance(Class<T> clazz) {
-        try {
-            return clazz.newInstance();
-        } catch (Exception e) {
-            throw new NestedRuntimeException(e);
-        } catch (LinkageError ex) {
-            throw new NestedRuntimeException(ex);
-        }
-    }
 
     /**
      * find Method use a special way.
@@ -59,6 +46,7 @@ class ClassTools {
                     if (paramTypes[i] == null) {
                         continue;
                     }
+                    // 将primitive类型转换成包装类型再比较
                     Class mp = MvcUtils.ClassUtil.resolvePrimitiveIfNecessary(mpts[i]);
                     if (!mp.isAssignableFrom(paramTypes[i])) {// && !(mp.isArray() && paramTypes[i].isArray())
                         flag = false;
@@ -88,6 +76,7 @@ class ClassTools {
                     if (paramTypes[i] == null) {
                         continue;
                     }
+                    // 将primitive类型转换成包装类型再比较
                     Class mp = MvcUtils.ClassUtil.resolvePrimitiveIfNecessary(mpts[i]);
                     if (!mp.isAssignableFrom(paramTypes[i])) {// && !(mp.isArray() && paramTypes[i].isArray())
                         flag = false;

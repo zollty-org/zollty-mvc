@@ -191,7 +191,7 @@ class BeansLoader {
             // 实例化对象
             Class<?> clazz = ClassTools.loadClass(beanDefinition.getClassName(), beanClassLoader);
             if (paramTypes.length == 0) {
-                beanDefinition.setObject(ClassTools.newInstance(clazz));
+                beanDefinition.setObject(MvcUtils.ReflectionUtil.newInstance(clazz));
             } else {
                 Constructor<?> constructor = ClassTools.findConstructor(clazz, paramTypes);
                 if (constructor == null) {
@@ -209,7 +209,7 @@ class BeansLoader {
             }
 
             // 取得接口名称
-            String[] names = MvcUtils.ReflectUtil.getInterfaceNames(clazz, beanClassLoader);
+            String[] names = MvcUtils.ClassUtil.getInterfaceNames(clazz, beanClassLoader);
             beanDefinition.setInterfaceNames(names);
             log.info("class [" + beanDefinition.getClassName() + "] names size [" + names.length + "]");
             
@@ -255,9 +255,9 @@ class BeansLoader {
                     value = getInjectArg(value, method == null ? null 
                             : method.getParameterTypes()[0]);
                     try {
-                        method.invoke(object, value);
+                        MvcUtils.ReflectionUtil.invokeMethod(method, object, value);
                     }
-                    catch (Throwable t) {
+                    catch (Exception t) {
                         throw new NestedRuntimeException(t, "xml inject error [method={}, value={}]", 
                                 method.toString(), value.toString());
                     }
@@ -288,7 +288,7 @@ class BeansLoader {
         }
         // 如果object未实例化，且非static方法调用，则直接根据class.newInstance
         if (object == null && !Modifier.isStatic(method.getModifiers())) {
-            object = ClassTools.newInstance(clazz);
+            object = MvcUtils.ReflectionUtil.newInstance(clazz);
             assignSetterProperty(object, beanDefinition.getProperties());
         }
         
@@ -296,15 +296,15 @@ class BeansLoader {
         Object result;
         try {
             method.setAccessible(true);
-            result = method.invoke(object, values);
-        } catch (Throwable t) {
+            result = MvcUtils.ReflectionUtil.invokeMethod(method, object, values);
+        } catch (Exception t) {
             throw new NestedRuntimeException(t, "xml method bean inject error [{}#{}]",
                     beanDefinition.getClassName(), beanDefinition.getMethodName());
         }
         beanDefinition.setObject(result);
         beanDefinition.setClassName(result.getClass().getName());
         // 取得接口名称
-        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(result.getClass(), getBeanClassLoader());
+        String[] names = MvcUtils.ClassUtil.getInterfaceNames(result.getClass(), getBeanClassLoader());
         beanDefinition.setInterfaceNames(names);
     }
 
@@ -512,9 +512,9 @@ class BeansLoader {
             }
 
             try {
-                method.invoke(object, p);
+                MvcUtils.ReflectionUtil.invokeMethod(method, object, p);
             }
-            catch (Throwable t) {
+            catch (Exception t) {
                 throw new NestedRuntimeException(t, "method inject error [{}]",
                         object.getClass().getName());
             }

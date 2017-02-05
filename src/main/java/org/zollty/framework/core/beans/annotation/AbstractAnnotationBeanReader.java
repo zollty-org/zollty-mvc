@@ -128,7 +128,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader<An
         id = id.length() != 0 ? id : MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
         annotationBeanDefinition.setId(id);
 
-        String[] names = MvcUtils.ReflectUtil.getInterfaceNames(c, getBeanClassLoader());
+        String[] names = MvcUtils.ClassUtil.getInterfaceNames(c, getBeanClassLoader());
         annotationBeanDefinition.setInterfaceNames(names);
 
         List<Field> fields = getInjectField(c);

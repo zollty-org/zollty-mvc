@@ -12,6 +12,8 @@
  */
 package org.zollty.framework.mvc.handler;
 
+import static org.zollty.framework.util.MvcUtils.ReflectionUtil.invokeMethod;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.BasicRuntimeException;
 import org.zollty.framework.core.Const;
 import org.zollty.framework.core.Const.ControllerMethodParamType;
 import org.zollty.framework.mvc.View;
@@ -36,9 +41,6 @@ import org.zollty.framework.mvc.aop.bean.MvcBeforeBeanDefinition;
 import org.zollty.framework.mvc.aop.bean.MvcBeforeRenderBeanDefinition;
 import org.zollty.framework.mvc.view.ErrorView;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
-import org.jretty.util.BasicRuntimeException;
 
 /**
  * 
@@ -106,7 +108,7 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
             Collections.reverse(aroundIntercList);
         }
 
-        return invokeMethod(request, response);
+        return invokeMvcMethod(request, response);
     }
 
     public ControllerMeta getMeta() {
@@ -124,50 +126,41 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
         }
     }
 
-    private View invokeMethod(HttpServletRequest request, HttpServletResponse response) {
+    private View invokeMvcMethod(HttpServletRequest request, HttpServletResponse response) {
 
         View view = doBefore(request, response);
         if (view != null) {
             return view;
         }
 
-        List<MvcAroundBeanDefinition> tempIntercs = null;
+        List<MvcAroundBeanDefinition> aroundIntercListTemp = null;
         if (MvcUtils.CollectionUtil.isNotEmpty(aroundIntercList)) {
             // aroundIntercList 后执行
-            tempIntercs = new ArrayList<MvcAroundBeanDefinition>(meta.getAroundIntercList());
-            tempIntercs.addAll(aroundIntercList);
+            aroundIntercListTemp = new ArrayList<MvcAroundBeanDefinition>(meta.getAroundIntercList());
+            aroundIntercListTemp.addAll(aroundIntercList);
         }
         else {
-            tempIntercs = meta.getAroundIntercList();
+            aroundIntercListTemp = meta.getAroundIntercList();
         }
 
         try {
             Object[] args = this.getInvokeParams(request, response);
-            if (MvcUtils.CollectionUtil.isNotEmpty(tempIntercs)) {
+            if (MvcUtils.CollectionUtil.isNotEmpty(aroundIntercListTemp)) {
 
-                int pos = MvcUtils.CollectionUtil.checkDuplication(tempIntercs);
+                int pos = MvcUtils.CollectionUtil.checkDuplication(aroundIntercListTemp);
                 if (pos != -1) {
                     LOG.warn("\"{}\" in [{}] is duplicate~! Framework auto removed the last one.",
-                            tempIntercs.get(pos), meta.getObject().getClass());
-                    tempIntercs.remove(pos);
+                            aroundIntercListTemp.get(pos), meta.getObject().getClass());
+                    aroundIntercListTemp.remove(pos);
                 }
 
-                view = doAround(tempIntercs, request, response, args, tempIntercs.size());
+                view = doAround(aroundIntercListTemp, request, response, args, aroundIntercListTemp.size());
             }
             else {
-                view = (View) meta.getMethod().invoke(meta.getObject(), args);
+                view = (View) invokeMethod(meta.getMethod(), meta.getObject(), args);
             }
 
         }
-        // catch (ClassCastException e) {
-        // View v = doAfterThrow(request, response, mvcContext);
-        // if (v != null) {
-        // return v;
-        // }
-        // return new ErrorViewHandler(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-        // new NestedCheckedException(e.getMessage()),
-        // ErrorViewHandler.HTTP_ERR_500_CTRLLER_ERR).getErrorView(request, response);
-        // }
         catch (InvocationTargetException e) {
             Throwable t = getTargetException(e);
             View v = doAfterThrow(request, response, t);
@@ -213,16 +206,11 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
                 LOG.trace("[Execute AOP Before Method] - {}", mbd.getClassName());
                 Method mt = mbd.getDisposeMethod();
                 try {
-                    ret = (View) mt.invoke(mbd.getObject(), new Object[] { request, response });
+                    ret = (View) invokeMethod(mt, mbd.getObject(), new Object[] { request, response });
                     if (ret != null) {
                         return ret;
                     }
-                }
-                catch (InvocationTargetException e) {
-                    return new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            e.getTargetException(), ErrorView.HTTP_ERR_500_BEFORE_ERR);
-                }
-                catch (Throwable e) {
+                } catch (Exception e) {
                     return new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e,
                             ErrorView.HTTP_ERR_500_BEFORE_ERR);
                 }
@@ -258,16 +246,11 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
                 LOG.trace("[Execute AOP BeforeRender Method] - {}", mbd.getClassName());
                 Method mt = mbd.getDisposeMethod();
                 try {
-                    ret = (View) mt.invoke(mbd.getObject(), new Object[] { request, response });
+                    ret = (View) invokeMethod(mt, mbd.getObject(), new Object[] { request, response });
                     if (ret != null) {
                         return ret;
                     }
-                }
-                catch (InvocationTargetException e) {
-                    return new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            e.getTargetException(), ErrorView.HTTP_ERR_500_BEFORE_ERR);
-                }
-                catch (Throwable e) {
+                } catch (Exception e) {
                     return new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e,
                             ErrorView.HTTP_ERR_500_BEFORE_ERR);
                 }
@@ -302,16 +285,11 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
                 LOG.trace("[Execute AOP AfterThrow Method] - {}", mbd.getClassName());
                 Method mt = mbd.getDisposeMethod();
                 try {
-                    ret = (View) mt.invoke(mbd.getObject(), new Object[] { request, response, t });
+                    ret = (View) invokeMethod(mt, mbd.getObject(), new Object[] { request, response, t });
                     if (ret != null) {
                         return ret;
                     }
-                }
-                catch (InvocationTargetException e) {
-                    return new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            e.getTargetException(), ErrorView.HTTP_ERR_500_BEFORE_ERR);
-                }
-                catch (Throwable e) {
+                } catch (Exception e) {
                     return new ErrorView(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e,
                             ErrorView.HTTP_ERR_500_BEFORE_ERR);
                 }
@@ -345,13 +323,8 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
                 LOG.trace("[Execute AOP After Method] - {}", mbd.getClassName());
                 Method mt = mbd.getDisposeMethod();
                 try {
-                    mt.invoke(mbd.getObject(), new Object[] { request, response });
-                }
-                catch (InvocationTargetException e) {
-                    LOG.error(e.getTargetException());
-                    return;
-                }
-                catch (Throwable e) {
+                    invokeMethod(mt, mbd.getObject(), new Object[] { request, response });
+                } catch (Throwable e) {
                     LOG.error(e);
                     return;
                 }

@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
+import org.zollty.framework.mvc.context.support.ControllerBeanBuilder;
 import org.zollty.framework.mvc.handler.ControllerMeta;
 import org.zollty.framework.mvc.handler.RequestViewHandler;
 import org.zollty.framework.util.MvcUtils;
@@ -62,7 +63,7 @@ public class ControllerResourceTest {
 
     private static void runURIMapping(String uriPattern, String servletURI, HashMap<String, String> params) {
         Method me = MvcUtils.ReflectUtil.findMethod(Pattern.class, "compile");
-        ControllerMeta cm = new ControllerMeta(null, me, new String[] { "GET" }, uriPattern);
+        ControllerMeta cm = new ControllerMeta(ControllerBeanBuilder.getControllerBeanDef(), me, new String[] { "GET" }, uriPattern);
         ViewHandlerFactory cr = new ViewHandlerFactory();
         cr.addControllerMeta(cm);
         RequestViewHandler ha = (RequestViewHandler) cr.getHandler(servletURI, new FakeHttpServletRequest("GET"));

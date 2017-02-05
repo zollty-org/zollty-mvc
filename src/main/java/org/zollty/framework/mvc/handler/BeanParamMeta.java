@@ -15,18 +15,14 @@ package org.zollty.framework.mvc.handler;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.jretty.util.NestedRuntimeException;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
 
 /**
  * @author zollty
  * @since 2013-9-21
  */
 public class BeanParamMeta {
-    
-    private static final Logger LOG = LogFactory.getLogger(BeanParamMeta.class);
-
     private final Class<?> paramClass; // 要注入的类型
     private final Map<String, Method> beanSetMethod; // 要注入的bean的set方法
     private final String attribute; // 要setAttribute的属性
@@ -52,15 +48,14 @@ public class BeanParamMeta {
      *            要赋的值
      */
     public void setParam(Object o, String key, String value) {
-        try {
-            Method m = beanSetMethod.get(key);
-            if (m != null) {
-                Class<?> p = m.getParameterTypes()[0];
-                m.invoke(o, MvcUtils.ConvertUtil.convert(value, p));
+        Method m = beanSetMethod.get(key);
+        if (m != null) {
+            Class<?> p = m.getParameterTypes()[0];
+            try {
+                MvcUtils.ReflectionUtil.invokeMethod(m, o, MvcUtils.ConvertUtil.convert(value, p));
+            } catch (Exception e) {
+                throw new NestedRuntimeException(e, "set param value error.");
             }
-        }
-        catch (Throwable t) {
-            LOG.error(t, "set param error");
         }
     }
 
@@ -68,14 +63,7 @@ public class BeanParamMeta {
      * 新建一个参数对象实例
      */
     public Object newParamInstance() {
-        Object o = null;
-        try {
-            o = paramClass.newInstance();
-        }
-        catch (Throwable t) {
-            LOG.error(t, "new param error");
-        }
-        return o;
+        return MvcUtils.ReflectionUtil.newInstance(paramClass);
     }
 
 }
