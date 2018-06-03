@@ -47,7 +47,7 @@ ZolltyMVC是在"Servlet集中控制转发器"基础上演变而来的，设计�
 3. 支持 Webjar，使用ZolltyMVC可以将web项目（包括class、html、picture、css、js）打包成一个jar，例如阿里的druid-monitor，如果使用ZolltyMVC的话，则完全不用再自己去写控制Servlet、HTML、CSS、JS的代码。
 4. ZolltyMVC框架预留了很多扩展和自定义的空间，许多组件框架只是提供了默认实现而已，如果需要个性化，则继承、实现、重载、重写都很方便。
 
-另外，ZolltyMVC刻意保留了部分比较好的Spring的使用习惯，有Spring使用经验的人，掌握ZolltyMVC只是分分钟的事。
+另外，ZolltyMVC**刻意**保留了部分比较好的Spring的使用习惯，有Spring使用经验的人，掌握ZolltyMVC只是分分钟的事。
 
 
 ZolltyMVC设计初衷（2013）
@@ -55,7 +55,7 @@ ZolltyMVC设计初衷（2013）
 
 #### 1. SSH框架的地位不在，Spring越来越复杂，支持RESTful的轻量级框架开始发展
 
-时值2013年，当时Struts已经逐渐被SpringMVC替代，随着RESTful的流行，许多支持RESTful的框架出现，SSH框架的霸主地位不在，Spring也面临着越来越重的包袱，开始酝酿全新的4.x版本。更为轻量级的框架逐渐出现在生产项目中，比如Google推出的Guice，是一款轻量级的Java Ioc容器，它的描述如下：
+时值2013年，当时Struts已经逐渐被SpringMVC替代，随着RESTful的流行，许多支持RESTful的框架出现，SSH框架的霸主地位不在，Spring也面临着越来越重的包袱，开始酝酿全新的4.x版本。更为轻量级的框架逐渐出现在生产项目中，比如Google推出的[Guice](https://github.com/google/guice)，是一款轻量级的Java Ioc容器，它的描述如下：
 
   1. 速度快，号称比spring快100倍。
   2. 无外部配置(如需要使用外部可以可以选用Guice的扩展包)，完全基于annotation特性，支持重构，代码静态检查。
@@ -76,7 +76,7 @@ Guice和Spring各有所长，Guice更适合与嵌入式或者高性能但项目�
 ZolltyMVC相比其他框架，没有历史包袱，要足够简单、实用、高效，所以在这些方面下足了功夫。
 
   1.  ZolltyMVC要足够快，那就不能像Spring那样，在controller层添加那么多东西，ZolltyMVC不支持MultipartRequest，也不支持代理，不追求大而全，只追求实用和简洁，彻底地提高性能。
-  2.  ZolltyMVC要足够快，那就要有更快的URI匹配算法，Spring采用的AntPathMather还是太慢了，我花了很多心思，写出来了一个全新的URI匹配算法（命名为ZolltyPathMather），比经典的AntPathMather快几倍！
+  2.  ZolltyMVC要足够快，那就要有更快的URI匹配算法，Spring采用的AntPathMather还是太慢了，我花了很多心思，写出来了一个全新的URI匹配算法（命名为ZolltyPathMather），比经典的AntPathMather还要快10倍！
   3.  ZolltyMVC要足够简单、足够顺手，让开发者无需记忆太多API，写起代码来飞快。经过我不断的尝试和改进，许多功能和API达到了简洁易用的效果。比如限制Controller的某个方法只能通过POST方式访问，则在Method上直接注解定义为：@RequestMapping("POST:/rest/api/login")，这个独创的方法来源于写代码时的灵感。另外，之所以采用了像RequestMapping这样的名字，其实是为了和Spring的使用习惯保持一致，让新手容易上手。
 
 
