@@ -63,6 +63,8 @@ ZolltyMVC设计初衷（2013）
 
 Guice和Spring各有所长，Guice更适合与嵌入式或者高性能但项目简单的方案。
 
+Spring性能问题案例：[达达科技对SpringMVC url mapping的一次性能测试](https://tech.imdada.cn/2015/12/23/springmvc-restful-optimize/)
+
 同样，还有58同城开源的轻量级Web框架[Argo](https://github.com/58code/Argo)，同时期在OSChina开源的[JFinal](https://www.oschina.net/p/jfinal)，主打特点是极速、简单、方便，目前已经被业界广泛使用。
 
 #### 2. ZolltyMVC主打中小型项目，特别是嵌入式项目
