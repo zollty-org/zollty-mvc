@@ -46,6 +46,7 @@ public class ClassPathAnnotationApplicationContext extends AbstractApplicationCo
         if (log.isDebugEnabled()) {
             log.debug("load {} ...", getClass().getSimpleName());
         }
+        super.doBeforeRefresh();
     }
 
     @Override
@@ -54,6 +55,7 @@ public class ClassPathAnnotationApplicationContext extends AbstractApplicationCo
             log.debug("{} completed in {} ms.", getClass().getSimpleName(),
                     System.currentTimeMillis() - beginTimeMs);
         }
+        super.doAfterRefresh();
     }
 
     @Override
@@ -66,10 +68,6 @@ public class ClassPathAnnotationApplicationContext extends AbstractApplicationCo
             return list;
         }
         return null;
-    }
-
-    @Override
-    protected void doAfterClose() {
     }
 
     @Override

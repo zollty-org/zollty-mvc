@@ -49,6 +49,8 @@ public class ClassPathAnnotationAndXmlApplicationContext extends AbstractApplica
         if (log.isDebugEnabled()) {
             log.debug("load {} ...", getClass().getSimpleName());
         }
+        
+        super.doBeforeRefresh();
     }
     
     @Override
@@ -80,10 +82,7 @@ public class ClassPathAnnotationAndXmlApplicationContext extends AbstractApplica
             log.debug("{} completed in {} ms.", getClass().getSimpleName(),
                     System.currentTimeMillis() - beginTimeMs);
         }
+        super.doAfterRefresh();
     }
 
-    @Override
-    protected void doAfterClose() {
-    }
-    
 }

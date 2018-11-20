@@ -187,9 +187,8 @@ public class MvcUtils {
         /**
          * @see {@link ClassUtils#findAllAssignableClass(Class, ClassLoader)}
          */
-        @SuppressWarnings("rawtypes")
         public static String[] getInterfaceNames(Class<?> c, ClassLoader classLoader) {
-            Set<Class> interfaces = MvcUtils.ClassUtil.findAllAssignableClass(c, classLoader);
+            Set<Class<?>> interfaces = MvcUtils.ClassUtil.findAllAssignableClass(c, classLoader);
             interfaces.remove(c);
             // 去掉常用的一些接口，以便减少AbstractBeanFactory.errorConflict的size
             interfaces.remove(Serializable.class);

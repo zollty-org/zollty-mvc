@@ -47,6 +47,8 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
         if (log.isDebugEnabled()) {
             log.debug("load {} ...", getClass().getSimpleName());
         }
+        
+        super.doBeforeRefresh();
     }
     
     @Override
@@ -68,12 +70,10 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
             log.debug("{} completed in {} ms.", getClass().getSimpleName(),
                     (System.currentTimeMillis() - beginTimeMs));
         }
+        
+        super.doAfterRefresh();
     }
 
-    @Override
-    protected void doAfterClose() {
-    }
-    
     @Override
     protected List<AnnotationBeanDefinition> loadAnnoBeanDefinitions() {
         return null;

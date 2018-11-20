@@ -24,7 +24,6 @@ import org.zollty.framework.mvc.View;
 import org.zollty.framework.util.MvcUtils;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
-import org.jretty.util.json.SimpleJSON;
 
 /**
  * 
@@ -127,7 +126,7 @@ public class ErrorView implements View {
             LOG.error("[MVC ERROR]: [{}] {} {}", errorCode, msg, MvcUtils.ExceptionUtil.getStackTraceStr(e));
         }
 
-        return new SimpleJSON().addItem("errorCode", errorCode).addItem("errorMsg", sb.toString()).toString();
+        return "{\"errorCode\":\"" + errorCode + "\",\"errorMsg\":\"" + sb.toString() + "\"}";
     }
     
     

@@ -47,6 +47,16 @@ public class SimpleBeanFactory extends AbstractBeanFactory {
 
         refresh();
     }
+    
+    @Override
+    public void refresh() {
+        close();
+        // 刷新之前执行个性化操作
+        doBeforeRefresh();
+        super.refresh();
+        // 刷新之后执行个性化操作
+        doAfterRefresh();
+    }
 
     @Override
     protected void doBeforeRefresh() {
@@ -89,6 +99,10 @@ public class SimpleBeanFactory extends AbstractBeanFactory {
         }
     }
 
+    @Override
+    protected void doBeforeClose() {
+    }
+    
     @Override
     protected void doAfterClose() {
     }

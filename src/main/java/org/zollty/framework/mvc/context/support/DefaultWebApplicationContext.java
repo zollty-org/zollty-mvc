@@ -56,6 +56,7 @@ public class DefaultWebApplicationContext extends AbstractWebApplicationContext 
         beginTimeMs = System.currentTimeMillis();
         log = LogFactory.getLogger(getClass());
         log.debug("load {} ...", getClass().getSimpleName());
+        super.doBeforeRefresh();
     }
 
     @Override
@@ -90,6 +91,8 @@ public class DefaultWebApplicationContext extends AbstractWebApplicationContext 
             log.debug("{} completed in {} ms.", getClass().getSimpleName(),
                     (System.currentTimeMillis() - beginTimeMs));
         }
+        
+        super.doAfterRefresh();
     }
     
     protected void initController() {
@@ -105,6 +108,7 @@ public class DefaultWebApplicationContext extends AbstractWebApplicationContext 
     protected void doAfterClose() {
         handlerMapping = null;
         log = null;
+        super.doAfterClose();
     }
     
 }

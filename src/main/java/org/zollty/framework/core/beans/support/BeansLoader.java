@@ -87,13 +87,13 @@ class BeansLoader {
         startAnnotationInject();
         
         // 释放中间变量
-        clearTempVals();
+        clearTempProps();
     }
 
     /**
      * 释放中间变量
      */
-    protected void clearTempVals() {
+    protected void clearTempProps() {
         // 没用了，释放它们
         conflictMem = null;
         xmlBeanDefinitions = null;
@@ -463,7 +463,7 @@ class BeansLoader {
             }
             Object instance = beanMap.get(key);
             if (instance == null) {
-                instance = recursiveAnnotationInject(key);
+                instance = recursiveAnnotationInject(key, object.getClass().getName());
             }
             if (instance != null) {
                 try {
@@ -485,6 +485,7 @@ class BeansLoader {
             Class<?>[] params = method.getParameterTypes();
             Object[] p = new Object[params.length];
             Annotation[][] annotations = method.getParameterAnnotations();
+            String pid = method.getAnnotation(Inject.class).value();
             for (int i = 0; i < p.length; i++) {
                 Annotation anno = getMethodBeanIdAnno(annotations[i]);
                 String id = null;
@@ -493,10 +494,14 @@ class BeansLoader {
                     id = mbId.value();
                 }
                 String key = null;
-                // id为空时按类型注入，调用checkConflict检查是否冲突
-                if (MvcUtils.StringUtil.isBlank(id)) {
-                    key = params[i].getName();
-                    checkConflict4Inject(key, object.getClass().getName());
+                if (MvcUtils.StringUtil.isEmpty(id)) {
+                    if (p.length == 1 && MvcUtils.StringUtil.isNotEmpty(pid)) {
+                        key = pid;
+                    } else {
+                        // id为空时按类型注入，调用checkConflict检查是否冲突
+                        key = params[i].getName();
+                        checkConflict4Inject(key, object.getClass().getName());
+                    }
                 }
                 else {
                     key = id;
@@ -507,7 +512,7 @@ class BeansLoader {
                     p[i] = instance;
                 }
                 else {
-                    p[i] = recursiveAnnotationInject(key);
+                    p[i] = recursiveAnnotationInject(key, object.getClass().getName());
                 }
             }
 
@@ -538,10 +543,10 @@ class BeansLoader {
         return doXmlInject(bean);
     }
     
-    private Object recursiveAnnotationInject(String key) {
+    private Object recursiveAnnotationInject(String key, String info) {
         BeanDefinition bean = findAnnoBeanDefinition(key);
         if (bean == null) {
-            throw new BeansException("can not findAnnoBeanDefinition, bean [{}] is null", key);
+            throw new BeansException("[{}]: can not findAnnoBeanDefinition, bean [{}] is null", info, key);
         }
         return doAnnotationInject(bean);
     }

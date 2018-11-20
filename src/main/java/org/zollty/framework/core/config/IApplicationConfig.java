@@ -56,10 +56,9 @@ public interface IApplicationConfig {
      * @return the special error page full path (relative to webroot path)
      */
     String getErrorPagePath();
-
-    /**
-     * @return the special log level using to init log lib like zollty-log.
-     */
-    String getLogLevel();
+    
+    Set<String> getBeforeRefreshInterceptors();
+    
+    Set<String> getAfterCloseInterceptors();
 
 }

@@ -12,9 +12,21 @@
  */
 package org.zollty.framework.core.context.support;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.AnnotationAwareOrderComparator;
+import org.jretty.util.NestedRuntimeException;
+import org.jretty.util.OrderComparator;
 import org.zollty.framework.core.beans.support.AbstractBeanFactory;
 import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.context.ApplicationContext;
+import org.zollty.framework.core.interceptor.AfterRefresh;
+import org.zollty.framework.core.interceptor.BeforeClose;
+import org.zollty.framework.core.interceptor.McvInterceptor;
+import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
@@ -24,23 +36,111 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
         ApplicationContext {
 
     private IApplicationConfig config;
+    
+    private List<McvInterceptor> beforeRefreshInterceptors = new LinkedList<McvInterceptor>();
+    
+    private List<McvInterceptor> afterCloseInterceptors = new LinkedList<McvInterceptor>();
+    
+    private List<McvInterceptor> afterRefreshInterceptors = new LinkedList<McvInterceptor>();
+    
+    private List<McvInterceptor> beforeCloseInterceptors = new LinkedList<McvInterceptor>();
+    
+    private static transient Logger logger;
 
     public AbstractApplicationContext(IApplicationConfig config) {
         super();
 
         // 配置好了，才能刷新
         this.config = config;
+        
+        initMcvInterceptor(this.getClass().getClassLoader());
 
         refresh();
     }
-
+    
     public AbstractApplicationContext(IApplicationConfig config, ClassLoader beanClassLoader) {
         super(beanClassLoader);
 
         // 配置好了，才能刷新
         this.config = config;
+        
+        initMcvInterceptor(this.getClass().getClassLoader());
 
         refresh();
+    }
+    
+    @Override
+    protected void doBeforeRefresh() {
+        for(McvInterceptor intcp: beforeRefreshInterceptors) {
+            intcp.onEnvent();
+        }
+    }
+    
+    @Override
+    protected void doAfterRefresh() {
+        afterRefreshInterceptors.addAll(getBeansOfType(AfterRefresh.class));
+        AnnotationAwareOrderComparator.sort(afterRefreshInterceptors);
+        for(McvInterceptor intcp: afterRefreshInterceptors) {
+            intcp.onEnvent();
+        }
+    }
+    
+    @Override
+    protected void doBeforeClose() {
+        beforeCloseInterceptors.addAll(getBeansOfType(BeforeClose.class));
+        AnnotationAwareOrderComparator.sort(beforeCloseInterceptors);
+        for(McvInterceptor intcp: beforeCloseInterceptors) {
+            try {
+                intcp.onEnvent();
+            } catch (Exception e) {
+                getLogger().error(e);
+            }
+        }
+    }
+    
+    @Override
+    protected void doAfterClose() {
+        for(McvInterceptor intcp: afterCloseInterceptors) {
+            try {
+                intcp.onEnvent();
+            } catch (Exception e) {
+                getLogger().error(e);
+            }
+        }
+    }
+    
+    protected void initMcvInterceptor(ClassLoader loader) {
+        if (config.getBeforeRefreshInterceptors() != null) {
+            for (String clazz : config.getBeforeRefreshInterceptors()) {
+                try {
+                    beforeRefreshInterceptors.add(
+                            (McvInterceptor) MvcUtils.ReflectionUtil.newInstance(
+                                    Class.forName(clazz, true, loader)));
+                    OrderComparator.sort(beforeRefreshInterceptors);
+                } catch (ClassNotFoundException e) {
+                    throw new NestedRuntimeException(e);
+                }
+            }
+        }
+        if (config.getAfterCloseInterceptors() != null) {
+            for (String clazz : config.getAfterCloseInterceptors()) {
+                try {
+                    afterCloseInterceptors.add(
+                            (McvInterceptor) MvcUtils.ReflectionUtil.newInstance(
+                                    Class.forName(clazz, true, loader)));
+                    OrderComparator.sort(afterCloseInterceptors);
+                } catch (ClassNotFoundException e) {
+                    throw new NestedRuntimeException(e);
+                }
+            }
+        }
+    }
+    
+    private static Logger getLogger() {
+        if (logger == null) {
+            logger = LogFactory.getLogger(AbstractApplicationContext.class);
+        }
+        return logger;
     }
 
     public IApplicationConfig getConfig() {

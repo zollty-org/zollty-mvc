@@ -12,13 +12,15 @@
  */
 package org.zollty.framework.core.beans.support;
 
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.Assert;
+import org.jretty.util.NestedRuntimeException;
 import org.zollty.framework.core.beans.ConfigurableBeanFactory;
 import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
@@ -59,11 +61,12 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
     @Override
     public void refresh() {
         // ~初始化工作,刷新之前把旧的close
-        close();
+        if(beanMap != null) {
+            throw new NestedRuntimeException("please close before refresh!");
+        }
 
         // 刷新之前执行个性化操作
         doBeforeRefresh();
-        // ~End
 
         BeansLoader beansLoader = new BeansLoader(getBeanClassLoader());
         beansLoader.refresh(loadXmlBeanDefinitions(), loadAnnoBeanDefinitions());
@@ -81,9 +84,11 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
 
     @Override
     public void close() {
-        doAfterClose();
-        
-        beanMap = null;
+        if (beanMap != null) {
+            doBeforeClose();
+            beanMap = null;
+            doAfterClose();
+        }
     }
 
     // 交给子类去实现
@@ -101,6 +106,9 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
 
     /** 关闭之后，执行一些个性化操作 */
     abstract protected void doAfterClose();
+    
+    /** 关闭之前，执行一些个性化操作 */
+    abstract protected void doBeforeClose();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -121,13 +129,13 @@ abstract public class AbstractBeanFactory implements ConfigurableBeanFactory {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Map<String, T> getBeansOfType(Class<T> type) {
+    public <T> Set<T> getBeansOfType(Class<T> type) {
         Assert.notNull(type, "Class must not be null");
-        Map<String, T> result = new LinkedHashMap<String, T>();
+        Set<T> result = new HashSet<T>();
         for (Map.Entry<String, Object> entry : beanMap.entrySet()) {
             Object obj = entry.getValue();
-            if (obj.getClass().equals(type)) {
-                result.put(entry.getKey(), (T) obj);
+            if (type.isAssignableFrom(obj.getClass())) {
+                result.add((T) obj);
             }
         }
         return result;

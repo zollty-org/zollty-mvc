@@ -14,13 +14,15 @@ package org.zollty.framework.core.config.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 
+import org.jretty.util.NestedRuntimeException;
 import org.zollty.framework.core.Const;
 import org.zollty.framework.core.config.ConfigTools;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.util.NestedRuntimeException;
 
 /**
  * TextConfig设计的初衷，就是想免去xml的繁琐配置，故TextConfig只支持注解形式的bean，不支持xml形式的bean定义
@@ -77,6 +79,12 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
         }
         this.setViewPath(propsMap.get("view-path"));
         this.setEncoding(propsMap.get("view-encoding"));
+        
+        this.setErrorPagePath(propsMap.get("error-page"));
+        
+        this.setErrorPagePath(propsMap.get("error-page"));
+        
+        setLogger(propsMap.get("jretty-logger"));
 
         String prefix = propsMap.get("no-intercept-prefix");
         String suffix = propsMap.get("no-intercept-suffix");
@@ -85,6 +93,32 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
         }
         if (MvcUtils.StringUtil.isNotEmpty(suffix)) {
             this.setExcludeSuffixes(ConfigTools.parseExcludeSuffix(suffix.toString()));
+        }
+        
+        handleBeforeRefreshInterceptors(propsMap.get("before-refresh"));
+        handleAfterCloseInterceptors(propsMap.get("after-close"));
+    }
+    
+    protected void handleBeforeRefreshInterceptors(String val) {
+        if (MvcUtils.StringUtil.isNotEmpty(val)) {
+            String[] incepts = MvcUtils.StringSplitUtil.split(val, ',');
+            this.setBeforeRefreshInterceptors(new HashSet<String>(Arrays.asList(incepts)));
+        }
+    }
+    
+    protected void handleAfterCloseInterceptors(String val) {
+        if (MvcUtils.StringUtil.isNotEmpty(val)) {
+            String[] incepts = MvcUtils.StringSplitUtil.split(val, ',');
+            this.setAfterCloseInterceptors(new HashSet<String>(Arrays.asList(incepts)));
+        }
+    }
+    
+    protected void setLogger(String loggerVal) {
+        if (MvcUtils.StringUtil.isNotEmpty(loggerVal)) {
+            String[] tmp = MvcUtils.StringSplitUtil.split(loggerVal, ':');
+            String logName = tmp[0];
+            String level = tmp[1];
+            this.setInitLogger(logName, level);
         }
     }
 

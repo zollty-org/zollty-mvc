@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2013-2015 the original author or authors.
+ * Copyright (C) 2013-2018 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License").
  * you may not use this file except in compliance with the License.
@@ -8,22 +8,15 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2013-10-11 (http://blog.zollty.com, zollty@163.com)
+ * Create by ZollTy on 2018-9-26 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.core.beans;
-
-import java.util.Map;
-import java.util.Set;
+package org.zollty.framework.core.interceptor;
 
 /**
- * 
+ * 关闭之前，执行一些个性化操作
  * @author zollty
- * @since 2015-10-11
+ * @since 2018年9月26日
  */
-public interface ListableBeanFactory extends BeanFactory {
-
-    Map<String, Object> getBeanMap();
-
-    <T> Set<T> getBeansOfType(Class<T> type);
+public interface BeforeClose extends McvInterceptor {
 
 }
