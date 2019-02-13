@@ -77,7 +77,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
                     method.setAccessible(true);
 
                     String value = method.getAnnotation(RequestMapping.class).value();
-                    String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(
+                    String[] array = MvcUtils.StringSplitUtil.splitByWholeIgnoreEmpty(
                             value, ":");
 
                     String[] allowHttpMethods = null;
@@ -87,8 +87,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
                         allowHttpMethods = new String[] { "GET", "POST", "PUT", "DELETE" };
                     }
                     else { // length==2
-                        allowHttpMethods = MvcUtils.StringSplitUtil
-                                .splitByWholeSeparatorIgnoreEmpty(array[0], "|");
+                        allowHttpMethods = MvcUtils.StringSplitUtil.splitByWholeIgnoreEmpty(array[0], "|");
                         uri = array[1].trim();
                     }
                     if (MvcUtils.StringUtil.isBlank(uri)) {
@@ -124,7 +123,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
             // 首先第一步，解析class上面的AOP注解
             String[] uriMatch = bean.getObject().getClass().getAnnotation(AopMapping.class).value();
             for (String value : uriMatch) {
-                String[] array = MvcUtils.StringSplitUtil.splitByWholeSeparatorIgnoreEmpty(value, ":");
+                String[] array = MvcUtils.StringSplitUtil.splitByWholeIgnoreEmpty(value, ":");
                 String uriPattern = null;
                 if (array.length == 1) {
                     uriPattern = value;

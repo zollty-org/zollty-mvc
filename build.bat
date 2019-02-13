@@ -10,6 +10,7 @@ call mvn -v
 
 if [%1]==[] goto HELP
 if [%1]==[--help] goto HELP
+if [%1]==[deploy] goto DEPLOY
 :: ****************************************************************************
 :: Title :  xxxxx                                                        
 :: 
@@ -33,6 +34,12 @@ if [%1]==[--help] goto HELP
 
 echo ------------------------- starting to install -------------------------
 call mvn clean install
+
+goto EOF
+
+:DEPLOY
+echo ------------------------- starting to deploy -------------------------
+call mvn deploy -DaltDeploymentRepository=my-git-repo::default::file:///D:/0sync-local/git/repository
 
 goto EOF
 

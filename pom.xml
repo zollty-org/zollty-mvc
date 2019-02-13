@@ -9,234 +9,234 @@
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   Create by Zollty Tsou on 2013-08-25 [http://blog.csdn.net/zollty (or GitHub)]
+   Create by Zollty Tsou on 2013-08-25 [http://blog.zollty.com (zolltytsou@gmail.com)]
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.zollty</groupId>
-	<artifactId>zollty-mvc</artifactId>
-	<packaging>jar</packaging>
-	<version>1.6.0</version>
-	<name>zollty-mvc</name>
-	<url>https://github.com/zollty-org/zollty-mvc</url>
-	<description>The ZolltyMVC is a lightweight Java MVC Framework. It can help development teams build simple, portable, fast and flexible Java applications.</description>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.zollty</groupId>
+  <artifactId>zollty-mvc</artifactId>
+  <packaging>jar</packaging>
+  <version>1.6.1</version>
+  <name>zollty-mvc</name>
+  <url>https://github.com/zollty-org/zollty-mvc</url>
+  <description>The ZolltyMVC is a lightweight Java MVC Framework. 
+  It can help development teams build simple, portable, fast and flexible Java applications.</description>
 
-	<!-- CONST -->
-	<properties>
-		<java-version>1.6</java-version>
-	</properties>
+  <properties>
+    <java-version>1.6</java-version>
+  </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.jretty</groupId>
-			<artifactId>jretty-log</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-    
-        <dependency>
-          <groupId>org.jretty</groupId>
-          <artifactId>jretty-core-starter-mvc</artifactId>
-          <version>1.0</version>
-        </dependency>
-		
-		<!-- Servlet -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-    
-		<!-- For Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.jretty</groupId>
+      <artifactId>jretty-log</artifactId>
+      <version>1.2.0</version>
+    </dependency>
 
-	<build>
-		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-		<outputDirectory>${basedir}/target/classes</outputDirectory>
-		<resources>
-			<resource>
-				<directory>${basedir}/src/main/resources</directory>
-				<excludes>
-                    <exclude>.gitkeep</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>${basedir}/src/main/java/org/zollty</directory>
-				<includes>
-					<include>*.xsd</include>
-				</includes>
-				<targetPath>${project.build.directory}/classes/org/zollty</targetPath>
-			</resource>
-		</resources>
+    <dependency>
+      <groupId>org.jretty</groupId>
+      <artifactId>jretty-core-starter-mvc</artifactId>
+      <version>1.0</version>
+    </dependency>
 
-		<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
-		<testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
-		<testResources>
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-			</testResource>
-		</testResources>
+    <!-- Servlet -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
 
-		<directory>${basedir}/target</directory>
+    <!-- For Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-		<!-- PLUGINS CONFIG -->
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
-					<encoding>UTF-8</encoding>
-					<debug>false</debug>
-					<optimize>true</optimize>
-				</configuration>
-			</plugin>
+  <build>
+    <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+    <outputDirectory>${basedir}/target/classes</outputDirectory>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <excludes>
+          <exclude>.gitkeep</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/main/java/org/zollty</directory>
+        <includes>
+          <include>*.xsd</include>
+        </includes>
+        <targetPath>${project.build.directory}/classes/org/zollty</targetPath>
+      </resource>
+    </resources>
 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+    <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+    <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
 
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
+    <directory>${basedir}/target</directory>
 
-			<plugin>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
+    <!-- PLUGINS CONFIG -->
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>${java-version}</source>
+          <target>${java-version}</target>
+          <encoding>UTF-8</encoding>
+          <debug>false</debug>
+          <optimize>true</optimize>
+        </configuration>
+      </plugin>
 
-			<!-- jar-plugin config -->
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<manifestEntries>
-							<Built-By>Zollty Tsou</Built-By>
-						</manifestEntries>
-					</archive>
-					<excludes>
-                        <exclude>.gitkeep</exclude>
-						<exclude>**/*.keep</exclude>
-						<exclude>**/*.bak</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
 
-			<!-- 生成javadoc-绑定到install阶段
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<charset>UTF-8</charset>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
-			
-			<!-- 打包源代码-绑定到install阶段 -->
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-						<configuration>
-							<excludes>
-								<exclude>.gitkeep</exclude>
-								<exclude>**/*.keep</exclude>
-								<exclude>**/*.bak</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
 
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<testFailureIgnore>true</testFailureIgnore>
-					<parallel>methods</parallel>
-					<threadCount>10</threadCount>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.3.1</version>
+      </plugin>
 
-		</plugins>
-	</build>
-	
-	<!--项目开发者列表 -->
-	<developers>
-		<developer>
-			<!--SCM里项目开发者的唯一标识符 -->
-			<id>zollty</id>
-			<!--项目开发者的全名 -->
-			<name>Zollty Tsou</name>
-			<!--项目开发者的email -->
-			<email>zolltytsou@gmail.com</email>
-			<!--项目开发者的主页的URL -->
-			<url>http://blog.csdn.net/zollty</url>
-			<roles>
-				<role>Project Manager</role>
-				<role>Architect</role>
-			</roles>
-			<organization>zollty-org</organization>
-			<organizationUrl>http://www.zollty.org</organizationUrl>
-		</developer>
-	</developers>
-	
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-    
-    <organization>
-	    <name>zollty-org</name>
-	    <url>http://www.zollty.org</url>
-    </organization>
+      <!-- jar-plugin config -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <manifestEntries>
+              <Built-By>Zollty Tsou</Built-By>
+            </manifestEntries>
+          </archive>
+          <excludes>
+            <exclude>.gitkeep</exclude>
+            <exclude>**/*.keep</exclude>
+            <exclude>**/*.bak</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 生成javadoc-绑定到install阶段
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.8.1</version>
+        <configuration>
+          <charset>UTF-8</charset>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin> -->
+
+      <!-- 打包源代码-绑定到install阶段 -->
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>.gitkeep</exclude>
+                <exclude>**/*.keep</exclude>
+                <exclude>**/*.bak</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
+          <parallel>methods</parallel>
+          <threadCount>10</threadCount>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <!--项目开发者列表 -->
+  <developers>
+    <developer>
+      <!--SCM里项目开发者的唯一标识符 -->
+      <id>zollty</id>
+      <!--项目开发者的全名 -->
+      <name>Zollty Tsou</name>
+      <!--项目开发者的email -->
+      <email>zolltytsou@gmail.com</email>
+      <!--项目开发者的主页的URL -->
+      <url>http://blog.zollty.com</url>
+      <roles>
+        <role>Project Manager</role>
+        <role>Architect</role>
+      </roles>
+      <organization>zollty-org</organization>
+      <organizationUrl>http://www.zollty.org</organizationUrl>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>zollty-org</name>
+    <url>http://www.zollty.org</url>
+  </organization>
 
 </project>
