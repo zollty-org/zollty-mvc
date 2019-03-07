@@ -133,28 +133,27 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
             return view;
         }
 
-        List<MvcAroundBeanDefinition> aroundIntercListTemp = null;
-        if (MvcUtils.CollectionUtil.isNotEmpty(aroundIntercList)) {
-            // aroundIntercList 后执行
-            aroundIntercListTemp = new ArrayList<MvcAroundBeanDefinition>(meta.getAroundIntercList());
-            aroundIntercListTemp.addAll(aroundIntercList);
+        List<MvcAroundBeanDefinition> tempIntercs = new ArrayList<MvcAroundBeanDefinition>();
+        if (MvcUtils.CollectionUtil.isNotEmpty(meta.getAroundIntercList())) {
+            tempIntercs.addAll(meta.getAroundIntercList());
         }
-        else {
-            aroundIntercListTemp = meta.getAroundIntercList();
+        // aroundIntercList 后执行, 可以覆盖meta注解
+        if (MvcUtils.CollectionUtil.isNotEmpty(aroundIntercList)) {
+            tempIntercs.addAll(aroundIntercList);
         }
 
         try {
             Object[] args = this.getInvokeParams(request, response);
-            if (MvcUtils.CollectionUtil.isNotEmpty(aroundIntercListTemp)) {
+            if (MvcUtils.CollectionUtil.isNotEmpty(tempIntercs)) {
 
-                int pos = MvcUtils.CollectionUtil.checkDuplication(aroundIntercListTemp);
+                int pos = MvcUtils.CollectionUtil.checkDuplication(tempIntercs);
                 if (pos != -1) {
                     LOG.warn("\"{}\" in [{}] is duplicate~! Framework auto removed the last one.",
-                            aroundIntercListTemp.get(pos), meta.getObject().getClass());
-                    aroundIntercListTemp.remove(pos);
+                            tempIntercs.get(pos), meta.getObject().getClass());
+                    tempIntercs.remove(pos);
                 }
 
-                view = doAround(aroundIntercListTemp, request, response, args, aroundIntercListTemp.size());
+                view = doAround(tempIntercs, request, response, args, tempIntercs.size());
             }
             else {
                 view = (View) invokeMethod(meta.getMethod(), meta.getObject(), args);
@@ -182,14 +181,13 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
     
     private View doBefore(HttpServletRequest request, HttpServletResponse response) {
 
-        List<MvcBeforeBeanDefinition> tempIntercs = null;
+        List<MvcBeforeBeanDefinition> tempIntercs = new ArrayList<MvcBeforeBeanDefinition>();
+        // beforeIntercList 先执行, meta注解可以覆盖它
         if (MvcUtils.CollectionUtil.isNotEmpty(beforeIntercList)) {
-            // beforeIntercList 先执行
-            tempIntercs = new ArrayList<MvcBeforeBeanDefinition>(beforeIntercList);
-            tempIntercs.addAll(meta.getBeforeIntercList());
+            tempIntercs.addAll(beforeIntercList);
         }
-        else {
-            tempIntercs = meta.getBeforeIntercList();
+        if (MvcUtils.CollectionUtil.isNotEmpty(meta.getBeforeIntercList())) {
+            tempIntercs.addAll(meta.getBeforeIntercList());
         }
 
         if (MvcUtils.CollectionUtil.isNotEmpty(tempIntercs)) {
@@ -220,16 +218,13 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
     }
 
     private View doBeforeRender(HttpServletRequest request, HttpServletResponse response) {
-
-        List<MvcBeforeRenderBeanDefinition> tempIntercs = null;
-        if (MvcUtils.CollectionUtil.isNotEmpty(beforeRenderIntercList)) {
-            // beforeRenderIntercList 后执行
-            tempIntercs = new ArrayList<MvcBeforeRenderBeanDefinition>(
-                    meta.getBeforeRenderIntercList());
-            tempIntercs.addAll(beforeRenderIntercList);
+        List<MvcBeforeRenderBeanDefinition> tempIntercs = new ArrayList<MvcBeforeRenderBeanDefinition>();
+        if (MvcUtils.CollectionUtil.isNotEmpty(meta.getBeforeRenderIntercList())) {
+            tempIntercs.addAll(meta.getBeforeRenderIntercList());
         }
-        else {
-            tempIntercs = meta.getBeforeRenderIntercList();
+        // beforeRenderIntercList 后执行, 可以覆盖meta注解
+        if (MvcUtils.CollectionUtil.isNotEmpty(beforeRenderIntercList)) {
+            tempIntercs.addAll(beforeRenderIntercList);
         }
 
         if (MvcUtils.CollectionUtil.isNotEmpty(tempIntercs)) {
@@ -260,15 +255,13 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
     }
 
     private View doAfterThrow(HttpServletRequest request, HttpServletResponse response, Throwable t) {
-        List<MvcAfterThrowBeanDefinition> tempIntercs = null;
-        if (MvcUtils.CollectionUtil.isNotEmpty(afterThrowIntercList)) {
-            // afterThrowIntercList 后执行
-            tempIntercs = new ArrayList<MvcAfterThrowBeanDefinition>(
-                    meta.getAfterThrowIntercList());
-            tempIntercs.addAll(afterThrowIntercList);
+        List<MvcAfterThrowBeanDefinition> tempIntercs = new ArrayList<MvcAfterThrowBeanDefinition>();
+        if (MvcUtils.CollectionUtil.isNotEmpty(meta.getAfterThrowIntercList())) {
+            tempIntercs.addAll(meta.getAfterThrowIntercList());
         }
-        else {
-            tempIntercs = meta.getAfterThrowIntercList();
+        // afterThrowIntercList 后执行, 可以覆盖meta注解
+        if (MvcUtils.CollectionUtil.isNotEmpty(afterThrowIntercList)) {
+            tempIntercs.addAll(afterThrowIntercList);
         }
 
         if (MvcUtils.CollectionUtil.isNotEmpty(tempIntercs)) {
@@ -300,14 +293,13 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
 
     @Override
     public void doAtfer(HttpServletRequest request, HttpServletResponse response) {
-        List<MvcAfterBeanDefinition> tempIntercs = null;
-        if (MvcUtils.CollectionUtil.isNotEmpty(afterIntercList)) {
-            // afterIntercList 后执行
-            tempIntercs = new ArrayList<MvcAfterBeanDefinition>(meta.getAfterIntercList());
-            tempIntercs.addAll(afterIntercList);
+        List<MvcAfterBeanDefinition> tempIntercs = new ArrayList<MvcAfterBeanDefinition>();
+        if (MvcUtils.CollectionUtil.isNotEmpty(meta.getAfterIntercList())) {
+            tempIntercs.addAll(meta.getAfterIntercList());
         }
-        else {
-            tempIntercs = meta.getAfterIntercList();
+        // afterIntercList 后执行, 可以覆盖meta注解
+        if (MvcUtils.CollectionUtil.isNotEmpty(afterIntercList)) {
+            tempIntercs.addAll(afterIntercList);
         }
 
         if (MvcUtils.CollectionUtil.isNotEmpty(tempIntercs)) {

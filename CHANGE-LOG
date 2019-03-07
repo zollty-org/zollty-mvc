@@ -79,7 +79,19 @@ Changes in version 1.4.0.RELEASE         (2016-11-26)
 -------------------------------------
 Enhance the object (bean) instantiation functions.
 
-Changes in version 1.4.0.RELEASE         (2017-07-09)
+Changes in version 1.5.0.RELEASE         (2017-07-09)
 -------------------------------------
 Separate zollty-dbk to an independent project, convenient maintenance and upgrading.
+
+Changes in version 1.6.0.RELEASE         (2018-11-20)
+-------------------------------------
+add doBeforeClose() in AbstractBeanFactory, add beforeRefreshInterceptors('before-refresh' in xml) and afterCloseInterceptors('after-close' in xml).
+
+Changes in version 1.6.1.RELEASE         (2019-02-13)
+-------------------------------------
+refactor the pom.
+
+Changes in version 1.6.2.RELEASE         (2019-03-07)
+-------------------------------------
+resolved a bug in mvc aop.
 
