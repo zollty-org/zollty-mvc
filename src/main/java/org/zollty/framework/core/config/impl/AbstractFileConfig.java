@@ -34,7 +34,7 @@ public abstract class AbstractFileConfig extends AbstractApplicationConfig imple
 
     public AbstractFileConfig(String configLocation, ClassLoader classLoader) {
         this.configLocation = configLocation;
-        this.classLoader = classLoader;
+        this.classLoader = classLoader != null ? classLoader : MvcUtils.ClassUtil.getDefaultClassLoader();
     }
 
     public ClassLoader getClassLoader() {

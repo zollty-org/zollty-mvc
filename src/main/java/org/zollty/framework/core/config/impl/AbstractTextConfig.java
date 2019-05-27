@@ -34,22 +34,19 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
 
     public AbstractTextConfig() {
         super(Const.DEFAULT_CONFIG_LOCATION_PROP);
-        loadConfig();
     }
 
     public AbstractTextConfig(String configLocation) {
-        super(configLocation);
-        loadConfig();
+        super(configLocation, null);
     }
 
     public AbstractTextConfig(String configLocation, ClassLoader classLoader) {
         super(configLocation, classLoader);
-        loadConfig();
     }
 
     public abstract InputStream getResourceInputStream() throws IOException;
 
-    private void loadConfig() {
+    protected void loadConfig() {
 
         String configPath = getConfigLocation();
         if (configPath == null || !configPath.endsWith(".properties")) {

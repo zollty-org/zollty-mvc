@@ -31,6 +31,9 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
         if (this.contextLoader == null) {
             this.contextLoader = this;
         }
+        ClassLoader cll = Thread.currentThread().getContextClassLoader();
+        event.getServletContext()
+              .log("======== zolltyMVC ready to start with classLoader '" + cll.getClass().getName() + "' ===========");
         this.contextLoader.initWebApplicationContext(event.getServletContext());
     }
 

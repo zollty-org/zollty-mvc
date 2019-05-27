@@ -31,25 +31,30 @@ public class DefaultTextFileConfig extends AbstractTextConfig implements IServle
 
     public DefaultTextFileConfig() {
         super();
+        loadConfig();
     }
 
     public DefaultTextFileConfig(String configLocation) {
         super(configLocation);
+        loadConfig();
     }
 
     public DefaultTextFileConfig(String configLocation, ClassLoader classLoader) {
         super(configLocation, classLoader);
+        loadConfig();
     }
 
     public DefaultTextFileConfig(String configLocation, ServletContext servletContext) {
         super(configLocation);
         this.servletContext = servletContext;
+        loadConfig();
     }
 
     public DefaultTextFileConfig(String configLocation, ClassLoader classLoader,
             ServletContext servletContext) {
         super(configLocation, classLoader);
         this.servletContext = servletContext;
+        loadConfig();
     }
 
     @Override

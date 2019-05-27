@@ -34,7 +34,7 @@ import org.zollty.framework.util.MvcUtils;
 public class ContextLoader {
 
     // SYS
-    private Logger logger = LogFactory.getLogger(ContextLoader.class);
+    private Logger logger;
 
     /**
      * Name of servlet context parameter (i.e. {@value} ) that can specify the config location for
@@ -70,21 +70,22 @@ public class ContextLoader {
                     "Cannot initialize context because there is already a root application context present - "
                             + "check whether you have multiple ContextLoader* definitions in your web.xml!");
         }
-
-        logger.info("Root WebApplicationContext initialization started ------------------");
+        logger = LogFactory.getLogger(ContextLoader.class);
+        
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        logger.info("Root WebApplicationContext initialization started with classLoader '{}'", ccl.getClass().getName());
 
         long startTime = System.currentTimeMillis();
         try {
             // Store context in local instance variable, to guarantee that
             // it is available on ServletContext shutdown.
             if (this.context == null) {
-                this.context = createWebApplicationContext(servletContext);
+                this.context = createWebApplicationContext(servletContext, ccl);
             }
 
             servletContext.setAttribute(
                     WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
-            ClassLoader ccl = Thread.currentThread().getContextClassLoader();
             if (ccl == ContextLoader.class.getClassLoader()) {
                 currentContext = this.context;
             }
@@ -108,7 +109,7 @@ public class ContextLoader {
         }
     }
 
-    protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+    protected WebApplicationContext createWebApplicationContext(ServletContext sc, ClassLoader cll) {
 
         String configLocation = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 
@@ -125,17 +126,17 @@ public class ContextLoader {
 
         if (configLocation != null && configLocation.endsWith("xml")) {
             return new DefaultWebApplicationContext(new DefaultXmlConfig(configLocation,
-                    sc), null, sc);
+                    sc), cll, sc);
         }
 
         if (configLocation != null && configLocation.endsWith("properties")) {
             return new DefaultWebApplicationContext(new DefaultTextFileConfig(configLocation,
-                    null, sc), null, sc);
+                    null, sc), cll, sc);
         }
 
         return new DefaultWebApplicationContext(
                 (IServletContextFileConfig) MvcUtils.ClassUtil.newInstance(configLocation, null),
-                null, sc);
+                cll, sc);
     }
     
     /**

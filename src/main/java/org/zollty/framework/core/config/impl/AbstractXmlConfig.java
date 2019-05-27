@@ -44,36 +44,31 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
     public AbstractXmlConfig() {
         super(Const.DEFAULT_CONFIG_LOCATION_XML);
         this.dom = new DefaultDom();
-        loadConfig();
     }
 
     public AbstractXmlConfig(String configLocation) {
         super(configLocation);
         this.dom = new DefaultDom();
-        loadConfig();
     }
 
     public AbstractXmlConfig(String configLocation, ClassLoader classLoader) {
         super(configLocation, classLoader);
         this.dom = new DefaultDom();
-        loadConfig();
     }
 
     public AbstractXmlConfig(String configLocation, Dom dom) {
         super(configLocation);
         this.dom = dom;
-        loadConfig();
     }
 
     public AbstractXmlConfig(String configLocation, ClassLoader classLoader, Dom dom) {
         super(configLocation, classLoader);
         this.dom = dom;
-        loadConfig();
     }
 
     public abstract InputStream getResourceInputStream() throws IOException;
 
-    private void loadConfig() {
+    protected void loadConfig() {
         String configPath = getConfigLocation();
         if (configPath == null || !configPath.endsWith(".xml")) {
             throw new IllegalArgumentException("config location assume be a xml file but get: "

@@ -78,7 +78,9 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader<An
             Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
 
             log.debug("resources size under [{}] = {}", packageSearchPath, resources.length);
-            log.debug("resources type = [{}]", resources[0].getClass().getName());
+            if (resources.length > 0) {
+                log.debug("resources type = [{}]", resources[0].getClass().getName());
+            }
 
             for (Resource r : resources) {
                 String org = r.getURL().toString();

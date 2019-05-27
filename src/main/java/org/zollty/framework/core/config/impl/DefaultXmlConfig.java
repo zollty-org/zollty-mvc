@@ -32,33 +32,40 @@ public class DefaultXmlConfig extends AbstractXmlConfig implements IServletConte
 
     public DefaultXmlConfig() {
         super();
+        loadConfig();
     }
 
     public DefaultXmlConfig(String configLocation, ClassLoader classLoader) {
         super(configLocation, classLoader);
+        loadConfig();
     }
 
     public DefaultXmlConfig(String configLocation, ClassLoader classLoader, Dom dom) {
         super(configLocation, classLoader, dom);
+        loadConfig();
     }
 
     public DefaultXmlConfig(String configLocation, Dom dom) {
         super(configLocation, dom);
+        loadConfig();
     }
 
     public DefaultXmlConfig(String configLocation) {
         super(configLocation);
+        loadConfig();
     }
 
     public DefaultXmlConfig(String configLocation, ServletContext servletContext) {
         super(configLocation);
         this.servletContext = servletContext;
+        loadConfig();
     }
 
     public DefaultXmlConfig(String configLocation, ClassLoader classLoader, Dom dom,
             ServletContext servletContext) {
         super(configLocation, classLoader, dom);
         this.servletContext = servletContext;
+        loadConfig();
     }
 
     @Override

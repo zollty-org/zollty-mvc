@@ -67,13 +67,13 @@
           <exclude>.gitkeep</exclude>
         </excludes>
       </resource>
-      <resource>
+      <!-- <resource>
         <directory>${basedir}/src/main/java/org/zollty</directory>
         <includes>
-          <include>*.xsd</include>
+          <include>**/*.xsd</include>
         </includes>
         <targetPath>${project.build.directory}/classes/org/zollty</targetPath>
-      </resource>
+      </resource> -->
     </resources>
 
     <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
