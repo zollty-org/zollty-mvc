@@ -12,7 +12,6 @@
  */
 package org.zollty.framework.mvc.handler.support;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +79,13 @@ class ControllerHandlerPattern {
         for (int i = 0; i < paramType.length; i++) {
             if (paramType[i] == Const.ControllerMethodParamType.URIParam) {
                 PrimParamMeta pb = paramMetaPrims[i];
-                int pos = Arrays.binarySearch(paramsName.toArray(new String[paramsName.size()]),
-                        pb.getAttribute());
+                int pos = -1;
+                for (int j = 0; j < paramsName.size(); j++) {
+                    if (paramsName.get(j).equals(pb.getAttribute())) {
+                        pos = j;
+                        break;
+                    }
+                }
                 // 如果参数的名称是在 URI 参数列表中，则OK，否则报错。
                 if (pos < 0) {
                     throw new IllegalArgumentException(

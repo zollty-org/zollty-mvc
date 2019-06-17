@@ -13,10 +13,15 @@
 package org.zollty.framework.core.interceptor;
 
 /**
- * 在刷新前做的一些个性化操作
+ * 拦截器基础接口
+ * 
  * @author zollty
  * @since 2018年9月26日
  */
-public interface BeforeRefresh extends MvcInterceptor {
+public interface MvcInterceptor {
 
+    /**
+     * 事件触发时执行的操作
+     */
+    public void onEnvent();
 }

@@ -47,7 +47,15 @@ ZolltyMVC是在"Servlet集中控制转发器"基础上演变而来的，设计�
 3. 支持 Webjar，使用ZolltyMVC可以将web项目（包括class、html、picture、css、js）打包成一个jar，例如阿里的druid-monitor，如果使用ZolltyMVC的话，则完全不用再自己去写控制Servlet、HTML、CSS、JS的代码。
 4. ZolltyMVC框架预留了很多扩展和自定义的空间，许多组件框架只是提供了默认实现而已，如果需要个性化，则继承、实现、重载、重写都很方便。
 
-另外，ZolltyMVC`刻意`保留了部分比较好的Spring的使用习惯，有Spring使用经验的人，掌握ZolltyMVC只是分分钟的事。
+另外，ZolltyMVC`刻意`保留了部分比较好的Spring的使用习惯（比如@Controller和@RequestMapping的命名），有Spring使用经验的人，掌握ZolltyMVC只是分分钟的事。
+
+### 6. Big news! ZolltyMVC support run on Android system！！！
+
+目前Android运行Java Web服务器，主要是使用jetty（i-jetty）。
+
+Spring等重型框架，是没办法在Android Java Web下运行的。
+
+ZolltyMVC框架能替代SpringMVC的绝大多数常用功能！而且得益于它的简洁、灵活和高可DIY性，经过简单改进，现在它已经可以运行在Android系统上，而且所有功能正常。
 
 
 ZolltyMVC设计初衷（2013）

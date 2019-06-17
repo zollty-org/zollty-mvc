@@ -17,6 +17,6 @@ package org.zollty.framework.core.interceptor;
  * @author zollty
  * @since 2018年9月26日
  */
-public interface AfterRefresh extends McvInterceptor {
+public interface AfterRefresh extends MvcInterceptor {
 
 }

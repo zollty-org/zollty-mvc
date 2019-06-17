@@ -13,6 +13,7 @@
 package org.zollty.framework.core.beans.support;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -388,24 +389,25 @@ class BeansLoader {
         return collection;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked"})
     private Object getArrayArg(Object value, Class<?> setterParamType) {
         ManagedArray<Object> values = (ManagedArray<Object>) value;
-
-        Collection collection = new ArrayList();// 指定为ArrayList
-
-        for (Object item : values) {
-            Object listValue = getInjectArg(item, null);
-            collection.add(listValue);
-        }
-        
-        if(setterParamType==null) {
+        if (setterParamType == null) {
             if (MvcUtils.StringUtil.isNotBlank(values.getTypeName())) { // 指定了list的类型
                 setterParamType = MvcUtils.ConvertUtil.resolveArrayClass(values.getTypeName());
             }
         }
-        
-        return MvcUtils.CollectionUtil.toArrayObj(collection, setterParamType);
+        Class<?> elementType = (setterParamType != null) ? 
+                setterParamType.getComponentType() : Object.class;
+        int size = values.size();
+        // Allocate a new Array
+        Object newArray = Array.newInstance(elementType, size);
+        // Convert and set each element in the new Array
+        for (int i = 0; i < size; i++) {
+            Object element = getInjectArg(values.get(i), null);
+            Array.set(newArray, i, element);
+        }
+        return newArray;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

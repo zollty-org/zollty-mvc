@@ -17,6 +17,6 @@ package org.zollty.framework.core.interceptor;
  * @author zollty
  * @since 2018年9月26日
  */
-public interface BeforeClose extends McvInterceptor {
+public interface BeforeClose extends MvcInterceptor {
 
 }

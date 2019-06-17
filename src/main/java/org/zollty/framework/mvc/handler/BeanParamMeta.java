@@ -13,6 +13,7 @@
 package org.zollty.framework.mvc.handler;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
 
 import org.jretty.util.NestedRuntimeException;
@@ -55,6 +56,26 @@ public class BeanParamMeta {
                 MvcUtils.ReflectionUtil.invokeMethod(m, o, MvcUtils.ConvertUtil.convert(value, p));
             } catch (Exception e) {
                 throw new NestedRuntimeException(e, "set param value error.");
+            }
+        }
+    }
+    
+    public void setParam(Object o, String key, String[] value) {
+        Method m = beanSetMethod.get(key);
+        if (m != null) {
+            Class<?> p = m.getParameterTypes()[0];
+            if (p.isArray()) {
+                try {
+                    MvcUtils.ReflectionUtil.invokeMethod(m, o, MvcUtils.ConvertUtil.toArrayValue(value, p));
+                } catch (Exception e) {
+                    throw new NestedRuntimeException(e, "set param value error.");
+                }
+            } else if (Collection.class.isAssignableFrom(p)) {
+                try {
+                    MvcUtils.ReflectionUtil.invokeMethod(m, o, MvcUtils.ConvertUtil.toListValue(value, m, 0));
+                } catch (Exception e) {
+                    throw new NestedRuntimeException(e, "set param value error.");
+                }
             }
         }
     }

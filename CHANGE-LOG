@@ -16,7 +16,7 @@ some good ideas like the URLMatcher of OSChina.NET.
 
 Changes in version 0.0.3 (2013-09-16)
 -------------------------------------
-The first local release version. Realized the Controller( based on httpservlet ), and IoC( support xml and annotation bean inject ).
+The first local release version(in our company). Realized the Controller( based on httpservlet ), and IoC( support xml and annotation bean inject ).
 
 
 Changes in version 0.0.4 (2013-09-25)
@@ -56,42 +56,54 @@ Support StaticResourceView. Can read static resource (like HTML, CSS, JS, PNG fi
 
 Changes in version 0.1.1 (1.0.2.RELEASE) (2014-06-12)
 -------------------------------------
-The new path matching pattern design. A bit like AntPathMatcher, but more advanced (more suitable URL match, the speed is 3~4 times of AntPathMatcher).
+The new path matching pattern design. It took me three days and two `whole nights` to write this algorithm.
+A bit like AntPathMatcher, but more advanced (more suitable URL match, the speed is 3~4 times of AntPathMatcher).
 
 
 Changes in version 0.1.2 (1.1.0.RELEASE) (2014-9-10)
 -------------------------------------
-Optimizations of Controller and Dispatcher, to make it more efficient. The version 1.1.0.RELEASE is a recommended stable version with interceptor. Later, we'll release another new version without interceptor, will reach unprecedented efficiency.
+Optimizations of Controller and Dispatcher, to make it more efficient. 
+The version 1.1.0.RELEASE is a recommended stable version with interceptor. 
+Later, we'll release another new version without interceptor, will reach unprecedented efficiency.
+
 
 Changes in version 1.2.0.RELEASE         (2014-11-21)
 -------------------------------------
-Internal optimization， see the commit history for details.
+Adjust the version naming. see the commit history for details.
+
 
 Changes in version 1.2.1.RELEASE         (2015-7-15)
 -------------------------------------
-Internal optimization， see the commit history for details.
+Add MVC AOP function, see the special docs: /docs/AOP-design.md 
+Many optimizations, see the commit history for details.
+
 
 Changes in version 1.3.0.RELEASE         (2015-8-11)
 -------------------------------------
 Internal optimization， see the commit history for details.
 
+
 Changes in version 1.4.0.RELEASE         (2016-11-26)
 -------------------------------------
 Enhance the object (bean) instantiation functions.
+
 
 Changes in version 1.5.0.RELEASE         (2017-07-09)
 -------------------------------------
 Separate zollty-dbk to an independent project, convenient maintenance and upgrading.
 
+
 Changes in version 1.6.0.RELEASE         (2018-11-20)
 -------------------------------------
-add doBeforeClose() in AbstractBeanFactory, add beforeRefreshInterceptors('before-refresh' in xml) and afterCloseInterceptors('after-close' in xml).
+Add BeanFactory lifecycle interceptors : 
+	add doBeforeClose() and doAfterRefresh() in AbstractBeanFactory, 
+	add beforeRefreshInterceptors('before-refresh' in xml) 
+	and afterCloseInterceptors('after-close' in xml).
 
-Changes in version 1.6.1.RELEASE         (2019-02-13)
--------------------------------------
-refactor the pom.
 
 Changes in version 1.6.2.RELEASE         (2019-03-07)
 -------------------------------------
-resolved a bug in mvc aop.
+1. refactor the pom.
+2. resolved a bug in mvc aop. 
+3. support http `array param` in ModelDriven bean.
 

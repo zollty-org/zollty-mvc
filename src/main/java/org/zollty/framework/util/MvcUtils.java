@@ -14,13 +14,10 @@ package org.zollty.framework.util;
 
 import java.io.Closeable;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -158,26 +155,13 @@ public class MvcUtils {
         static class HttpServerLineChecker implements LineChecker {
             @Override
             public boolean checkLine(String line) {
-                boolean result = false;
-                result = line.startsWith("\tat org.zollty.framework.mvc.handler");
-                if (result)
-                    return false;
-                result = line.startsWith("\tat sun.reflect");
-                if (result)
-                    return false;
-                result = line.startsWith("\tat com.ibm.ws");
-                if (result)
-                    return false;
-                result = line.startsWith("\tat com.ibm.io");
-                if (result)
-                    return false;
-                result = line.startsWith("\tat org.apache.catalina");
-                if (result)
-                    return false;
-                result = line.startsWith("\tat org.apache.coyote.http11");
-                if (result)
-                    return false;
-                return true;
+                // false 过滤，true 不过滤
+                return !(line.startsWith("\tat org.zollty.framework.mvc.handler") 
+                        || line.startsWith("\tat sun.reflect")
+                        || line.startsWith("\tat org.apache.catalina")
+                        || line.startsWith("\tat org.apache.coyote.http11")
+                        || line.startsWith("\tat com.ibm.ws")
+                        || line.startsWith("\tat com.ibm.io"));
             }
         }
 
@@ -197,7 +181,7 @@ public class MvcUtils {
             for (Class<?> i : interfaces) {
                 names.add(i.getName());
             }
-            return names.toArray(new String[interfaces.size()]);
+            return names.toArray(new String[names.size()]);
         }
     }
     
@@ -205,37 +189,6 @@ public class MvcUtils {
     }
     
     public static class CollectionUtil extends CollectionUtils {
-        /**
-         * 把集合转换为指定类型的数组，zolltyMVC专用
-         * <p>
-         * 仅用于类型不确定的情况，如果类型确定，推荐用 collection.toArray(new T[0])方式，例如list.toArray()
-         * 
-         * @param collection
-         * @param arrayType
-         * @return Array newInstance
-         */
-        public static Object toArrayObj(Collection<?> collection, Class<?> arrayType) {
-            Class<?> componentType = null;
-            if (arrayType == null) {
-                componentType = Object.class;
-            }
-            else {
-                if (!arrayType.isArray())
-                    throw new IllegalArgumentException("type is not a array");
-                componentType = arrayType.getComponentType();
-            }
-
-            int size = collection.size();
-            // Allocate a new Array
-            Object newArray = Array.newInstance(componentType, size);
-            Iterator<?> iterator = collection.iterator();
-            // Convert and set each element in the new Array
-            for (int i = 0; i < size; i++) {
-                Object element = iterator.next();
-                Array.set(newArray, i, element);
-            }
-            return newArray;
-        }
     }
     
     public static class ArrayUtil extends ArrayUtils {

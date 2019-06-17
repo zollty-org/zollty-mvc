@@ -25,7 +25,7 @@ import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.context.ApplicationContext;
 import org.zollty.framework.core.interceptor.AfterRefresh;
 import org.zollty.framework.core.interceptor.BeforeClose;
-import org.zollty.framework.core.interceptor.McvInterceptor;
+import org.zollty.framework.core.interceptor.MvcInterceptor;
 import org.zollty.framework.util.MvcUtils;
 
 /**
@@ -37,13 +37,13 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
 
     private IApplicationConfig config;
     
-    private List<McvInterceptor> beforeRefreshInterceptors = new LinkedList<McvInterceptor>();
+    private List<MvcInterceptor> beforeRefreshInterceptors = new LinkedList<MvcInterceptor>();
     
-    private List<McvInterceptor> afterCloseInterceptors = new LinkedList<McvInterceptor>();
+    private List<MvcInterceptor> afterCloseInterceptors = new LinkedList<MvcInterceptor>();
     
-    private List<McvInterceptor> afterRefreshInterceptors = new LinkedList<McvInterceptor>();
+    private List<MvcInterceptor> afterRefreshInterceptors = new LinkedList<MvcInterceptor>();
     
-    private List<McvInterceptor> beforeCloseInterceptors = new LinkedList<McvInterceptor>();
+    private List<MvcInterceptor> beforeCloseInterceptors = new LinkedList<MvcInterceptor>();
     
     private static transient Logger logger;
 
@@ -53,7 +53,7 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
         // 配置好了，才能刷新
         this.config = config;
         
-        initMcvInterceptor(this.getClass().getClassLoader());
+        initMvcInterceptor(this.getClass().getClassLoader());
 
         refresh();
     }
@@ -64,14 +64,14 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
         // 配置好了，才能刷新
         this.config = config;
         
-        initMcvInterceptor(this.getClass().getClassLoader());
+        initMvcInterceptor(this.getClass().getClassLoader());
 
         refresh();
     }
     
     @Override
     protected void doBeforeRefresh() {
-        for(McvInterceptor intcp: beforeRefreshInterceptors) {
+        for(MvcInterceptor intcp: beforeRefreshInterceptors) {
             intcp.onEnvent();
         }
     }
@@ -80,7 +80,7 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
     protected void doAfterRefresh() {
         afterRefreshInterceptors.addAll(getBeansOfType(AfterRefresh.class));
         AnnotationAwareOrderComparator.sort(afterRefreshInterceptors);
-        for(McvInterceptor intcp: afterRefreshInterceptors) {
+        for(MvcInterceptor intcp: afterRefreshInterceptors) {
             intcp.onEnvent();
         }
     }
@@ -89,7 +89,7 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
     protected void doBeforeClose() {
         beforeCloseInterceptors.addAll(getBeansOfType(BeforeClose.class));
         AnnotationAwareOrderComparator.sort(beforeCloseInterceptors);
-        for(McvInterceptor intcp: beforeCloseInterceptors) {
+        for(MvcInterceptor intcp: beforeCloseInterceptors) {
             try {
                 intcp.onEnvent();
             } catch (Exception e) {
@@ -100,7 +100,7 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
     
     @Override
     protected void doAfterClose() {
-        for(McvInterceptor intcp: afterCloseInterceptors) {
+        for(MvcInterceptor intcp: afterCloseInterceptors) {
             try {
                 intcp.onEnvent();
             } catch (Exception e) {
@@ -109,12 +109,12 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
         }
     }
     
-    protected void initMcvInterceptor(ClassLoader loader) {
+    protected void initMvcInterceptor(ClassLoader loader) {
         if (config.getBeforeRefreshInterceptors() != null) {
             for (String clazz : config.getBeforeRefreshInterceptors()) {
                 try {
                     beforeRefreshInterceptors.add(
-                            (McvInterceptor) MvcUtils.ReflectionUtil.newInstance(
+                            (MvcInterceptor) MvcUtils.ReflectionUtil.newInstance(
                                     Class.forName(clazz, true, loader)));
                     OrderComparator.sort(beforeRefreshInterceptors);
                 } catch (ClassNotFoundException e) {
@@ -126,7 +126,7 @@ public abstract class AbstractApplicationContext extends AbstractBeanFactory imp
             for (String clazz : config.getAfterCloseInterceptors()) {
                 try {
                     afterCloseInterceptors.add(
-                            (McvInterceptor) MvcUtils.ReflectionUtil.newInstance(
+                            (MvcInterceptor) MvcUtils.ReflectionUtil.newInstance(
                                     Class.forName(clazz, true, loader)));
                     OrderComparator.sort(afterCloseInterceptors);
                 } catch (ClassNotFoundException e) {

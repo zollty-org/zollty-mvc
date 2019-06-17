@@ -12,6 +12,9 @@
  */
 package org.zollty.framework.util;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,6 +109,38 @@ class MvcConvertUtils {
         }
         return (T) ret;
     }
+    
+    
+    public static Object toListValue(Object value, Method method, int pos) {
+        return toListValue(value, (Class<?>) method.getParameterTypes()[0],
+                MvcUtils.ReflectUtil.getMethodParamGenericActualType(method, pos)[0]);
+    }
+    
+    public static Object toArrayValue(Object value, Class<?> arrayType) {
+        String[] values = (String[]) value;
+        Class<?> elementType = arrayType.getComponentType();
+        // Allocate a new Array
+        Object newArray = Array.newInstance(elementType, values.length);
+        // Convert and set each element in the new Array
+        for (int i = 0; i < values.length; i++) {
+            Object element = MvcUtils.ConvertUtil.convert(values[i], elementType);
+            Array.set(newArray, i, element);
+        }
+        return newArray;
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Object toListValue(Object value, Class<?> listType, Class<?> elementType) {
+        String[] values = (String[]) value;
+        Collection collection = MvcUtils.CollectionUtil.getCollectionObj(listType);
+        for (String item : values) {
+            Object listValue = MvcUtils.ConvertUtil.convert(item, elementType);
+            collection.add(listValue);
+        }
+        return collection;
+    }
+    
+    
 
     // ~~ helper method for this util
 

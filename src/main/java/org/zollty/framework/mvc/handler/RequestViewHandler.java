@@ -397,8 +397,13 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
                 // 把http参数赋值给参数对象
                 while (enumeration.hasMoreElements()) {
                     String httpParamName = enumeration.nextElement();
-                    String paramValue = request.getParameter(httpParamName);
-                    paramMetaInfo.setParam(p[i], httpParamName, paramValue);
+                    String[] paramValue = request.getParameterValues(httpParamName);
+                    if (!httpParamName.endsWith("[]")) {
+                        paramMetaInfo.setParam(p[i], httpParamName, paramValue[0]);
+                    } else {
+                        paramMetaInfo.setParam(p[i], httpParamName.substring(0, httpParamName.length() - 2),
+                                paramValue);
+                    }
                 }
                 if (MvcUtils.StringUtil.isNotBlank(paramMetaInfo.getAttribute())) {
                     request.setAttribute(paramMetaInfo.getAttribute(), p[i]);
