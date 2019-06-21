@@ -393,11 +393,14 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
                 Enumeration<String> enumeration = request.getParameterNames();
                 BeanParamMeta paramMetaInfo = paramMetaBeans[i];
                 p[i] = paramMetaInfo.newParamInstance();
-
                 // 把http参数赋值给参数对象
                 while (enumeration.hasMoreElements()) {
                     String httpParamName = enumeration.nextElement();
                     String[] paramValue = request.getParameterValues(httpParamName);
+                    if (paramValue.length == 1 && paramValue[0].length() < 1) {
+                        // 前端的空值("")和null值，传到后端都是""，且无法区分，没有意义，因此直接丢弃掉
+                        continue;
+                    }
                     if (!httpParamName.endsWith("[]")) {
                         paramMetaInfo.setParam(p[i], httpParamName, paramValue[0]);
                     } else {
