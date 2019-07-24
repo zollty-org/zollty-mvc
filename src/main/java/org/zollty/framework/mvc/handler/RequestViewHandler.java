@@ -12,7 +12,7 @@
  */
 package org.zollty.framework.mvc.handler;
 
-import static org.zollty.framework.util.MvcUtils.ReflectionUtil.invokeMethod;
+import static org.jretty.util.ReflectionMethodUtils.invokeMethod;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,8 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.BasicRuntimeException;
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.Const.ControllerMethodParamType;
 import org.zollty.framework.mvc.View;
 import org.zollty.framework.mvc.ViewHandler;
 import org.zollty.framework.mvc.aop.MvcJoinPoint;
@@ -66,7 +64,7 @@ public class RequestViewHandler implements ViewHandler, ViewHandlerAopSupport {
         // Check paramType
         ControllerMethodParamType[] paramType = meta.getParamType();
         for (ControllerMethodParamType type : paramType) {
-            if (type == Const.ControllerMethodParamType.URIParam) {
+            if (type == ControllerMethodParamType.URIParam) {
                 throw new BasicRuntimeException("the common meta can't use URIParam!");
             }
         }

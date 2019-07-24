@@ -13,7 +13,9 @@
 package org.zollty.framework.core.beans;
 
 /**
- * Bean信息
+ * A BeanDefinition describes a bean instance, which has property values,
+ * constructor argument values, and further information supplied by
+ * concrete implementations.
  * 
  * @author zollty
  * @since 2013-9-15

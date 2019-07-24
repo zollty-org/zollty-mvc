@@ -2,7 +2,7 @@
 <beans xmlns="http://www.zollty.org/mvc/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.zollty.org/mvc/schema/beans 
-  http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.2.xsd">
+  http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.3.xsd">
 
   <bean id="car" class="com.zollty.mvcdemo.CarFactory#build">
     <property name="color" value="black" />

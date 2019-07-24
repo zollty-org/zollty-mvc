@@ -24,11 +24,9 @@ import org.jretty.log.Logger;
 import org.jretty.util.NestedRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.config.ConfigTools;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.framework.util.dom.DefaultDom;
-import org.zollty.framework.util.dom.Dom;
+import org.zollty.framework.util.dom.JavaxDomParser;
+import org.zollty.framework.util.dom.DomParser;
 
 /**
  * 
@@ -37,31 +35,29 @@ import org.zollty.framework.util.dom.Dom;
  */
 public abstract class AbstractXmlConfig extends AbstractFileConfig {
 
-    private Logger logger = LogFactory.getLogger(AbstractXmlConfig.class);
-
-    private Dom dom;
+    private DomParser dom;
 
     public AbstractXmlConfig() {
-        super(Const.DEFAULT_CONFIG_LOCATION_XML);
-        this.dom = new DefaultDom();
+        super(DEFAULT_CONFIG_LOCATION_XML);
+        this.dom = new JavaxDomParser();
     }
 
     public AbstractXmlConfig(String configLocation) {
         super(configLocation);
-        this.dom = new DefaultDom();
+        this.dom = new JavaxDomParser();
     }
 
     public AbstractXmlConfig(String configLocation, ClassLoader classLoader) {
         super(configLocation, classLoader);
-        this.dom = new DefaultDom();
+        this.dom = new JavaxDomParser();
     }
 
-    public AbstractXmlConfig(String configLocation, Dom dom) {
+    public AbstractXmlConfig(String configLocation, DomParser dom) {
         super(configLocation);
         this.dom = dom;
     }
 
-    public AbstractXmlConfig(String configLocation, ClassLoader classLoader, Dom dom) {
+    public AbstractXmlConfig(String configLocation, ClassLoader classLoader, DomParser dom) {
         super(configLocation, classLoader);
         this.dom = dom;
     }
@@ -71,8 +67,8 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
     protected void loadConfig() {
         String configPath = getConfigLocation();
         if (configPath == null || !configPath.endsWith(".xml")) {
-            throw new IllegalArgumentException("config location assume be a xml file but get: "
-                    + configPath);
+            throw new IllegalArgumentException(
+                    "config location assume be a xml file but get: " + configPath);
         }
 
         InputStream in = null;
@@ -88,6 +84,16 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
         Document doc = dom.getDocument(in);
         // 得到根节点
         Element root = dom.getRoot(doc);
+        
+        // 优先解析日志
+        Element logEle = dom.element(root, "logger");
+        if (null != logEle) {
+            String logName = logEle.getAttribute("class");
+            String level = logEle.getAttribute("level");
+            this.setInitLogger(logName, level);
+        }
+        
+        Logger logger = LogFactory.getLogger(AbstractXmlConfig.class);
         
         parseComponentScan(root);
 
@@ -109,13 +115,6 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
             }
         }
         
-        Element logger = dom.element(root, "logger");
-        if (null != logger) {
-            String logName = logger.getAttribute("class");
-            String level = logger.getAttribute("level");
-            this.setInitLogger(logName, level);
-        }
-
         Element errorPage = dom.element(root, "error-page");
         if (null != errorPage) {
             String path = errorPage.getAttribute("path");
@@ -125,11 +124,11 @@ public abstract class AbstractXmlConfig extends AbstractFileConfig {
         }
     }
 
-    public void setDom(Dom dom) {
+    public void setDom(DomParser dom) {
         this.dom = dom;
     }
 
-    public Dom getDom() {
+    public DomParser getDom() {
         return dom;
     }
     

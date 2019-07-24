@@ -9,15 +9,17 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
-package org.zollty.framework.core.beans.xml;
-
-import java.util.ArrayList;
+package org.zollty.framework.core.beans.xml.value;
 
 /**
- * list元素
+ * &lt;value&gt;节点的属性与值
  */
-@SuppressWarnings("serial")
-public class ManagedList<T> extends ArrayList<T> {
+public class ManagedValue {
+
+    /**
+     * value值
+     */
+    private String value;
 
     /**
      * 类型名称
@@ -31,4 +33,25 @@ public class ManagedList<T> extends ArrayList<T> {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
+
+    public ManagedValue() {
+    }
+
+    public ManagedValue(String value) {
+        this(value, null);
+    }
+
+    public ManagedValue(String value, String typeName) {
+        this.value = value;
+        this.typeName = typeName;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }

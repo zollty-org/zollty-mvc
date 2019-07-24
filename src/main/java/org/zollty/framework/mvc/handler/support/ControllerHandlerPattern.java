@@ -16,14 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.Const.ControllerMethodParamType;
-import org.zollty.framework.mvc.handler.ControllerMeta;
-import org.zollty.framework.mvc.handler.PrimParamMeta;
-import org.zollty.framework.mvc.handler.RequestViewHandler;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.match.ZolltyPathMatcher;
+import org.zollty.framework.mvc.handler.ControllerMeta;
+import org.zollty.framework.mvc.handler.ControllerMethodParamType;
+import org.zollty.framework.mvc.handler.PrimParamMeta;
+import org.zollty.framework.mvc.handler.RequestViewHandler;
 
 /**
  * @author zollty
@@ -77,7 +76,7 @@ class ControllerHandlerPattern {
         ControllerMethodParamType[] paramType = meta.getParamType();
         PrimParamMeta[] paramMetaPrims = meta.getParamMetaPrims();
         for (int i = 0; i < paramType.length; i++) {
-            if (paramType[i] == Const.ControllerMethodParamType.URIParam) {
+            if (paramType[i] == ControllerMethodParamType.URIParam) {
                 PrimParamMeta pb = paramMetaPrims[i];
                 int pos = -1;
                 for (int j = 0; j < paramsName.size(); j++) {

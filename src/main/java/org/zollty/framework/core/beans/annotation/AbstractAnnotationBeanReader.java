@@ -26,14 +26,15 @@ import org.jretty.util.resource.support.PathMatchingResourcePatternResolver;
 import org.jretty.util.resource.support.ResourcePatternResolver;
 import org.zollty.framework.core.annotation.Component;
 import org.zollty.framework.core.annotation.Inject;
-import org.zollty.framework.core.beans.AbstractBeanReader;
+import org.zollty.framework.core.beans.BeanDefinitionParsingException;
+import org.zollty.framework.core.beans.BeanReader;
 import org.zollty.framework.util.MvcUtils;
 
 /**
  * @author zollty
  * @since 2013-9-21
  */
-abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader<AnnotationBeanDefinition> {
+abstract public class AbstractAnnotationBeanReader implements BeanReader<AnnotationBeanDefinition> {
 
     private Logger log = LogFactory.getLogger(AbstractAnnotationBeanReader.class);
 
@@ -90,7 +91,7 @@ abstract public class AbstractAnnotationBeanReader extends AbstractBeanReader<An
             }
         }
         catch (IOException e) {
-            error("Pattern = [" + packageSearchPath + "] can not be found.");
+            throw new BeanDefinitionParsingException("Pattern = [" + packageSearchPath + "] can not be found.");
         }
     }
 

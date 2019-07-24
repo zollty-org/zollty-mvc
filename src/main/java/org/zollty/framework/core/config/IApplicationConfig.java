@@ -20,6 +20,16 @@ import java.util.Set;
  * @since 2014-5-21
  */
 public interface IApplicationConfig {
+    
+    /**
+     * Default config file (xml) location.
+     */
+    String DEFAULT_CONFIG_LOCATION_XML = "classpath:zollty-mvc.xml";
+
+    /**
+     * Default properties config file location.
+     */
+    String DEFAULT_CONFIG_LOCATION_PROP = "classpath:zollty-mvc.properties";
 
     String DEFAULT_VIEW_PATH = "/WEB-INF/views";
     String DEFAULT_VIEW_ENCODING = "UTF-8";

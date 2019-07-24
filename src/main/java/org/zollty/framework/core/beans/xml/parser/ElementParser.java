@@ -8,23 +8,15 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2014-5-27 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.view;
+package org.zollty.framework.core.beans.xml.parser;
 
-/**
- * @author zollty
- * @since 2014-5-27
- */
-public class StaticResourceView extends AbstractStaticResourceView {
+import org.w3c.dom.Element;
 
-    public StaticResourceView(String shortPath) {
-        super(shortPath);
-    }
+import org.zollty.framework.util.dom.DomParser;
 
-    @Override
-    public String getViewPathPrefix() {
-        return VIEW_PATH_PREFIX;
-    }
-
+public interface ElementParser {
+    
+    Object parse(Element ele, DomParser dom);
+    
 }

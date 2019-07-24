@@ -12,9 +12,6 @@
  */
 package org.zollty.framework.core.beans.xml;
 
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.BEAN_ELEMENT;
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.IMPORT_ELEMENT;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,22 +24,22 @@ import org.jretty.log.Logger;
 import org.jretty.util.NestedRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.zollty.framework.core.beans.AbstractBeanReader;
-import org.zollty.framework.core.beans.xml.parser.XmlNodeParserFactory;
+import org.zollty.framework.core.beans.BeanReader;
+import org.zollty.framework.core.beans.xml.parser.XmlParserFactory;
 import org.zollty.framework.util.MvcUtils;
 import org.zollty.framework.util.ResourceContext;
-import org.zollty.framework.util.dom.DefaultDom;
-import org.zollty.framework.util.dom.Dom;
+import org.zollty.framework.util.dom.JavaxDomParser;
+import org.zollty.framework.util.dom.DomParser;
 
 /**
  * @author zollty
  * @since 2013-9-15
  */
-public class XmlBeanReader extends AbstractBeanReader<XmlBeanDefinition> {
+public class XmlBeanReader implements BeanReader<XmlBeanDefinition> {
 
     private static final Logger LOG = LogFactory.getLogger(XmlBeanReader.class);
 
-    private Dom dom = new DefaultDom();
+    private DomParser dom = new JavaxDomParser();
 
     private ResourceContext beanXmlResourceContext;
 
@@ -78,8 +75,7 @@ public class XmlBeanReader extends AbstractBeanReader<XmlBeanDefinition> {
         // 迭代beans列表
         if (beansList != null && !beansList.isEmpty()) {
             for (Element ele : beansList) {
-                beanDefinitions.add((XmlBeanDefinition) XmlNodeParserFactory.getXmlBeanDefinition(ele,
-                        dom, beanClassLoader));
+                beanDefinitions.add((XmlBeanDefinition) XmlParserFactory.parserBean(ele, dom));
             }
         }
     }
@@ -116,11 +112,11 @@ public class XmlBeanReader extends AbstractBeanReader<XmlBeanDefinition> {
             // 得到根节点
             Element root = dom.getRoot(doc);
             // 得到所有bean节点
-            List<Element> list = dom.elements(root, BEAN_ELEMENT);
+            List<Element> list = dom.elements(root, XmlParserFactory.BEAN_ELEMENT);
             beansList.addAll(list);
 
             // 得到所有import节点
-            List<Element> importList = dom.elements(root, IMPORT_ELEMENT);
+            List<Element> importList = dom.elements(root, XmlParserFactory.IMPORT_ELEMENT);
             if (importList != null) {
                 for (Element ele : importList) {
                     if (ele.hasAttribute("resource")) {

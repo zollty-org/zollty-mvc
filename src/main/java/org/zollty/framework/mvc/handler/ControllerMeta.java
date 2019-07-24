@@ -19,8 +19,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.Const.ControllerMethodParamType;
 import org.zollty.framework.mvc.annotation.HttpParam;
 import org.zollty.framework.mvc.annotation.URIParam;
 import org.zollty.framework.mvc.aop.ControllerMethodAopMeta;
@@ -167,7 +165,7 @@ public class ControllerMeta {
                         // 数据类型为主要类型，可以直接转换，比如int、Long等
                         paramMetaPrims[i] = new PrimParamMeta(paraTypes[i], httpParam.value(),
                                 httpParam.setAttr());
-                        paramType[i] = Const.ControllerMethodParamType.HttpParamBasic;
+                        paramType[i] = ControllerMethodParamType.HttpParamBasic;
                     }
                     else {
                         // 数据类型为复合类型，需要调用标准setter赋值
@@ -175,23 +173,23 @@ public class ControllerMeta {
                                 MvcUtils.ReflectUtil.getSetterMethods(paraTypes[i]),
                                 httpParam.value());
                         paramMetaBeans[i] = paramMetaInfo;
-                        paramType[i] = Const.ControllerMethodParamType.HttpParamBean;
+                        paramType[i] = ControllerMethodParamType.HttpParamBean;
                     }
                 }
                 else if (anno.annotationType().equals(URIParam.class)) {
                     if (MvcUtils.ConvertUtil.canConvert(paraTypes[i]) != null) {
                         URIParam pv = (URIParam) anno;
                         paramMetaPrims[i] = new PrimParamMeta(paraTypes[i], pv.value(), false);
-                        paramType[i] = Const.ControllerMethodParamType.URIParam;
+                        paramType[i] = ControllerMethodParamType.URIParam;
                     }
                 }
             }
             else {
                 if (paraTypes[i].equals(HttpServletRequest.class)) {
-                    paramType[i] = Const.ControllerMethodParamType.HttpServletRequest;
+                    paramType[i] = ControllerMethodParamType.HttpServletRequest;
                 }
                 else if (paraTypes[i].equals(HttpServletResponse.class)) {
-                    paramType[i] = Const.ControllerMethodParamType.HttpServletResponse;
+                    paramType[i] = ControllerMethodParamType.HttpServletResponse;
                 }
             }
         }

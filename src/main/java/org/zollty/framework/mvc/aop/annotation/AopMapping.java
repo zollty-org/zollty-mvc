@@ -26,6 +26,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AopMapping {
+    
+    int DEFAULT_MVC_AOP_MAPPING_ORDER = 100;
 
     String[] value();
 

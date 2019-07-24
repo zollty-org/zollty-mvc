@@ -14,45 +14,15 @@ package org.zollty.framework.core.beans.xml;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import org.zollty.framework.core.beans.AbstractBeanDefinition;
+
 /**
  * Xml方式Bean实现
  */
-public class GenericXmlBeanDefinition implements XmlBeanDefinition {
-
-    // id
-    private String id;
-
-    // className
-    private String className;
-
-    private String beanType = CLASS_BEAN_TYPE;
-
-    private String methodName;
-
-    // 属性集合
+public class GenericXmlBeanDefinition extends AbstractBeanDefinition implements XmlBeanDefinition {
+    
     private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>();
-    // 参数集合
     private LinkedList<Object> constructorArgs;
-    private String[] names;
-    private Object object;
-
-    private boolean finished;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
 
     public LinkedHashMap<String, Object> getProperties() {
         return properties;
@@ -71,58 +41,8 @@ public class GenericXmlBeanDefinition implements XmlBeanDefinition {
     }
 
     @Override
-    public String[] getInterfaceNames() {
-        return names;
-    }
-
-    @Override
-    public Object getObject() {
-        return object;
-    }
-
-    @Override
-    public void setInterfaceNames(String[] names) {
-        this.names = names;
-    }
-
-    @Override
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return finished;
-    }
-
-    @Override
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    @Override
-    public String getBeanType() {
-        return beanType;
-    }
-
-    @Override
-    public void setBeanType(String beanType) {
-        this.beanType = beanType;
-    }
-
-    @Override
-    public String getMethodName() {
-        return methodName;
-    }
-
-    @Override
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
-    @Override
     public String toString() {
-        return "GenericXmlBeanDefinition [id=" + id + ", className=" + className + "]";
+        return "GenericXmlBeanDefinition [id=" + getId() + ", className=" + getClassName() + "]";
     }
 
 }

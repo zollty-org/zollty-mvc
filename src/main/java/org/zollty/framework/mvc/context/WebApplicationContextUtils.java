@@ -26,8 +26,9 @@ public class WebApplicationContextUtils {
     }
 
     public static WebApplicationContext getWebApplicationContext(ServletContext sc, String attrName) {
-        if (null == sc)
+        if (null == sc) {
             throw new RuntimeException("ServletContext must not be null");
+        }
         Object attr = sc.getAttribute(attrName);
         if (attr == null) {
             return null;

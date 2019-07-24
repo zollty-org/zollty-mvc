@@ -8,23 +8,27 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * Create by ZollTy on 2014-5-27 (http://blog.zollty.com, zollty@163.com)
  */
-package org.zollty.framework.mvc.view;
+package org.zollty.framework.core.beans.xml.value;
+
+import java.util.ArrayList;
 
 /**
- * @author zollty
- * @since 2014-5-27
+ * array元素
  */
-public class StaticResourceView extends AbstractStaticResourceView {
+@SuppressWarnings("serial")
+public class ManagedArray<T> extends ArrayList<T> {
 
-    public StaticResourceView(String shortPath) {
-        super(shortPath);
+    /**
+     * 类型名称
+     */
+    private String typeName;
+
+    public String getTypeName() {
+        return typeName;
     }
 
-    @Override
-    public String getViewPathPrefix() {
-        return VIEW_PATH_PREFIX;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
-
 }

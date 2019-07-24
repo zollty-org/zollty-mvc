@@ -37,12 +37,12 @@ import org.zollty.framework.core.annotation.MethodBeanId;
 import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.core.beans.BeansException;
 import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
-import org.zollty.framework.core.beans.xml.ManagedArray;
-import org.zollty.framework.core.beans.xml.ManagedList;
-import org.zollty.framework.core.beans.xml.ManagedMap;
-import org.zollty.framework.core.beans.xml.ManagedRef;
-import org.zollty.framework.core.beans.xml.ManagedValue;
 import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
+import org.zollty.framework.core.beans.xml.value.ManagedArray;
+import org.zollty.framework.core.beans.xml.value.ManagedList;
+import org.zollty.framework.core.beans.xml.value.ManagedMap;
+import org.zollty.framework.core.beans.xml.value.ManagedRef;
+import org.zollty.framework.core.beans.xml.value.ManagedValue;
 import org.zollty.framework.util.MvcUtils;
 
 /**

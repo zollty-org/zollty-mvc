@@ -19,7 +19,7 @@ import javax.servlet.ServletContext;
 
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.framework.util.dom.Dom;
+import org.zollty.framework.util.dom.DomParser;
 
 /**
  * 
@@ -40,12 +40,12 @@ public class DefaultXmlConfig extends AbstractXmlConfig implements IServletConte
         loadConfig();
     }
 
-    public DefaultXmlConfig(String configLocation, ClassLoader classLoader, Dom dom) {
+    public DefaultXmlConfig(String configLocation, ClassLoader classLoader, DomParser dom) {
         super(configLocation, classLoader, dom);
         loadConfig();
     }
 
-    public DefaultXmlConfig(String configLocation, Dom dom) {
+    public DefaultXmlConfig(String configLocation, DomParser dom) {
         super(configLocation, dom);
         loadConfig();
     }
@@ -61,7 +61,7 @@ public class DefaultXmlConfig extends AbstractXmlConfig implements IServletConte
         loadConfig();
     }
 
-    public DefaultXmlConfig(String configLocation, ClassLoader classLoader, Dom dom,
+    public DefaultXmlConfig(String configLocation, ClassLoader classLoader, DomParser dom,
             ServletContext servletContext) {
         super(configLocation, classLoader, dom);
         this.servletContext = servletContext;

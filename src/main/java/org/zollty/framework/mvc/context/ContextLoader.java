@@ -20,7 +20,7 @@ import javax.servlet.ServletContext;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.NestedRuntimeException;
-import org.zollty.framework.core.Const;
+import org.zollty.framework.core.config.IApplicationConfig;
 import org.zollty.framework.core.config.IServletContextFileConfig;
 import org.zollty.framework.core.config.impl.DefaultTextFileConfig;
 import org.zollty.framework.core.config.impl.DefaultXmlConfig;
@@ -118,7 +118,7 @@ public class ContextLoader {
         }
 
         if (configLocation == null) {
-            configLocation = Const.DEFAULT_CONFIG_LOCATION_XML;
+            configLocation = IApplicationConfig.DEFAULT_CONFIG_LOCATION_XML;
         }
         else if (configLocation.startsWith("/")) {
             configLocation = configLocation.substring(1);

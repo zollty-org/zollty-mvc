@@ -28,8 +28,6 @@ public interface XmlBeanDefinition extends BeanDefinition {
     
     /**
      * 设置属性集合
-     * 
-     * @param properties
      */
     public void setProperties(LinkedHashMap<String, Object> properties);
     
@@ -42,4 +40,5 @@ public interface XmlBeanDefinition extends BeanDefinition {
      * 设置参数集合
      */
     public void setConstructorArgs(LinkedList<Object> constructorArgs);
+    
 }

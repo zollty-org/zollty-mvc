@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.jretty.util.NestedRuntimeException;
-import org.zollty.framework.core.Const;
-import org.zollty.framework.core.config.ConfigTools;
 import org.zollty.framework.util.MvcUtils;
 
 /**
@@ -33,7 +31,7 @@ import org.zollty.framework.util.MvcUtils;
 public abstract class AbstractTextConfig extends AbstractFileConfig {
 
     public AbstractTextConfig() {
-        super(Const.DEFAULT_CONFIG_LOCATION_PROP);
+        super(DEFAULT_CONFIG_LOCATION_PROP);
     }
 
     public AbstractTextConfig(String configLocation) {
@@ -65,6 +63,9 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
 
         Properties props = MvcUtils.ResourceUtil.getProperties(in);
         Map<String, String> propsMap = MvcUtils.CollectionUtil.covertPropertiesToMap(props);
+        
+        // 优先解析日志配置
+        setLogger(propsMap.get("jretty-logger"));
 
         String scanPackage = propsMap.get("scan-package");
         if (scanPackage != null) {
@@ -81,8 +82,6 @@ public abstract class AbstractTextConfig extends AbstractFileConfig {
         
         this.setErrorPagePath(propsMap.get("error-page"));
         
-        setLogger(propsMap.get("jretty-logger"));
-
         String prefix = propsMap.get("no-intercept-prefix");
         String suffix = propsMap.get("no-intercept-suffix");
         if (MvcUtils.StringUtil.isNotEmpty(prefix)) {

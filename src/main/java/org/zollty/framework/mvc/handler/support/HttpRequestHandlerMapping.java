@@ -19,7 +19,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.zollty.framework.core.Const;
+import org.jretty.log.LogFactory;
+import org.jretty.log.Logger;
+import org.jretty.util.BasicRuntimeException;
+import org.jretty.util.NestedRuntimeException;
 import org.zollty.framework.core.beans.BeanDefinition;
 import org.zollty.framework.core.beans.annotation.AnnotationBeanDefinition;
 import org.zollty.framework.core.config.IApplicationConfig;
@@ -31,10 +34,6 @@ import org.zollty.framework.mvc.context.ControllerBeanDefinition;
 import org.zollty.framework.mvc.handler.AbstractHandlerMapping;
 import org.zollty.framework.mvc.handler.ControllerMeta;
 import org.zollty.framework.util.MvcUtils;
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
-import org.jretty.util.BasicRuntimeException;
-import org.jretty.util.NestedRuntimeException;
 
 /**
  * @author zollty
@@ -127,7 +126,7 @@ public class HttpRequestHandlerMapping extends AbstractHandlerMapping {
                 String uriPattern = null;
                 if (array.length == 1) {
                     uriPattern = value;
-                    bd.setOrder(Const.DEFAULT_MVC_AOP_MAPPING_ORDER);
+                    bd.setOrder(AopMapping.DEFAULT_MVC_AOP_MAPPING_ORDER);
                     bd.setUriPattern(uriPattern);
                 }
                 else { // length==2

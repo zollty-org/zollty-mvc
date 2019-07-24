@@ -16,7 +16,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
 import org.zollty.framework.ext.jdbc.JndiTemplate;
 
 /**
@@ -24,17 +23,14 @@ import org.zollty.framework.ext.jdbc.JndiTemplate;
  * @since 2013-10-14
  */
 public class JndiDataSourceCreator {
-
+    
     public DataSource getDataSource() {
-        
-        Logger log = LogFactory.getLogger(JndiDataSourceCreator.class);
-
         JndiTemplate jndiTemplate = new JndiTemplate();
         try {
             return jndiTemplate.lookup(jndiName, javax.sql.DataSource.class);
-        }
-        catch (NamingException e) {
-            log.error(e, "get jndi datasource error, jndiName=" + jndiName);
+        } catch (NamingException e) {
+            LogFactory.getLogger(JndiDataSourceCreator.class).error(e,
+                    "get jndi datasource error, jndiName=" + jndiName);
         }
         return null;
     }

@@ -12,40 +12,36 @@
  */
 package org.zollty.framework.core.beans.xml.parser;
 
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.CLASS_ATTRIBUTE;
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.ID_ATTRIBUTE;
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.NAME_ATTRIBUTE;
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.PROPERTY_ELEMENT;
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.REF_ATTRIBUTE;
-import static org.zollty.framework.core.beans.xml.XmlNodeConstants.VALUE_ATTRIBUTE;
-
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jretty.log.LogFactory;
-import org.jretty.log.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.zollty.framework.core.beans.BeanDefinition;
-import org.zollty.framework.core.beans.BeanDefinitionParsingException;
 import org.zollty.framework.core.beans.xml.GenericXmlBeanDefinition;
-import org.zollty.framework.core.beans.xml.ManagedRef;
-import org.zollty.framework.core.beans.xml.ManagedValue;
 import org.zollty.framework.core.beans.xml.XmlBeanDefinition;
+import org.zollty.framework.core.beans.xml.value.ManagedRef;
+import org.zollty.framework.core.beans.xml.value.ManagedValue;
 import org.zollty.framework.util.MvcUtils;
-import org.zollty.framework.util.dom.Dom;
+import org.zollty.framework.util.dom.DomParser;
 
 /**
  * 
  * @author zollty
  * @since 2013-9-15
  */
-public class BeanNodeParser {
+class BeanParser extends AbstractElementParser {
+    
+    private String ID_ATTRIBUTE = "id";
+    private String CLASS_ATTRIBUTE = "class";
+    private String NAME_ATTRIBUTE = "name";
+    private String REF_ATTRIBUTE = "ref";
 
-    private static final Logger LOG = LogFactory.getLogger(BeanNodeParser.class);
+    private String PROPERTY_ELEMENT = "property";
+    private String CONSTRUCTOR_ELEMENT = "constructor";
 
-    public static XmlBeanDefinition parse(Element ele, Dom dom, ClassLoader beanClassLoader) {
+    public XmlBeanDefinition parse(Element ele, DomParser dom) {
         XmlBeanDefinition xmlBeanDefinition = new GenericXmlBeanDefinition();
 
         // 获取所有property
@@ -97,8 +93,7 @@ public class BeanNodeParser {
                 }
                 else if (subElement != null) {
                     // 处理子元素
-                    Object subEle = XmlNodeParserFactory.getXmlBeanDefinition(subElement, dom,
-                            beanClassLoader);
+                    Object subEle = XmlParserFactory.getElementValue(subElement, dom);
                     xmlBeanDefinition.getProperties().put(name, subEle);
                 }
                 else {
@@ -109,7 +104,7 @@ public class BeanNodeParser {
         }
         
         // 获取constructor
-        List<Element> constructorArs = dom.elements(ele, "constructor");
+        List<Element> constructorArs = dom.elements(ele, CONSTRUCTOR_ELEMENT);
         LinkedList<Object> constructorArgs = new LinkedList<Object>();
         if (constructorArs != null && !constructorArs.isEmpty()) {
             Element property = constructorArs.get(0);
@@ -120,8 +115,7 @@ public class BeanNodeParser {
                 if (node instanceof Element) {
                     Element subElement = (Element) node;
                     // 处理子元素
-                    Object subEle = XmlNodeParserFactory.getXmlBeanDefinition(subElement, dom,
-                            beanClassLoader);
+                    Object subEle = XmlParserFactory.getElementValue(subElement, dom);
                     constructorArgs.add(subEle);
                 }
             }
@@ -150,9 +144,5 @@ public class BeanNodeParser {
         }
         return xmlBeanDefinition;
     }
-
-    private static void error(String msg) {
-        LOG.error(msg);
-        throw new BeanDefinitionParsingException(msg);
-    }
+    
 }

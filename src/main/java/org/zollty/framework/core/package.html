@@ -9,12 +9,12 @@
   <div>
     其中，package的调用关系如下：
     
-    annotation---------|------------------|
-                       |------beans-------|---context
-    config-------------|------------------|
+    context位于最上层，可以调用其他package。beans可以调用config和annotation：
     
-    即context位于最上层，可以调用其他package。beans可以调用config和annotation
-  
+                |----------------->|--------->annotation
+    context---->|------beans------>|
+                |----------------->|--------->config
+    
   </div>
   
 </body>

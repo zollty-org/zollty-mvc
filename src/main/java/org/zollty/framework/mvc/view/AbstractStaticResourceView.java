@@ -31,6 +31,8 @@ import org.zollty.framework.util.MvcUtils;
  */
 abstract public class AbstractStaticResourceView implements View {
 
+    protected static final String VIEW_PATH_PREFIX = "classpath:/META-INF/resources/";
+    
     private final String shortPath;
 
     public AbstractStaticResourceView(String shortPath) {
