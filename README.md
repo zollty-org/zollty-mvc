@@ -241,7 +241,7 @@ See the XML Schema and use it to validate your XML configuration:
  http://assets.zollty.com/misc/p/schema/zolltymvc-beans-1.3.xsd
 
 
-### See the docs for more details  
+## See the docs for more details  
 
 Quik learn, see [docs pages](https://github.com/zollty-org/zollty-mvc/tree/master/docs)
 
