@@ -29,6 +29,7 @@ import org.jretty.util.DateFormatUtils;
 import org.jretty.util.ExceptionUtils;
 import org.jretty.util.FileUtils;
 import org.jretty.util.IOUtils;
+import org.jretty.util.PathUtils;
 import org.jretty.util.RandomUtils;
 import org.jretty.util.ReflectionUtils;
 import org.jretty.util.StringSplitUtils;
@@ -45,28 +46,12 @@ public class MvcUtils {
     
     /** yyyy-MM-dd HH:mm:ss格式 */
     public static final MvcUtils.DateFormatUtil DATEFORMAT = new MvcUtils.DateFormatUtil();
-
-    public static class StringUtil extends StringUtils {
-
-        public static List<String> splitURL(String uri) {
-            List<String> ret = new ArrayList<String>();
-            int start = 1;
-            int max = uri.length() - 1;
-
-            for (int i = 1; i <= max; i++) {
-                if (uri.charAt(i) == '/') {
-                    ret.add(uri.substring(start, i));
-                    start = i + 1;
-                }
-            }
-
-            if (uri.charAt(max) != '/')
-                ret.add(uri.substring(start));
-            return ret;
-        }
-
+    
+    public static class PathUtil extends PathUtils {
     }
     
+    public static class StringUtil extends StringUtils {
+    }
     
     public static class ConvertUtil extends MvcConvertUtils {
     }
@@ -109,7 +94,6 @@ public class MvcUtils {
     
     public static class VerifyUtil extends MvcVerifyUtils {
     }
-    
     
     public static class StringSplitUtil extends StringSplitUtils {
     }

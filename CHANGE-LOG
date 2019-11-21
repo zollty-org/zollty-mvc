@@ -107,7 +107,14 @@ Changes in version 1.6.2.RELEASE         (2019-03-07)
 2. resolved a bug in mvc aop. 
 3. support http `array param` in ModelDriven bean.
 
+
 Changes in version 1.7.0.RELEASE         (2019-07-22)
 -------------------------------------
 1. Optimizing resource loading，include classloader resources.
 2. Support run on Android System (Android 1.6 to Android 9.0 all tested pass).
+
+
+Changes in version 1.8.0.RELEASE         (2019-11-21)
+-------------------------------------
+1. Support system placeholder in config value. e.g. ${catalina.base:-target}/logs, use the token ":-" specify a default value.
+

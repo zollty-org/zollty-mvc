@@ -17,7 +17,7 @@
   <groupId>org.zollty</groupId>
   <artifactId>zollty-mvc</artifactId>
   <packaging>jar</packaging>
-  <version>1.7.0</version>
+  <version>1.8.0</version>
   <name>zollty-mvc</name>
   <url>https://github.com/zollty-org/zollty-mvc</url>
   <description>The ZolltyMVC is a lightweight Java MVC Framework. 
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.jretty</groupId>
       <artifactId>jretty-core-starter-mvc</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
     </dependency>
 
     <!-- Servlet -->

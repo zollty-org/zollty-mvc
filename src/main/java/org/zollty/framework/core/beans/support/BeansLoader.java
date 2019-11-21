@@ -32,6 +32,7 @@ import java.util.Set;
 import org.jretty.log.LogFactory;
 import org.jretty.log.Logger;
 import org.jretty.util.NestedRuntimeException;
+import org.jretty.util.SystemPlaceHolderUtils;
 import org.zollty.framework.core.annotation.Inject;
 import org.zollty.framework.core.annotation.MethodBeanId;
 import org.zollty.framework.core.beans.BeanDefinition;
@@ -349,7 +350,8 @@ class BeansLoader {
         } else if (setterParamType != null) {
             typeName = setterParamType.getName();
         }
-        return MvcUtils.ConvertUtil.convert(managedValue.getValue(), typeName);
+        return MvcUtils.ConvertUtil.convert(
+                SystemPlaceHolderUtils.resovlePlaceHolder(managedValue.getValue()), typeName);
     }
 
     private Object getRefArg(Object value) {

@@ -58,7 +58,7 @@ abstract public class AbstractStaticResourceView implements View {
             return;
         }
         if (in != null) {
-            String contentType = MvcUtils.StringUtil.getFilenameExtension(shortPath);
+            String contentType = MvcUtils.PathUtil.getFilenameExtension(shortPath);
             contentType = MIME.get(contentType);
             if (contentType != null) {
                 response.setHeader("Content-Type", contentType);
