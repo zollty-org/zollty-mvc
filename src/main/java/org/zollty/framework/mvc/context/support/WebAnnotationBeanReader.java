@@ -88,7 +88,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         setWebBeanDefinition(beanDefinition, c);
         
         // modified by zollty 12/15/2014 contoller bean don't need exact id
-        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         beanDefinition.setId(id);
 
         List<Method> reqMethods = getReqMethods(c);
@@ -105,7 +105,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         MvcBeforeBeanDefinition beanDefinition = new MvcBeforeBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
-        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {
@@ -122,7 +122,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         MvcAroundBeanDefinition beanDefinition = new MvcAroundBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
-        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {
@@ -140,7 +140,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         MvcBeforeRenderBeanDefinition beanDefinition = new MvcBeforeRenderBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
-        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {
@@ -157,7 +157,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         MvcAfterThrowBeanDefinition beanDefinition = new MvcAfterThrowBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
-        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {
@@ -174,7 +174,7 @@ class WebAnnotationBeanReader extends AbstractAnnotationBeanReader {
         MvcAfterBeanDefinition beanDefinition = new MvcAfterBeanDefinition();
         setWebBeanDefinition(beanDefinition, c);
         
-        String id = MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        String id = MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         beanDefinition.setId(id);
 
         for (Method m : c.getMethods()) {

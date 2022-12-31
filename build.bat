@@ -4,7 +4,8 @@ setlocal
 echo.
 call java -version
 echo.
-SET JAVA_HOME=D:\C\Program Files\Java\jdk1.7.0_80
+SET JAVA_HOME=D:\__SYNC1\Softwares\Java\jdk1.7.0_79
+set settings=D:\__SYNC0\00WORK\ide-config\settings-local.xml
 echo ------------------------- maven info -------------------------------
 call mvn -v
 
@@ -33,13 +34,13 @@ if [%1]==[deploy] goto DEPLOY
 :: ****************************************************************************
 
 echo ------------------------- starting to install -------------------------
-call mvn clean install
+call mvn clean install --settings %settings%
 
 goto EOF
 
 :DEPLOY
 echo ------------------------- starting to deploy -------------------------
-call mvn deploy -DaltDeploymentRepository=my-git-repo::default::file:///D:/0sync-local/git/repository
+call mvn deploy -DaltDeploymentRepository=my-git-repo::default::file:///D:/__SYNC2/git/repository --settings %settings%
 
 goto EOF
 

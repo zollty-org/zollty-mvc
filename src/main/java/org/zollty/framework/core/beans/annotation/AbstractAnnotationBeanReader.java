@@ -128,7 +128,7 @@ abstract public class AbstractAnnotationBeanReader implements BeanReader<Annotat
 
         Component component = c.getAnnotation(Component.class);
         String id = component.value();
-        id = id.length() != 0 ? id : MvcUtils.DateFormatUtil.getShortUniqueDate_TimeMillis();
+        id = id.length() != 0 ? id : MvcUtils.DateFormatUtil.getShortUniqueDateTimeMillis();
         annotationBeanDefinition.setId(id);
 
         String[] names = MvcUtils.ClassUtil.getInterfaceNames(c, getBeanClassLoader());

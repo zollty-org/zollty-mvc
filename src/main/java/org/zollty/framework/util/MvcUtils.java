@@ -127,25 +127,52 @@ public class MvcUtils {
     public static class ExceptionUtil extends ExceptionUtils {
 
         public static String getStackTraceStr(Throwable e) {
-            return ExceptionUtils.getStackTraceStr(lineChecker, e, null);
+            return ExceptionUtils.getStackTraceStr(eleFilter, e, null);
         }
 
         public static String getStackTraceStr(Throwable e, String prompt) {
-            return ExceptionUtils.getStackTraceStr(lineChecker, e, prompt);
+            return ExceptionUtils.getStackTraceStr(eleFilter, e, prompt);
         }
 
-        private static HttpServerLineChecker lineChecker = new HttpServerLineChecker();
+        private static HttpServerLineChecker eleFilter = new HttpServerLineChecker();
 
-        static class HttpServerLineChecker implements LineChecker {
+        static class HttpServerLineChecker implements StackTraceFilter {
+//                // false 过滤，true 不过滤
+//                return !(line.startsWith("\tat org.zollty.framework.mvc.handler") 
+//                        || line.startsWith("\tat sun.reflect")
+//                        || line.startsWith("\tat org.apache.catalina")
+//                        || line.startsWith("\tat org.apache.coyote.http11")
+//                        || line.startsWith("\tat com.ibm.ws")
+//                        || line.startsWith("\tat com.ibm.io"));
+            
             @Override
-            public boolean checkLine(String line) {
-                // false 过滤，true 不过滤
-                return !(line.startsWith("\tat org.zollty.framework.mvc.handler") 
-                        || line.startsWith("\tat sun.reflect")
-                        || line.startsWith("\tat org.apache.catalina")
-                        || line.startsWith("\tat org.apache.coyote.http11")
-                        || line.startsWith("\tat com.ibm.ws")
-                        || line.startsWith("\tat com.ibm.io"));
+            public boolean exclude(String className) {
+                return excludeMvc(className) 
+                        || excludeTomcat(className) 
+                        || excludeJava(className)
+                        || excludeDubbo(className) 
+                        || excludeWs(className);
+            }
+            
+            private static boolean excludeJava(String className) {
+                return className.startsWith("sun.reflect");
+            }
+
+            private static boolean excludeTomcat(String className) {
+                return className.startsWith("org.apache.catalina")
+                        || className.startsWith("org.apache.coyote");
+            }
+
+            private static boolean excludeMvc(String className) {
+                return className.startsWith("org.zollty.framework.mvc.handler");
+            }
+            
+            private static boolean excludeDubbo(String className) {
+                return className.startsWith("com.alibaba.dubbo");
+            }
+            
+            private static boolean excludeWs(String className) {
+                return className.startsWith("com.ibm.ws") || className.startsWith("com.ibm.io");
             }
         }
 
